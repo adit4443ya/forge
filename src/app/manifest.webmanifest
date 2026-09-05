@@ -1,0 +1,13 @@
+{
+  "name": "Forge — compiler, systems, HFT and quant preparation",
+  "short_name": "Forge",
+  "description": "Timed problems with staged hints, runnable labs, long-form guides and spaced repetition.",
+  "start_url": "/today",
+  "display": "standalone",
+  "background_color": "#0b0b0c",
+  "theme_color": "#0b0b0c",
+  "icons": [
+    { "src": "/icon.svg", "sizes": "any", "type": "image/svg+xml" },
+    { "src": "/apple-icon.svg", "sizes": "180x180", "type": "image/svg+xml" }
+  ]
+}
