@@ -23,15 +23,15 @@ browser. Sign-in and cross-device sync are opt-in — see below.
 
 ## Optional: Google sign-in and cloud progress
 
-1. Create a project at [supabase.com](https://supabase.com).
-2. Run [`supabase/schema.sql`](supabase/schema.sql) in the SQL editor (Dashboard → SQL Editor → New query).
-3. Enable Google in Authentication → Providers, and add your callback URL
-   (`https://your-domain/auth/callback`, plus `http://localhost:3000/auth/callback` for development).
-4. Copy `.env.example` to `.env.local` and fill in the project URL and anon key.
+Full runbook in [SETUP.md](SETUP.md). Check your work at any point with:
 
 ```bash
-cp .env.example .env.local
+npm run doctor
 ```
+
+It verifies the environment variables, that Supabase is reachable, that the schema is applied, that
+row-level security actually hides other users' rows, and that the Google provider is enabled — and
+prints the exact redirect URLs to paste into Supabase and Google.
 
 Without those variables `CLOUD_ENABLED` is false, every cloud path is skipped, and the sign-in button
 is replaced by an explanation. The app never degrades into a broken state because a backend is missing.
@@ -79,6 +79,7 @@ bundle. Only the guide you are reading is sent, already rendered.
 | `node scripts/check-curriculum.mjs` | every problem in the bank is placed in a tier |
 | `node scripts/build-content.mjs` | regenerates the content index; fails on duplicate guide numbers |
 | `npm run smoke` | headless Chrome walks every surface, the palette, the gates, persistence and the theme |
+| `npm run doctor` | the deployment is actually wired up: env, schema, RLS, Google provider |
 
 Run the smoke test against a built server:
 
