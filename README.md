@@ -80,6 +80,7 @@ bundle. Only the guide you are reading is sent, already rendered.
 | `node scripts/build-content.mjs` | regenerates the content index; fails on duplicate guide numbers |
 | `npm run smoke` | headless Chrome walks every surface, the palette, the gates, persistence and the theme |
 | `npm run doctor` | the deployment is actually wired up: env, schema, RLS, Google provider |
+| `npm run test:scroll` | the landing page scrolls, the app does not, nothing overflows sideways |
 
 Run the smoke test against a built server:
 

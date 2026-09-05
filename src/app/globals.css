@@ -7,7 +7,9 @@
 
 *, *::before, *::after { box-sizing: border-box; }
 
-html, body, #root { height: 100%; }
+/* Ordinary documents (landing, login, guides) scroll normally. The app shell
+   opts out by pinning itself to the viewport — see .shell below. */
+html, body { min-height: 100%; }
 
 body {
   margin: 0;
@@ -16,14 +18,11 @@ body {
   font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', system-ui, sans-serif;
   font-size: var(--fs-base);
   line-height: 1.6;
-  overflow: hidden;                 /* the app owns scrolling via inner panes */
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   text-rendering: optimizeLegibility;
   font-feature-settings: "cv02","cv03","cv04","cv11","ss01";
 }
-
-#root { display: flex; flex-direction: column; overflow: hidden; }
 
 ::selection { background: var(--tk-accentBg2); color: var(--tk-text); }
 
@@ -161,7 +160,10 @@ a:hover { text-decoration: underline; text-underline-offset: 3px; }
 /* ══════════════════════════════════════════════════════════════════
    APP SHELL LAYOUT
    ══════════════════════════════════════════════════════════════════ */
-.shell { display: flex; flex-direction: column; height: 100%; overflow: hidden; }
+/* The app fills exactly the viewport and never scrolls the page itself; its
+   inner panes scroll instead. 100dvh, not 100%, so it does not depend on an
+   ancestor height — the landing page needs body to grow freely. */
+.shell { display: flex; flex-direction: column; height: 100dvh; overflow: hidden; }
 
 .topbar {
   flex-shrink: 0;

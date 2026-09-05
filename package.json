@@ -9,7 +9,8 @@
     "start": "next start",
     "lint": "eslint .",
     "smoke": "node scripts/smoke.mjs",
-    "doctor": "node scripts/doctor.mjs"
+    "doctor": "node scripts/doctor.mjs",
+    "test:scroll": "node scripts/test-scroll.mjs"
   },
   "dependencies": {
     "@supabase/ssr": "^0.7.0",
