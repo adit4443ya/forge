@@ -9,7 +9,7 @@ import { ROLES } from "@/data/roles.js";
 import { PHASES, phaseForWeek } from "@/data/roadmap.js";
 import { stats as reviewStats } from "@/lib/review.js";
 import { PROBLEMS } from "@/dsaData.jsx";
-import LABS from "@/data/labs.json";
+import { LAB_INDEX, LAB_TRACKS } from "@/data/generated/labs.js";
 
 /* ══════════════════════════════════════════════════════════════════════════
    PROGRESS — the evidence that you are getting better, and the one number
@@ -23,7 +23,7 @@ function readiness(prog) {
   const ids = TIERS.flatMap((t) => t.groups.flatMap((g) => g.ids));
   const solvedMock = ids.filter((id) => isSolvedIn(prog.dsa[id], "mock")).length;
   const solvedAny = ids.filter((id) => isSolved(prog.dsa[id])).length;
-  const labs = LABS.labs.filter((l) => prog.labs[l.id]).length;
+  const labs = LAB_INDEX.filter((l) => prog.labs[l.id]).length;
   const evidence = Object.values(prog.evidence || {}).filter((e) => e?.claim).length;
   const mocks = prog.sessions.filter((s) => s.kind === "D" || s.kind === "mock").length;
   const weeks = new Set(prog.sessions.map((s) => { const d = new Date(s.date); const y = d.getFullYear(); const w = Math.floor((d - new Date(y, 0, 1)) / 604800000); return `${y}-${w}`; })).size;
@@ -31,7 +31,7 @@ function readiness(prog) {
   const parts = [
     { id: "coding",     label: "Coding under mock conditions", value: Math.min(1, solvedMock / 40), weight: 30, detail: `${solvedMock} problems solved in mock mode (40 for full marks)` },
     { id: "coverage",   label: "Pattern coverage",             value: Math.min(1, solvedAny / ids.length), weight: 15, detail: `${solvedAny} of ${ids.length} problems solved in any mode` },
-    { id: "labs",       label: "Labs completed",               value: Math.min(1, labs / LABS.labs.length), weight: 20, detail: `${labs} of ${LABS.labs.length} labs` },
+    { id: "labs",       label: "Labs completed",               value: Math.min(1, labs / LAB_INDEX.length), weight: 20, detail: `${labs} of ${LAB_INDEX.length} labs` },
     { id: "evidence",   label: "Evidence notes written",       value: Math.min(1, evidence / 20), weight: 10, detail: `${evidence} notes (20 for full marks)` },
     { id: "mocks",      label: "Full mocks run",               value: Math.min(1, mocks / 8), weight: 15, detail: `${mocks} mock sessions (8 for full marks)` },
     { id: "consistency",label: "Weeks with any work",          value: Math.min(1, weeks / 20), weight: 10, detail: `${weeks} distinct weeks` },
@@ -216,7 +216,7 @@ export default function Progress() {
         <div style={{ display: "grid", gap: "var(--sp-2)" }}>
           {ROLES.map((role, i) => {
             const prefixes = role.competencies.flatMap((c) => c.labs || []);
-            const labs = LABS.labs.filter((l) => prefixes.some((p) => l.id === p || l.id.startsWith(p)));
+            const labs = LAB_INDEX.filter((l) => prefixes.some((p) => l.id === p || l.id.startsWith(p)));
             const done = labs.filter((l) => prog.labs[l.id]).length;
             return (
               <Panel key={role.id} i={i} hue={role.id === prog.role ? role.hue : "neutral"} active={role.id === prog.role}

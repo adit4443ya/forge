@@ -92,7 +92,8 @@ const seg = (from, to) => dsaSrc.slice(dsaSrc.indexOf(from), dsaSrc.indexOf(to))
 const bankSrc = seg('export const PROBLEMS', 'export const NVIDIA_PROBLEMS')
               + seg('export const NVIDIA_PROBLEMS', 'export const CPP_CONCEPTS');
 const problems = new Set([...bankSrc.matchAll(/^\s*id:\s*(\d+),/gm)].map((m) => +m[1])).size;
-const labsJson = JSON.parse(fs.readFileSync(path.join(root, 'src/data/labs.json'), 'utf8'));
+/* Read the GENERATED index, not the older hand-kept copy — they drift. */
+const labsJson = JSON.parse(fs.readFileSync(path.join(root, 'content/labs.json'), 'utf8'));
 const rolesSrc = fs.readFileSync(path.join(root, 'src/data/roles.js'), 'utf8');
 const rapidSrc = fs.readFileSync(path.join(root, 'src/data/rapidfire.js'), 'utf8');
 const labsJsonPath = path.join(root, 'content/labs.json');

@@ -3,6 +3,6 @@
    several screens said "clone debug_lab" without ever saying from where. */
 export const REPO = {
   forge: "https://github.com/adit4443ya/forge",
-  labs: "https://github.com/adit4443ya/debug_lab",
-  labsName: "debug_lab",
+  labs: "https://github.com/adit4443ya/debug_labs",
+  labsName: "debug_labs",
 };

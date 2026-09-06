@@ -6,7 +6,7 @@ import { PREP_INDEX, PREP_MODULE_LABELS } from "@/data/generated/prepIndex.js";
 import { GUIDES } from "@/data/generated/guides.js";
 import { ROLES, allCompetencies } from "@/data/roles.js";
 import { SURFACES } from "./nav.js";
-import LABS from "@/data/labs.json";
+import { LAB_INDEX, LAB_TRACKS } from "@/data/generated/labs.js";
 
 /* ══════════════════════════════════════════════════════════════════════════
    COMMAND PALETTE — one keystroke to anything.
@@ -41,7 +41,7 @@ export default function CommandPalette({ open, onClose, nav }) {
       out.push({ kind: "guide", title: g.title, sub: `Guide ${g.num}`, run: () => nav.openGuide(g.num) });
       g.headings.slice(0, 40).forEach((h) => out.push({ kind: "guide", title: h.text, sub: g.title, run: () => nav.openGuide(g.num, h.id) }));
     });
-    LABS.labs.forEach((l) => out.push({ kind: "lab", title: l.title, sub: `${l.id} · ${l.file}`, run: () => nav.openLab(l.id) }));
+    LAB_INDEX.forEach((l) => out.push({ kind: "lab", title: l.title, sub: `${l.id} · ${l.file}`, run: () => nav.openLab(l.id) }));
     PREP_INDEX.forEach((p) => out.push({ kind: "qa", title: p.question, sub: PREP_MODULE_LABELS[p.module] || p.module, run: () => nav.go("learn", { kind: "module", id: p.module }) }));
     return out;
   }, [nav]);

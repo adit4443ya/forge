@@ -187,8 +187,9 @@ const TRACKS = [
   { id: 'concurrency', dir: 'concurrency', order: 6, title: 'Concurrency', summary: 'Races, queues, memory orders and what a mutex actually costs.' },
   { id: 'systems', dir: 'systems', order: 7, title: 'Systems and syscalls', summary: 'Allocator behaviour, the syscall floor, timing and the network path.' },
   { id: 'aarch64', dir: 'aarch64', order: 8, title: 'AArch64 and SVE', summary: 'NEON, SVE, LSE atomics and runtime dispatch, on a root-free toolchain.' },
-  { id: 'bigcode', dir: 'bigcode', order: 9, title: 'Large codebases', summary: 'Navigate, bisect and reduce inside a codebase too big to read.' },
-  { id: 'capstones', dir: 'capstones', order: 10, title: 'Capstones', summary: 'Multi-day investigations that combine every track.' },
+  { id: 'bigcode', dir: 'bigcode', order: 10, title: 'Large codebases', summary: 'Navigate, bisect and reduce inside a codebase too big to read.' },
+  { id: 'passwork', dir: 'passwork', order: 9, title: 'Pass work', summary: 'Bisect to one pass, read what it did, reduce it, pin it with a test.' },
+  { id: 'capstones', dir: 'capstones', order: 11, title: 'Capstones', summary: 'Multi-day investigations that combine every track.' },
 ];
 
 /* The repository's own manifest carries ids, skills, prereqs and the evidence

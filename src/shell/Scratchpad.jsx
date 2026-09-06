@@ -1,6 +1,6 @@
 "use client";
-import { useEffect, useRef, useState } from "react";
-import { usePathname, useSearchParams } from "next/navigation";
+import { useEffect, useMemo, useRef, useState } from "react";
+import { usePathname, useSearchParams, useRouter } from "next/navigation";
 import { Label, Mono } from "@/ui/kit.jsx";
 import { useProgress, progressStore } from "@/lib/progress/store.js";
 
@@ -26,9 +26,11 @@ const KEY_FOR = (pathname, params) => {
 export default function Scratchpad() {
   const pathname = usePathname();
   const params = useSearchParams();
+  const router = useRouter();
   const prog = useProgress();
   const [open, setOpen] = useState(false);
   const [wide, setWide] = useState(false);
+  const [showAll, setShowAll] = useState(false);
   const ref = useRef(null);
   const { key, label } = KEY_FOR(pathname, params);
   const noteKey = `pad:${key}`;
@@ -67,7 +69,20 @@ export default function Scratchpad() {
     return () => window.removeEventListener("keydown", onKey);
   }, [open]);
 
-  const pads = Object.keys(prog.notes || {}).filter((k) => k.startsWith("pad:") && prog.notes[k]?.text?.trim());
+  /* Notes were write-only: saved per surface and never surfaced again, so a
+     note written while solving was effectively deleted. This is the index. */
+  const pads = useMemo(() => Object.entries(prog.notes || {})
+    .filter(([k, v]) => k.startsWith("pad:") && v?.text?.trim())
+    .map(([k, v]) => {
+      const scope = k.slice(4);
+      const [kind, id] = scope.split(":");
+      const href = kind === "problem" ? `/practice?problem=${id}`
+        : kind === "lab" ? `/labs/${id}`
+        : kind === "guide" ? `/learn/guide/${id}`
+        : `/${id || "today"}`;
+      return { key: k, scope, kind, id, href, text: v.text.trim(), at: v.at || 0, current: k === noteKey };
+    })
+    .sort((a, b) => b.at - a.at), [prog.notes, noteKey]);
   const words = draft.trim() ? draft.trim().split(/\s+/).length : 0;
 
   return (
@@ -95,10 +110,25 @@ export default function Scratchpad() {
             onChange={(e) => setDraft(e.target.value)}
             placeholder={"Invariant, then the code.\n\nWhat is the state?\nWhat does each step preserve?\nWhat is the case I have not handled?"} />
 
+          {showAll && (
+            <div className="pad-index">
+              {pads.length === 0 && <Mono dim>No notes yet. Anything you type here is kept per page.</Mono>}
+              {pads.map((n) => (
+                <button key={n.key} className="press pad-index-row" data-current={n.current ? "1" : undefined}
+                  onClick={() => { setShowAll(false); if (!n.current) router.push(n.href); }}>
+                  <Mono dim>{n.kind === "surface" ? n.id : `${n.kind} ${n.id}`}</Mono>
+                  <span className="pad-index-text">{n.text.split("\n")[0].slice(0, 90)}</span>
+                </button>
+              ))}
+            </div>
+          )}
+
           <footer className="pad-foot">
             <Mono dim>saved automatically · scoped to this page</Mono>
             <div style={{ flex: 1 }} />
-            {pads.length > 1 && <Mono dim>{pads.length} pads</Mono>}
+            <button className="press pad-btn" data-on={showAll ? "1" : undefined} onClick={() => setShowAll((v) => !v)}>
+              {pads.length} note{pads.length === 1 ? "" : "s"}
+            </button>
             <button className="press pad-btn" title="Copy" onClick={() => navigator.clipboard?.writeText(draft).catch(() => {})}>copy</button>
           </footer>
         </aside>

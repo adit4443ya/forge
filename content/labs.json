@@ -67,14 +67,21 @@
    "id": "bigcode",
    "title": "Large codebases",
    "summary": "Navigate, bisect and reduce inside a codebase too big to read.",
-   "order": 9,
+   "order": 10,
    "run": "cd bigcode && ./build.sh"
+  },
+  {
+   "id": "passwork",
+   "title": "Pass work",
+   "summary": "Bisect to one pass, read what it did, reduce it, pin it with a test.",
+   "order": 9,
+   "run": "cd passwork && ./build.sh"
   },
   {
    "id": "capstones",
    "title": "Capstones",
    "summary": "Multi-day investigations that combine every track.",
-   "order": 10,
+   "order": 11,
    "run": "cd capstones && ./build.sh"
   }
  ],
@@ -5348,6 +5355,202 @@
     "bigcode-04"
    ],
    "evidence": "APInt.cpp: Backend 2.2 s of 3.1 s, one function 107 ms; heavy.cpp: std::regex instantiation 0.56 s"
+  },
+  {
+   "id": "passwork-01",
+   "num": "01",
+   "track": "passwork",
+   "file": "passwork/01_bisect_a_pass.c",
+   "title": "Which pass did that? Bisect the pipeline",
+   "difficulty": 2,
+   "needs": "clang, opt (LLVM 17+)",
+   "source": "#include <stdio.h>\n#include <stdlib.h>\n\nint __attribute__((noinline)) sum_squares(const int *a, int n) {\n    int total = 0;\n    for (int i = 0; i < n; i++)\n        total += a[i] * a[i];\n    return total;\n}\n\nint main(int argc, char **argv) {\n    int n = argc > 1 ? atoi(argv[1]) : 8;\n    int *a = malloc(n * sizeof *a);\n    for (int i = 0; i < n; i++) a[i] = i;\n    printf(\"%d\\n\", sum_squares(a, n));\n    free(a);\n    return 0;\n}",
+   "lang": "c",
+   "teaches": "\"It works at -O0 and breaks at -O2\" is the most common compiler bug\nreport there is, and the useless response is to read all 201 passes.\nThe useful response is a binary search. -opt-bisect-limit=N runs the\nfirst N passes and skips the rest, so you can bisect on any observable\nproperty of the output and land on the exact pass in about eight runs.\n\nHere the property is benign — does the IR contain vector types — but the\nmethod is identical when the property is \"does the program print the\nwrong answer\". That is the whole point: practise the loop on something\nsafe so you can run it under pressure on something that is not.",
+   "build": "cd passwork && ./build.sh",
+   "artifact": "passwork/01_bisect.ll",
+   "steps": [
+    {
+     "n": 1,
+     "title": "SEE HOW MANY PASSES YOU ARE UP AGAINST",
+     "blocks": [
+      {
+       "kind": "cmd",
+       "commands": [
+        "opt -O2 -opt-bisect-limit=-1 01_bisect.ll -o /dev/null 2>&1 | wc -l"
+       ],
+       "output": "201\n-1 means \"run everything and narrate it\". Two hundred and one passes for\none twelve-line function. Reading that list top to bottom is not a plan."
+      }
+     ]
+    },
+    {
+     "n": 2,
+     "title": "PICK A PROPERTY YOU CAN TEST WITH ONE COMMAND",
+     "blocks": [
+      {
+       "kind": "cmd",
+       "commands": [
+        "opt -O2 01_bisect.ll -S -o - | grep -c '<4 x i32>'"
+       ],
+       "output": "16"
+      },
+      {
+       "kind": "prose",
+       "text": "Sixteen vector-typed values in the final IR. At limit 0 there will be\nnone. Somewhere between is the pass that introduced them. A good property\nis one word of output and no judgement: a count, or an exit status."
+      }
+     ]
+    },
+    {
+     "n": 3,
+     "title": "BISECT. HALVE THE INTERVAL EACH TIME",
+     "blocks": [
+      {
+       "kind": "cmd",
+       "commands": [
+        "for n in 200 100 150 125 137 142 144 143; do \\"
+       ],
+       "output": "    printf \"limit=%-4s vectors=%s\\n\" \"$n\" \\\n      \"$(opt -O2 -opt-bisect-limit=$n 01_bisect.ll -S -o - 2>/dev/null | grep -c '<4 x i32>')\"; \\\n  done\nlimit=200  vectors=16\nlimit=100  vectors=0\nlimit=150  vectors=11\nlimit=125  vectors=0\nlimit=137  vectors=0\nlimit=142  vectors=0\nlimit=144  vectors=11\nlimit=143  vectors=0"
+      },
+      {
+       "kind": "prose",
+       "text": "Eight runs to go from 201 candidates to one. The change happens when the\nlimit reaches 144 and not at 143, so pass 144 is the one."
+      }
+     ]
+    },
+    {
+     "n": 4,
+     "title": "NAME IT",
+     "blocks": [
+      {
+       "kind": "cmd",
+       "commands": [
+        "opt -O2 -opt-bisect-limit=-1 01_bisect.ll -o /dev/null 2>&1 | sed -n '143,145p'"
+       ],
+       "output": "BISECT: running pass (143) InjectTLIMappings on sum_squares\nBISECT: running pass (144) LoopVectorizePass on sum_squares\nBISECT: running pass (145) InferAlignmentPass on sum_squares\nLoopVectorizePass. Now you have a pass name, and every later question —\nwhy did it fire, was it legal, what does it cost — has somewhere to start."
+      }
+     ]
+    },
+    {
+     "n": 5,
+     "title": "CONFIRM BY REMOVING JUST THAT PASS",
+     "blocks": [
+      {
+       "kind": "cmd",
+       "commands": [
+        "opt -O2 01_bisect.ll -S -o - | grep -c '<4 x i32>'"
+       ],
+       "output": "16"
+      },
+      {
+       "kind": "cmd",
+       "commands": [
+        "opt -O2 -disable-loop-vectorization 01_bisect.ll -S -o - | grep -c '<4 x i32>'"
+       ],
+       "output": "0"
+      },
+      {
+       "kind": "prose",
+       "text": "A bisect gives you a suspect; disabling the pass gives you a confession.\nAlways do the second step — an off-by-one in the bisect is easy and the\nconfirmation costs one command."
+      }
+     ]
+    }
+   ],
+   "tryIt": [
+    {
+     "kind": "prose",
+     "text": "1. Bisect for a different property: when does `sum_squares` stop being a\n     call and get inlined into main? Grep the IR for `call.*sum_squares`.\n  2. Run with `-print-after=loop-vectorize` and read the IR it produced.\n  3. Compare the pass count at -O1, -O2 and -O3. The difference between\n     -O2 and -O3 is smaller than most people assume — check before you\n     believe anyone who says \"just use -O3\".\n============================================================"
+    }
+   ],
+   "sections": [
+    {
+     "title": "WHY THE COUNT CHANGES BETWEEN 144 AND THE END",
+     "blocks": [
+      {
+       "kind": "prose",
+       "text": "Eleven at the boundary, sixteen at the end. Later passes widen and clean\nup what the vectorizer produced. That is normal, and it is why you bisect\non \"did the property appear\" rather than on an exact number."
+      }
+     ]
+    },
+    {
+     "title": "WHEN THE PROPERTY IS A WRONG ANSWER",
+     "blocks": [
+      {
+       "kind": "prose",
+       "text": "Same loop, different test. Write a script that exits 0 when the program\nis correct and 1 when it is not, then bisect on the exit status:"
+      },
+      {
+       "kind": "cmd",
+       "commands": [
+        "opt -O2 -opt-bisect-limit=$n bug.ll -o t.bc && clang t.bc -o t && ./t"
+       ],
+       "output": "That script is also exactly what llvm-reduce wants (lab 03), so writing it\nonce serves both."
+      }
+     ]
+    }
+   ],
+   "manifestTitle": "Which pass did that? Bisect the pipeline",
+   "skills": [
+    "opt-bisect-limit",
+    "pass pipeline",
+    "binary search"
+   ],
+   "prereqs": [
+    "ir-01"
+   ],
+   "evidence": "The pass number and name you landed on, and the one command that confirmed it by disabling that pass"
+  },
+  {
+   "id": "passwork-02",
+   "num": "02",
+   "track": "passwork",
+   "file": "passwork/02_read_what_a_pass_did.md",
+   "title": "Read what one pass actually did",
+   "lang": "markdown",
+   "teaches": "",
+   "build": "",
+   "steps": [],
+   "sections": [],
+   "markdown": "<!--\ntrack: passwork\ndifficulty: 2\nneeds: opt (LLVM 17+)\n-->\n\n# Read what one pass actually did\n\n## WHAT THIS TEACHES\n\nInterviews ask you to look at IR before and after and say which transformation\nran and why it was legal. The way to get good at that is not to read the whole\n`-O2` output — 217 passes report a change on a twelve-line function — but to\nrun **one pass at a time** on input small enough that the diff is obvious, until\nyou recognise each transformation on sight.\n\nThe input is hand-written IR rather than clang output, so there is nothing\nbetween you and the change.\n\n## BUILD\n\nNothing to build. `02_read_what_a_pass_did.ll` is the input.\n\n## STEP 1 — GVN removes a redundant load\n\n```\n$ opt -passes=gvn -S 02_read_what_a_pass_did.ll -o - | sed -n '/@redundant_load/,/^}/p'\ndefine i32 @redundant_load(ptr %p) {\nentry:\n  %a = load i32, ptr %p, align 4\n  %sum = add i32 %a, %a\n  ret i32 %sum\n}\n```\n\nTwo loads became one and `%b` was replaced by `%a` everywhere. Say why it is\nlegal: nothing writes through `%p` between them, and `%p` is not `volatile`, so\nboth loads must observe the same value.\n\nNow make it illegal, and watch alias analysis decide. Put a store through a\n*different* pointer between the loads:\n\n```llvm\ndefine i32 @redundant_load(ptr %p, ptr %q, i32 %v) {\n  %a = load i32, ptr %p\n  store i32 %v, ptr %q\n  %b = load i32, ptr %p\n  %sum = add i32 %a, %b\n  ret i32 %sum\n}\n```\n```\n$ opt -passes=gvn -S that.ll -o -\n  %a = load i32, ptr %p, align 4\n  store i32 %v, ptr %q, align 4\n  %b = load i32, ptr %p, align 4      ; both loads kept\n  %sum = add i32 %a, %b\n```\n\nGVN backs off, because `%q` might alias `%p`. Add one word:\n\n```\n$ sed 's/ptr %p, ptr %q/ptr noalias %p, ptr noalias %q/' that.ll | opt -passes=gvn -S -\n  %a = load i32, ptr %p, align 4\n  store i32 %v, ptr %q, align 4\n  %sum = add i32 %a, %a               ; redundant load gone again\n```\n\nThat is the entire value of `restrict` in C, in three lines of IR: the\noptimization was always legal, the compiler just could not prove it. Worth\nrunning once yourself — it is the clearest demonstration of alias analysis you\nwill find, and it answers the interview question about `restrict` with a\ntranscript instead of an opinion.\n\nOne more, because it surprises people: store a *constant* rather than `%v`\nthrough `%p` itself, and GVN does not keep two loads — it forwards the stored\nvalue directly (`add i32 %a, 7`). That is store-to-load forwarding, a different\noptimization wearing the same pass's name.\n\n## STEP 2 — DCE removes a value nothing reads\n\n```\n$ opt -passes=dce -S 02_read_what_a_pass_did.ll -o - | sed -n '/@dead_arithmetic/,/^}/p'\ndefine i32 @dead_arithmetic(i32 %x) {\nentry:\n  %r = add i32 %x, 1\n  ret i32 %r\n}\n```\n\nThe multiply is gone. Legal because the instruction has no users and no side\neffects — the second half matters, which is why DCE will not touch a `store` or\na `call` it cannot prove is pure.\n\n## STEP 3 — SimplifyCFG, and a result worth stopping on\n\n```\n$ opt -passes=simplifycfg -S 02_read_what_a_pass_did.ll -o - | sed -n '/@constant_branch/,/^}/p'\ndefine i32 @constant_branch(i32 %x) {\nentry:\n  %always = icmp sge i32 4, 3\n  %x. = select i1 %always, i32 %x, i32 0\n  ret i32 %x.\n}\n```\n\nIt flattened the branch into a `select` — and left `icmp sge i32 4, 3` sitting\nthere, obviously constant, unfolded. That is not a bug. SimplifyCFG's job is\ncontrol flow; folding constants is InstCombine's. Passes are deliberately narrow.\n\n## STEP 4 — WHICH IS WHY THE PIPELINE ALTERNATES THEM\n\n```\n$ opt -passes=instcombine -S 02_read_what_a_pass_did.ll -o - | sed -n '/@constant_branch/,/^}/p'\ndefine i32 @constant_branch(i32 %x) {\nentry:\n  br i1 true, label %yes, label %no\nyes:\n  ret i32 %x\nno:\n  ret i32 0\n}\n```\n\nInstCombine folds the comparison to `true` — and leaves the dead block, because\ndeleting blocks is SimplifyCFG's job. Each pass does half. Run both:\n\n```\n$ opt -passes='simplifycfg,instcombine' -S 02_read_what_a_pass_did.ll -o - | sed -n '/@constant_branch/,/^}/p'\ndefine i32 @constant_branch(i32 %x) {\nentry:\n  ret i32 %x\n}\n```\n\nBoth orders reach the same answer here. That is why the real pipeline runs\n`simplifycfg` and `instcombine` repeatedly rather than once: each creates work\nthe other can then do, and the fixed point is reached by alternating.\n\n## STEP 5 — WATCH THE WHOLE PIPELINE, BUT ONLY THE PARTS THAT CHANGED\n\n```\n$ opt -O2 -print-changed 02_read_what_a_pass_did.ll -o /dev/null 2>&1 | grep -c \"IR Dump After\"\n269\n```\n\n`-print-changed` prints a dump only when a pass actually modified the IR, which\nis the difference between a readable log and forty thousand lines.\n`-print-after=<pass>` narrows it to one pass; `-print-after-all` is the blunt\nversion and is almost never what you want.\n\n## WHAT TO SAY IN AN INTERVIEW\n\nFor any before/after, answer three things in order:\n\n1. **What changed** — name the instructions that appeared and disappeared.\n2. **Which pass** — from the shape of the change, not a guess.\n3. **Why it was legal** — the property of the input the pass relied on, and the\n   single edit to the input that would make it illegal.\n\nThe third is what separates someone who has read about passes from someone who\nhas debugged one.\n\n## TRY THIS YOURSELF\n\n1. Mark one load `volatile` and re-run. GVN backs off even with `noalias`. Say\n   why volatile is different from \"might alias\" — one is about what the value\n   is, the other about whether the access itself is observable.\n2. Run `opt -passes=gvn -aa-trace` or `-print-changed` on the aliasing version\n   to see the query being answered rather than inferring it from the result.\n3. Replace the dead multiply with a call to an unknown function and re-run DCE.\n   It stays, because the call might have side effects. Add `readnone` to the\n   declaration and it disappears.\n",
+   "source": "",
+   "difficulty": 2,
+   "manifestTitle": "Read what one pass actually did",
+   "skills": [
+    "GVN",
+    "DCE",
+    "SimplifyCFG",
+    "InstCombine",
+    "alias analysis"
+   ],
+   "prereqs": [
+    "passwork-01"
+   ],
+   "evidence": "Your before/after for one pass, and the single edit to the input that made the transformation illegal"
+  },
+  {
+   "id": "passwork-03",
+   "num": "03",
+   "track": "passwork",
+   "file": "passwork/03_reduce_and_pin.md",
+   "title": "Reduce a reproducer, then pin it with a test",
+   "lang": "markdown",
+   "teaches": "",
+   "build": "",
+   "steps": [],
+   "sections": [],
+   "markdown": "<!--\ntrack: passwork\ndifficulty: 3\nneeds: opt, llvm-reduce, FileCheck (LLVM 17+)\n-->\n\n# Reduce a reproducer, then pin it with a test\n\n## WHAT THIS TEACHES\n\nBug reports arrive as forty thousand lines. Nobody debugs that. You reduce it\nto something a maintainer can read in a minute, then write a test so it cannot\ncome back.\n\nThe reducing is mechanical — `llvm-reduce` does it. **The interestingness test\nis the part people get wrong**, and this lab is mostly about getting it wrong\ntwice on purpose, because that is how you learn what it has to assert.\n\n## BUILD\n\nNothing to build. `03_reduce_and_pin.ll` is one interesting function buried in\nfive noise functions, standing in for the large file.\n\n## STEP 1 — ATTEMPT ONE: THE OBVIOUS TEST, AND WHY IT DESTROYS EVERYTHING\n\n```sh\n#!/bin/sh\ngrep -q \"@the_one\" \"$1\"          # \"is my function still mentioned?\"\n```\n```\n$ llvm-reduce --test=./interesting-loose.sh 03_reduce_and_pin.ll -o loose.ll\n$ cat loose.ll\ndeclare i32 @the_one()\n```\n\nA bare declaration. The reducer did exactly what you asked — it kept the *name*\nand threw away everything else, because a declaration satisfies `grep`. This is\nthe single most common way a reduction wastes an afternoon.\n\n**The rule: the test must assert the BUG still reproduces, not that the code\nstill looks familiar.**\n\n## STEP 2 — ATTEMPT TWO: BETTER, STILL WRONG\n\n```sh\n#!/bin/sh\nopt -passes=gvn -S \"$1\" -o - 2>/dev/null \\\n  | sed -n '/@the_one/,/^}/p' | grep -q \"add i32 %a, %a\"\n```\n```\n$ llvm-reduce --test=./interesting-good.sh 03_reduce_and_pin.ll -o good.ll\n$ cat good.ll\ndefine i32 @the_one(i32 %a) {\nentry:\n  %sum = add i32 %a, %a\n  ret i32 %sum\n}\n```\n\nNow it runs the pass and checks the output — much better, and still wrong. There\nare no loads left. The reducer found a program whose *output* has the shape we\nasked for **without GVN doing anything at all**: the input already said\n`add i32 %a, %a`. We asserted a shape, not a transformation.\n\n## STEP 3 — ATTEMPT THREE: ASSERT THAT WORK HAPPENED\n\n```sh\n#!/bin/sh\nbefore=$(grep -c \"load i32\" \"$1\")\n[ \"$before\" -ge 2 ] || exit 1\nafter=$(opt -passes=gvn -S \"$1\" -o - 2>/dev/null | grep -c \"load i32\")\n[ \"$after\" -lt \"$before\" ]\n```\n```\n$ llvm-reduce --test=./interesting-correct.sh 03_reduce_and_pin.ll -o correct.ll\n$ cat correct.ll\ndefine i32 @the_one() {\nentry:\n  %a = load i32, ptr null, align 4\n  %b = load i32, ptr null, align 4\n  ret i32 %b\n}\n```\n\nFour lines, and it still exercises the thing we care about: two loads go in,\none comes out. This is what you attach to a bug report.\n\nNote `ptr null` — the reducer replaced the parameter with the simplest value\nthat keeps the property. That is fine here because nothing dereferences it at\nrun time. When your property is a *crash*, it is not fine, and the test must\nrun the program rather than inspect its IR.\n\n## STEP 4 — PIN IT SO IT CANNOT COME BACK\n\nA reproducer that is not in the test suite will be reintroduced. FileCheck is\nhow LLVM pins a transformation:\n\n```llvm\n; RUN: opt -passes=gvn -S < %s | FileCheck %s\n\ndefine i32 @the_one(ptr %p) {\n; CHECK-LABEL: @the_one\n; CHECK: %a = load i32, ptr %p\n; CHECK-NOT: load\n; CHECK: ret\nentry:\n  %a = load i32, ptr %p\n  %b = load i32, ptr %p\n  %sum = add i32 %a, %b\n  ret i32 %sum\n}\n```\n```\n$ opt -passes=gvn -S < 04_filecheck_test.ll | FileCheck 04_filecheck_test.ll && echo PASS\nPASS\n```\n\n`CHECK-NOT: load` between two `CHECK`s is the load-bearing line: it asserts\nthere is no second load *between* the first one and the return. A test that only\nchecks the first load would pass even if GVN did nothing.\n\n## STEP 5 — PROVE THE TEST CAN FAIL\n\nA test you have never seen fail is not a test.\n\n```\n$ opt -passes=gvn -S < 04_filecheck_test.ll | FileCheck 04_filecheck_test.ll && echo PASS\nPASS\n$ opt -S < 04_filecheck_test.ll | FileCheck 04_filecheck_test.ll && echo PASS || echo FAIL\nFAIL\n```\n\nWithout `-passes=gvn` the second load survives, `CHECK-NOT` fires, and the test\nfails. Do this every time you write one.\n\n## WHAT TO SAY IN AN INTERVIEW\n\n\"I reduce with `llvm-reduce` against an interestingness script, and the script\nhas to assert the *transformation*, not the shape of the output — otherwise the\nreducer happily hands you a program that satisfies your grep and reproduces\nnothing. Then I pin it with a lit/FileCheck test and confirm the test fails\nwithout the fix.\"\n\nThat answer contains the two things people miss: what makes a reduction script\ncorrect, and that a test must be seen failing.\n\n## TRY THIS YOURSELF\n\n1. Write an interestingness test for a *crash* — `opt … ; [ $? -ne 0 ]` — and\n   reduce something that asserts. Notice you must distinguish the crash you want\n   from every other crash, or you will reduce to unrelated malformed IR.\n2. Add `; CHECK-SAME` and `; CHECK-DAG` variants and find out what each buys.\n3. Run `llvm-reduce` with `--delta-passes=` to limit which reductions it tries,\n   and watch the runtime change on a large input.\n",
+   "source": "",
+   "difficulty": 3,
+   "manifestTitle": "Reduce a reproducer, then pin it with a test",
+   "skills": [
+    "llvm-reduce",
+    "interestingness test",
+    "FileCheck",
+    "lit"
+   ],
+   "prereqs": [
+    "passwork-02"
+   ],
+   "evidence": "Your minimal reproducer, and the FileCheck test — with the run where you watched it fail"
   },
   {
    "id": "capstone-0",

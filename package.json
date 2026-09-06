@@ -24,7 +24,8 @@
     "test:links": "node scripts/test-links-ui.mjs",
     "test:role": "node scripts/test-role.mjs",
     "test:nav": "node scripts/test-navigation.mjs",
-    "test:audit": "node scripts/test-audit-fixes.mjs"
+    "test:audit": "node scripts/test-audit-fixes.mjs",
+    "test:followups": "node scripts/test-followups.mjs"
   },
   "dependencies": {
     "@supabase/ssr": "^0.7.0",

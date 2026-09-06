@@ -67,14 +67,21 @@ export const LAB_TRACKS = [
   "id": "bigcode",
   "title": "Large codebases",
   "summary": "Navigate, bisect and reduce inside a codebase too big to read.",
-  "order": 9,
+  "order": 10,
   "run": "cd bigcode && ./build.sh"
+ },
+ {
+  "id": "passwork",
+  "title": "Pass work",
+  "summary": "Bisect to one pass, read what it did, reduce it, pin it with a test.",
+  "order": 9,
+  "run": "cd passwork && ./build.sh"
  },
  {
   "id": "capstones",
   "title": "Capstones",
   "summary": "Multi-day investigations that combine every track.",
-  "order": 10,
+  "order": 11,
   "run": "cd capstones && ./build.sh"
  }
 ];
@@ -1264,6 +1271,69 @@ export const LAB_INDEX = [
    "bigcode-04"
   ],
   "evidence": "APInt.cpp: Backend 2.2 s of 3.1 s, one function 107 ms; heavy.cpp: std::regex instantiation 0.56 s",
+  "steps": 0,
+  "minutes": 12,
+  "teaser": ""
+ },
+ {
+  "id": "passwork-01",
+  "num": "01",
+  "track": "passwork",
+  "file": "passwork/01_bisect_a_pass.c",
+  "title": "Which pass did that? Bisect the pipeline",
+  "difficulty": 2,
+  "skills": [
+   "opt-bisect-limit",
+   "pass pipeline",
+   "binary search"
+  ],
+  "prereqs": [
+   "ir-01"
+  ],
+  "evidence": "The pass number and name you landed on, and the one command that confirmed it by disabling that pass",
+  "steps": 5,
+  "minutes": 52,
+  "teaser": "\"It works at -O0 and breaks at -O2\" is the most common compiler bug"
+ },
+ {
+  "id": "passwork-02",
+  "num": "02",
+  "track": "passwork",
+  "file": "passwork/02_read_what_a_pass_did.md",
+  "title": "Read what one pass actually did",
+  "difficulty": 2,
+  "skills": [
+   "GVN",
+   "DCE",
+   "SimplifyCFG",
+   "InstCombine",
+   "alias analysis"
+  ],
+  "prereqs": [
+   "passwork-01"
+  ],
+  "evidence": "Your before/after for one pass, and the single edit to the input that made the transformation illegal",
+  "steps": 0,
+  "minutes": 12,
+  "teaser": ""
+ },
+ {
+  "id": "passwork-03",
+  "num": "03",
+  "track": "passwork",
+  "file": "passwork/03_reduce_and_pin.md",
+  "title": "Reduce a reproducer, then pin it with a test",
+  "difficulty": 3,
+  "skills": [
+   "llvm-reduce",
+   "interestingness test",
+   "FileCheck",
+   "lit"
+  ],
+  "prereqs": [
+   "passwork-02"
+  ],
+  "evidence": "Your minimal reproducer, and the FileCheck test — with the run where you watched it fail",
   "steps": 0,
   "minutes": 12,
   "teaser": ""

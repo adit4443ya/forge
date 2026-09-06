@@ -43,7 +43,7 @@ export const ROLES = [
       { id: "c-debug", name: "Debug a miscompile", level: "working",
         doing: "You separate UB in the input from a genuine optimizer bug, then bisect to the pass and produce a minimal reproducer.",
         signal: "It works at -O0 and breaks at -O2. What is your first command, and your second?",
-        guides: ["11", "21"], modules: ["test"], labs: ["debug-", "xl-04"], sections: ["Binary Search", "String Parsing"] },
+        guides: ["11", "21"], modules: ["test"], labs: ["passwork-", "xl-"], sections: ["Binary Search", "String Parsing"] },
       { id: "c-backend", name: "Backend: selection, allocation, scheduling", level: "working",
         doing: "You can follow a value from IR through instruction selection into a register and out to the encoded instruction, and explain a spill.",
         signal: "Why did this get spilled? What would a different scheduling model change?",
@@ -59,7 +59,7 @@ export const ROLES = [
       { id: "c-scale", name: "Work in a huge codebase", level: "working",
         doing: "You find the code that matters in a tree you have never seen, using the build system rather than guessing.",
         signal: "Here is a repo you do not know. Where is this behaviour implemented, and how do you rebuild just that?",
-        guides: ["21"], modules: ["link"], labs: ["bigcode-"], sections: ["Design", "Trie", "HashMap"] },
+        guides: ["21"], modules: ["link"], labs: ["bigcode-", "debug-"], sections: ["Design", "Trie", "HashMap"] },
     ],
   },
   {

@@ -9,7 +9,7 @@ import { SESSION_TEMPLATES, TEMPLATE_BY_ID, MODE_LIST, MODES, suggestSession, te
 import { PHASES, phaseForWeek } from "@/data/roadmap.js";
 import { TIERS } from "@/data/dsaCurriculum.js";
 import { dueCards, stats as reviewStats } from "@/lib/review.js";
-import LABS from "@/data/labs.json";
+import { LAB_INDEX, LAB_TRACKS } from "@/data/generated/labs.js";
 
 /* ══════════════════════════════════════════════════════════════════════════
    TODAY — the only screen that answers "what do I do right now".
@@ -133,7 +133,7 @@ export default function Today({ role }) {
   const suggested = useMemo(() => suggestSession(thisWeek), [thisWeek]);
   const chosen = templateForRole(pick ? TEMPLATE_BY_ID[pick] : suggested, role?.id);
   const rs = useMemo(() => reviewStats(new Date(now)), [now]);
-  const labsDone = LABS.labs.filter((l) => prog.labs[l.id]).length;
+  const labsDone = LAB_INDEX.filter((l) => prog.labs[l.id]).length;
   const allIds = useMemo(() => TIERS.flatMap((t) => t.groups.flatMap((g) => g.ids)), []);
   const solved = allIds.filter((id) => isSolved(prog.dsa[id])).length;
   const totalProblems = allIds.length;
@@ -238,7 +238,7 @@ export default function Today({ role }) {
           <Stat label="This week" value={thisWeek.length} sub="of 3 sessions" hue={thisWeek.length >= 3 ? "ok" : "accent"} i={1} onClick={() => nav.go("progress")} />
           <Stat label="Due to review" value={rs.due} sub={`${rs.total} cards`} hue={rs.due > 0 ? "warn" : "neutral"} i={2} onClick={() => nav.go("learn", { kind: "review" })} />
           <Stat label="Problems solved" value={solved} sub={`of ${totalProblems}`} hue="warn" i={3} onClick={() => nav.go("practice")} />
-          <Stat label="Labs done" value={labsDone} sub={`of ${LABS.labs.length}`} hue="ok" i={4} onClick={() => nav.go("labs")} />
+          <Stat label="Labs done" value={labsDone} sub={`of ${LAB_INDEX.length}`} hue="ok" i={4} onClick={() => nav.go("labs")} />
         </div>
       </Section>
 

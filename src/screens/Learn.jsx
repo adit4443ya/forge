@@ -9,7 +9,7 @@ import CoverageMap from "./CoverageMap.jsx";
 import { useProgress } from "@/lib/progress/store.js";
 import { ROLE_BY_ID, LEVELS, LEVEL_META } from "@/data/roles.js";
 import { dueCards, stats as reviewStats, preview, rate, removeCard, allCards, describeInterval, RATINGS } from "@/lib/review.js";
-import LABS from "@/data/labs.json";
+import { LAB_INDEX, LAB_TRACKS } from "@/data/generated/labs.js";
 import { content as LEGACY, GROUPS as LEGACY_GROUPS, NavCtx as LegacyNavCtx } from "@/legacyLibrary.jsx";
 
 /* ══════════════════════════════════════════════════════════════════════════
@@ -64,7 +64,7 @@ function CompetencyTab({ role, focusId }) {
             <div style={{ display: "grid", gap: "var(--sp-2)" }}>
               {comps.map((c, i) => {
                 const on = open === c.id;
-                const labs = LABS.labs.filter((l) => (c.labs || []).some((p) => l.id === p || l.id.startsWith(p)));
+                const labs = LAB_INDEX.filter((l) => (c.labs || []).some((p) => l.id === p || l.id.startsWith(p)));
                 const done = labs.filter((l) => prog.labs[l.id]).length;
                 return (
                   <Panel key={c.id} i={i} hue={on ? role.hue : "neutral"} active={on} onClick={() => setOpen(on ? null : c.id)} style={{ padding: "var(--sp-4)" }}>
@@ -155,11 +155,45 @@ function ReviewTab() {
       </div>
 
       {!cur ? (
-        <Empty icon="✓" title={st.total === 0 ? "No cards yet" : "All caught up"}>
-          {st.total === 0
-            ? "Open any answer in a guide or module and press “review queue”. Every DSA attempt you log also schedules its problem automatically."
-            : "Nothing is due. Come back when the scheduler says so, or add more cards."}
-        </Empty>
+        st.total === 0 ? (
+          /* The old copy pointed at a button that lives inside collapsed Q&A
+             blocks — the one feature that moves retention over six months was
+             undiscoverable. Say where the cards come from, and link there. */
+          <div className="rev-empty">
+            <Label hue="accent">the queue fills itself as you work</Label>
+            <div className="rev-ways">
+              <button className="press rev-way" onClick={() => nav.go("practice")}>
+                <span className="rev-way-n">1</span>
+                <span>
+                  <strong>Log a problem attempt</strong>
+                  <em>Anything you did not solve cleanly is scheduled automatically. No extra step.</em>
+                </span>
+              </button>
+              <button className="press rev-way" onClick={() => nav.go("practice", { kind: "tab", id: "rapid" })}>
+                <span className="rev-way-n">2</span>
+                <span>
+                  <strong>Run a rapid-fire deck</strong>
+                  <em>Anything you rate below &ldquo;nailed it&rdquo; goes straight in.</em>
+                </span>
+              </button>
+              <button className="press rev-way" onClick={() => setTab("modules")}>
+                <span className="rev-way-n">3</span>
+                <span>
+                  <strong>Open a recall answer and press &ldquo;+ review queue&rdquo;</strong>
+                  <em>The button is inside each expanded question, under the answer.</em>
+                </span>
+              </button>
+            </div>
+            <Muted style={{ marginTop: "var(--sp-4)", fontSize: "var(--fs-sm)" }}>
+              Cards come back on an FSRS schedule — the interval widens each time you get one right,
+              which is what makes six months of work still be there in month six.
+            </Muted>
+          </div>
+        ) : (
+          <Empty icon="✓" title="All caught up">
+            Nothing is due. Come back when the scheduler says so, or add more cards.
+          </Empty>
+        )
       ) : (
         <Panel hue="accent" active style={{ padding: "var(--sp-5)" }}>
           <div className="row" style={{ marginBottom: "var(--sp-3)" }}>

@@ -8,7 +8,7 @@ the pattern label as a spoiler in the problem list as well as the problem page, 
 revealed against each attempt — so "solved" means something specific.
 
 ```
-120 problems · 33 patterns · 61 guided labs (113 steps) in 11 tracks
+120 problems · 33 patterns · 64 guided labs (118 steps) in 12 tracks
 23 guides (80k words) · 32 C++ concepts · 61 drills
 239 recall questions · 71 rapid-fire mechanisms · 19 estimation chains
 plus mental-math drills and a market-making game (trading track, clearly scoped)
@@ -88,6 +88,7 @@ bundle. Only the guide you are reading is sent, already rendered.
 | `npm run test:guides` | every guide opens by clicking it, plus legacy links, palette anchors and the back button |
 | `npm run test:labs` | every lab page renders, the runner shows copyable commands and reference output, evidence notes persist |
 | `npm run check:links` | every problem named anywhere resolves to the bank or an exact judge page; `check:links:verify` re-asks the judge |
+| `npm run test:followups` | the pass-work track renders, the session bar follows you, scratchpad notes are findable, the review queue explains itself |
 | `npm run test:audit` | the findings from the black-box audit stay fixed: gated content absent from the DOM, no leaked bug comments, labs obtainable, real session timing, keyboard-usable modal, readable at 390px |
 | `npm run test:nav` | tabs and problem selection reach the URL, so Back works and views can be linked |
 | `npm run test:role` | the role switch actually re-sorts every surface, and the first-run picker appears once |

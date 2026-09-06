@@ -10,6 +10,7 @@ import CommandPalette from "./CommandPalette.jsx";
 import AccountMenu from "./AccountMenu.jsx";
 import Scratchpad from "./Scratchpad.jsx";
 import RolePicker from "./RolePicker.jsx";
+import SessionBar from "./SessionBar.jsx";
 
 const SunIcon = (
   <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" aria-hidden="true">
@@ -145,6 +146,8 @@ export default function AppShell({ children }) {
 
           <AccountMenu />
         </header>
+
+        <SessionBar />
 
         <div className="surface">
           <div key={pathname} className="pane surface-enter">{children}</div>
