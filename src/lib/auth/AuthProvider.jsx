@@ -32,7 +32,10 @@ export function AuthProvider({ children }) {
   const signIn = useCallback(async () => {
     const sb = supabaseBrowser();
     if (!sb) return;
-    const origin = process.env.NEXT_PUBLIC_SITE_URL || window.location.origin;
+    /* Come back to where the user actually is. NEXT_PUBLIC_SITE_URL is for the
+       server, which cannot see the browser's address; using it here would send
+       someone signing in on localhost to the production deployment. */
+    const origin = window.location.origin;
     await sb.auth.signInWithOAuth({
       provider: "google",
       options: {

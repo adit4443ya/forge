@@ -133,7 +133,11 @@ Supabase dashboard → **Authentication → Sign In / Providers → Google**:
 
 Then **Authentication → URL Configuration**:
 
-- **Site URL:** `SITE_URL` (your Vercel domain)
+- **Site URL:** where you are testing **right now**. Use `http://localhost:3000`
+  while developing and switch it to the deployed domain once the site is live.
+  This is the address Supabase falls back to when a redirect is not allowlisted,
+  so pointing it at a domain you are not on is how sign-in silently sends you
+  somewhere else.
 - **Redirect URLs** — add both:
   ```
   https://<your-vercel-domain>/auth/callback
@@ -203,7 +207,8 @@ If the dot is red, open the account menu — the sync error is printed there.
 | `redirect_uri_mismatch` from Google | Google has your app URL instead of Supabase's | Redirect URI must be `https://<ref>.supabase.co/auth/v1/callback` |
 | doctor: `PGRST125 Invalid path`, or auth health 404 | The URL is the REST endpoint, not the project URL | Strip `/rest/v1/` — keep only `https://<ref>.supabase.co` |
 | doctor: "reachable but rejected the key" | Wrong or truncated anon key | Re-copy the **anon / public** key; it is ~200+ chars and starts `eyJ` |
-| Signs in, bounces back signed out | App callback not allowlisted | Add `<SITE_URL>/auth/callback` to Supabase → URL Configuration → Redirect URLs |
+| Signs in, lands on a different deployment, not signed in | The redirect was not allowlisted, so Supabase used Site URL instead | Add the exact callback for where you are testing (`http://localhost:3000/auth/callback`) to Redirect URLs, and set Site URL to that same origin |
+| Progress "disappeared" after that bounce | localStorage is per-origin — the work is still on the origin you ticked it on | Go back to that origin. Nothing is lost, and an empty device never overwrites the cloud |
 | "Sign-in is off" on the login page | Env vars missing at **build** time | Add them in Vercel, then **redeploy** |
 | `Access blocked: has not completed verification` | Consent screen still in Testing | Step 8, Publish app |
 | Red dot, error mentions `relation ... does not exist` | Schema never ran | Re-run `supabase/schema.sql` |

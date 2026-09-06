@@ -117,12 +117,17 @@ try {
 } catch (e) { fail(`could not read auth settings: ${e.message}`); }
 
 console.log('\n\x1b[1m5. Redirect URLs to allowlist\x1b[0m');
+info('Supabase cannot be asked what is on this list, so it is not checked — but it is');
+info('the most common reason sign-in "works" and then dumps you somewhere unexpected:');
+info('an unlisted redirect is silently replaced by your Site URL.');
 info('Supabase → Authentication → URL Configuration → Redirect URLs must include:');
 console.log(`      http://localhost:3000/auth/callback`);
 if (SITE) console.log(`      ${SITE.replace(/\/$/, '')}/auth/callback`);
 else console.log(`      https://<your-domain>/auth/callback`);
 info('Google Cloud → Credentials → your OAuth client → Authorized redirect URIs must include:');
 console.log(`      ${base}/auth/v1/callback`);
+info('And Site URL should be where you are testing right now — set it to');
+info('http://localhost:3000 while developing, the deployed domain once live.');
 
 console.log(bad ? `\n\x1b[31m${bad} problem(s) to fix.\x1b[0m\n` : '\n\x1b[32mAll checks passed. Sign-in and sync should work.\x1b[0m\n');
 process.exit(bad ? 1 : 0);

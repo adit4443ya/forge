@@ -15,7 +15,17 @@ export default async function LoginPage({ searchParams }) {
           Sign in to keep your progress across devices. Everything works without an account too —
           it just stays in this browser.
         </p>
-        {error && <div className="auth-error">{decodeURIComponent(error)}</div>}
+        {error && (
+          <div className="auth-error">
+            {decodeURIComponent(error)}
+            {/redirect|callback|missing_code/i.test(error) && (
+              <div style={{ marginTop: 8, opacity: .85, fontSize: "var(--fs-micro)", lineHeight: 1.6 }}>
+                Supabase only returns to URLs on its allowlist. Add this exact value under
+                Authentication → URL Configuration → Redirect URLs.
+              </div>
+            )}
+          </div>
+        )}
         {CLOUD_ENABLED
           ? <SignInButton />
           : <div className="auth-note">
