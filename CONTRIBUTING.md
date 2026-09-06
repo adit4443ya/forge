@@ -129,3 +129,18 @@ LeetCode Premium — the UI says so rather than sending someone to a paywall.
 
 `npm run check:links` fails if a name resolves to nothing, and
 `npm run test:links` fails if the UI renders a chip that is not clickable.
+
+## What the role switch must do
+
+The role is the product's organising idea, so a surface that ignores it is a
+bug. `src/data/roleScope.js` is the single definition of "does this belong to my
+role" — use it rather than reimplementing the check.
+
+It **sorts and highlights; it never hides by default.** A compiler candidate
+still does the whole coding bar. Filtering the bank down to one role would be
+worse advice than not having roles at all, which is why the role filter on the
+problem list is opt-in and the labs filter is a visible, reversible toggle.
+
+If you add a surface, decide what the role changes there and assert it in
+`scripts/test-role.mjs`. If the honest answer is "nothing", say so in the UI
+rather than leaving the switch looking like it did something.

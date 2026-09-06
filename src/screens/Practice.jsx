@@ -6,6 +6,7 @@ import MentalMath from "./MentalMath.jsx";
 import MarketMaking from "./MarketMaking.jsx";
 import Patterns from "./Patterns.jsx";
 import { PATTERNS_2 } from "@/data/patterns.js";
+import { roleSections, sortForRole } from "@/data/roleScope.js";
 import { RAPID } from "@/data/rapidfire.js";
 import { ESTIMATES } from "@/data/estimation.js";
 import { tk, hue as H } from "@/theme/carbon.jsx";
@@ -36,7 +37,7 @@ const STATUS = [
 
 /* The section name is the same spoiler the detail page hides, so the list only
    shows it once you have solved the problem (or you asked to see it). */
-function ProblemRow({ p, active, onClick, prog, i, reveal }) {
+function ProblemRow({ p, active, onClick, prog, i, reveal, forRole }) {
   const entry = prog.dsa[p.id];
   const solved = isSolved(entry);
   const tried = attemptCount(entry) > 0;
@@ -61,6 +62,7 @@ function ProblemRow({ p, active, onClick, prog, i, reveal }) {
           {sub}{last?.mode === "mock" && solved ? " · mock ✓" : ""}
         </span>
       </span>
+      {forRole && <span className="role-dot" title="a section your role names" />}
       <span className="mono" style={{ flexShrink: 0, fontSize: "var(--fs-micro)", color: H(DIFF_HUE[p.difficulty] || "neutral").fg, marginTop: 2 }}>
         {p.difficulty?.[0]}
       </span>
@@ -68,11 +70,12 @@ function ProblemRow({ p, active, onClick, prog, i, reveal }) {
   );
 }
 
-function ProblemsTab({ target }) {
+function ProblemsTab({ target, role }) {
   const prog = useProgress();
   const [q, setQ] = useState(() => (target?.kind === "section" ? target.id : ""));
   const [tierF, setTierF] = useState("all");
   const [statusF, setStatusF] = useState("all");
+  const [roleF, setRoleF] = useState(false);   // highlight, never hides by default
   const [mode, setMode] = useState(prog.session?.mode || "drill");
   const [reveal, setReveal] = useState(false);
   const [sel, setSel] = useState(() => target?.kind === "problem" ? target.id : PROBLEMS[0]?.id);
@@ -85,9 +88,12 @@ function ProblemsTab({ target }) {
   if (target?.kind === "section" && target.n !== seenSection) { setSeenSection(target.n); setQ(target.id); }
   if (prog.session?.mode && prog.session.mode !== seenMode) { setSeenMode(prog.session.mode); setMode(prog.session.mode); }
 
+  const secs = useMemo(() => roleSections(role), [role]);
+
   const list = useMemo(() => {
     const needle = q.trim().toLowerCase();
-    return PROBLEMS.filter((p) => {
+    const filtered = PROBLEMS.filter((p) => {
+      if (roleF && !secs.has(p.section)) return false;
       const t = tierOf(p.id);
       if (tierF !== "all" && String(t?.id) !== tierF) return false;
       const e = prog.dsa[p.id];
@@ -98,7 +104,9 @@ function ProblemsTab({ target }) {
       if (!needle) return true;
       return p.title.toLowerCase().includes(needle) || p.section.toLowerCase().includes(needle) || (p.pattern || "").toLowerCase().includes(needle);
     });
-  }, [q, tierF, statusF, prog.dsa]);
+    /* Role sorts, it does not hide: the whole coding bar still matters. */
+    return roleF ? filtered : sortForRole(filtered, role);
+  }, [q, tierF, statusF, roleF, secs, role, prog.dsa]);
 
   const problem = PROBLEMS.find((p) => p.id === sel) || list[0] || PROBLEMS[0];
   const solvedCount = PROBLEMS.filter((p) => isSolved(prog.dsa[p.id])).length;
@@ -128,6 +136,12 @@ function ProblemsTab({ target }) {
               </button>
             ))}
           </div>
+          <div className="row" style={{ marginTop: "var(--sp-2)", gap: 6, flexWrap: "wrap" }}>
+            <button className="press role-chip" data-on={roleF ? "1" : undefined} onClick={() => setRoleF((v) => !v)}
+              title={roleF ? `Showing only sections ${role.name} names` : `Sorted so ${role.name}'s sections come first — click to show only those`}>
+              {roleF ? `✓ ${role.name} only` : `${role.name} first`}
+            </button>
+          </div>
           <div className="row" style={{ marginTop: "var(--sp-2)", justifyContent: "space-between" }}>
             <Mono dim>{list.length} shown · {solvedCount}/{PROBLEMS.length} solved</Mono>
             <button className="press" onClick={() => setReveal((v) => !v)} title="Patterns are hidden so the list does not spoil the problem"
@@ -137,7 +151,8 @@ function ProblemsTab({ target }) {
           </div>
         </div>
         {list.map((p, i) => (
-          <ProblemRow key={p.id} p={p} i={i} prog={prog} reveal={reveal} active={p.id === problem?.id} onClick={() => { setSel(p.id); setShowList(false); }} />
+          <ProblemRow key={p.id} p={p} i={i} prog={prog} reveal={reveal} active={p.id === problem?.id}
+            forRole={secs.has(p.section)} onClick={() => { setSel(p.id); setShowList(false); }} />
         ))}
         {list.length === 0 && <Empty icon="⌕" title="Nothing matches">Loosen a filter, or clear the search.</Empty>}
       </aside>
@@ -305,7 +320,7 @@ function LaddersTab() {
   );
 }
 
-export default function Practice({ target }) {
+export default function Practice({ target, role }) {
   const [tab, setTab] = useState(() => (target?.kind === "tab" ? target.id : "problems"));
   useTargetChange(target, (t) => {
     if (t.kind === "tab") setTab(t.id);
@@ -332,9 +347,9 @@ export default function Practice({ target }) {
         <Tabs items={tabs} value={tab} onChange={setTab} style={{ border: "none" }} />
       </div>
       <div style={{ flex: 1, minHeight: 0, overflow: ["problems", "rapid", "estimate", "mental"].includes(tab) ? "hidden" : "auto" }}>
-        {tab === "problems" && <ProblemsTab target={target} />}
-        {tab === "rapid" && <RapidFire />}
-        {tab === "estimate" && <Estimation />}
+        {tab === "problems" && <ProblemsTab target={target} role={role} />}
+        {tab === "rapid" && <RapidFire role={role} />}
+        {tab === "estimate" && <Estimation role={role} />}
         {tab === "mental" && <MentalMath />}
         {tab === "market" && <MarketMaking />}
         {tab === "drills" && <DrillsTab />}

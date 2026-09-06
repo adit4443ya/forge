@@ -88,6 +88,7 @@ bundle. Only the guide you are reading is sent, already rendered.
 | `npm run test:guides` | every guide opens by clicking it, plus legacy links, palette anchors and the back button |
 | `npm run test:labs` | every lab page renders, the runner shows copyable commands and reference output, evidence notes persist |
 | `npm run check:links` | every problem named anywhere resolves to the bank or an exact judge page; `check:links:verify` re-asks the judge |
+| `npm run test:role` | the role switch actually re-sorts every surface, and the first-run picker appears once |
 | `npm run test:links` | no chip in the UI names a problem without linking somewhere |
 | `npm run check:content` | guides stay role-specific: no company targeting, no personal leftovers, every guide titled |
 | `npm run check:map` | every competency maps to real rapid-fire domains, guides, labs and problem sections |

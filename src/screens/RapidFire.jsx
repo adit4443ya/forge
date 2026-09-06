@@ -3,6 +3,7 @@ import { useCallback, useEffect, useMemo, useState } from "react";
 import { hue as H } from "@/theme/carbon.jsx";
 import { Label, Mono, Muted, H1, Button, Tag, Empty } from "@/ui/kit.jsx";
 import { RAPID, DOMAINS } from "@/data/rapidfire.js";
+import { decksFor } from "@/data/roleScope.js";
 import { useProgress, progressStore } from "@/lib/progress/store.js";
 import { addCard, hasCard, cardId } from "@/lib/review.js";
 
@@ -27,9 +28,14 @@ const shuffle = (a, seed) => {
   return r;
 };
 
-export default function RapidFire() {
+export default function RapidFire({ role }) {
   const prog = useProgress();
-  const [picked, setPicked] = useState(() => new Set(DOMAINS.map((d) => d.id)));
+  /* Open with the decks this role is actually screened on; the rest are one
+     click away, because nothing here is off-limits. */
+  const [picked, setPicked] = useState(() => {
+    const d = decksFor(role?.id, "rapid");
+    return new Set(d.length ? d : DOMAINS.map((x) => x.id));
+  });
   const [seed, setSeed] = useState(1);
   const [i, setI] = useState(0);
   const [stage, setStage] = useState(0);           // 0 question · 1 answer · 2 follow-up

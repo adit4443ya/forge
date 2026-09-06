@@ -943,3 +943,56 @@ a.pat-prob:hover { color: var(--tk-text); border-color: var(--tk-info); backgrou
   transition: all var(--dur-1);
 }
 .sec-chip:hover { border-color: var(--tk-warn); filter: brightness(1.15); }
+.role-chip {
+  padding: 3px 9px; border-radius: var(--r-1); border: 1px solid var(--tk-line);
+  background: transparent; color: var(--tk-faint);
+  font-family: var(--font-mono); font-size: var(--fs-micro); font-weight: 700; letter-spacing: .03em;
+  transition: all var(--dur-1);
+}
+.role-chip:hover { color: var(--tk-text); border-color: var(--tk-line2); }
+.role-chip[data-on] { color: var(--tk-accent); border-color: var(--tk-accentLine); background: var(--tk-accentBg); }
+.role-dot {
+  flex-shrink: 0; align-self: center; width: 5px; height: 5px; border-radius: 50%;
+  background: var(--tk-accent); opacity: .7;
+}
+
+/* ── first-run role picker ────────────────────────────────────────────── */
+.rp-scrim {
+  position: fixed; inset: 0; z-index: 150; display: grid; place-items: center;
+  padding: var(--sp-5); background: var(--tk-scrim); backdrop-filter: blur(3px);
+  overflow-y: auto;
+}
+.rp {
+  width: min(96vw, 980px); padding: var(--sp-6);
+  background: var(--tk-bg1); border: 1px solid var(--tk-line2); border-radius: var(--r-4);
+  box-shadow: var(--tk-shadow3);
+}
+.rp-head { text-align: center; margin-bottom: var(--sp-5); }
+.rp-head h2 { margin: 0 0 9px; font-size: clamp(20px, 2.8vw, 27px); letter-spacing: -.022em; color: var(--tk-text); }
+.rp-head p { margin: 0 auto; max-width: 62ch; color: var(--tk-dim); font-size: var(--fs-sm); line-height: 1.7; }
+.rp-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: var(--sp-3); }
+.rp-card {
+  display: flex; flex-direction: column; gap: 9px; text-align: left; padding: var(--sp-4);
+  border: 1px solid var(--tk-line); border-radius: var(--r-3); background: var(--tk-bg2);
+  transition: border-color var(--dur-2), transform var(--dur-2), background var(--dur-2);
+}
+.rp-card:hover { border-color: var(--tk-accent); transform: translateY(-2px); background: var(--tk-bg3); }
+.rp-card-head { display: flex; gap: 11px; align-items: flex-start; }
+.rp-name { color: var(--tk-text); font-size: var(--fs-md); font-weight: 700; }
+.rp-tag { margin-top: 2px; font-family: var(--font-mono); font-size: var(--fs-micro); color: var(--tk-faint); }
+.rp-reality {
+  margin: 0; color: var(--tk-dim); font-size: var(--fs-sm); line-height: 1.65;
+  display: -webkit-box; -webkit-line-clamp: 4; line-clamp: 4; -webkit-box-orient: vertical; overflow: hidden;
+}
+.rp-day { margin: 0; padding: 0; list-style: none; display: grid; gap: 5px; }
+.rp-day li { position: relative; padding-left: 14px; color: var(--tk-faint); font-size: var(--fs-sm); line-height: 1.5; }
+.rp-day li::before { content: "·"; position: absolute; left: 4px; color: var(--tk-accent); font-weight: 700; }
+.rp-foot {
+  margin-top: auto; padding-top: 9px; border-top: 1px solid var(--tk-line);
+  font-family: var(--font-mono); font-size: var(--fs-micro); color: var(--tk-accent);
+}
+.rp-skip {
+  display: block; margin: var(--sp-5) auto 0; padding: 7px 14px;
+  background: transparent; border: none; color: var(--tk-faint); font-size: var(--fs-sm);
+}
+.rp-skip:hover { color: var(--tk-text); text-decoration: underline; }

@@ -25,7 +25,8 @@ const Dots = ({ n }) => (
 
 export default function Labs({ role, target }) {
   const prog = useProgress();
-  const [onlyRole, setOnlyRole] = useState(false);
+  /* Default to the role: the top-bar switch is a real filter, not decoration. */
+  const [onlyRole, setOnlyRole] = useState(true);
 
   /* A ?lab=ID deep link opens the runner directly. */
   const router = useRouter();
@@ -76,7 +77,7 @@ export default function Labs({ role, target }) {
           <div style={{ marginTop: 8 }}><Bar value={withEvidence} max={shown.length} hue="accent" height={5} /></div>
         </Panel>
         <Button hue={onlyRole ? "accent" : "neutral"} onClick={() => setOnlyRole((v) => !v)}>
-          {onlyRole ? `✓ ${role.name} only` : `Filter to ${role.name}`}
+          {onlyRole ? `✓ ${role.name} only` : `Showing all ${LAB_INDEX.length}`}
         </Button>
       </div>
 

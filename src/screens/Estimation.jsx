@@ -3,6 +3,7 @@ import { useCallback, useMemo, useState } from "react";
 import { hue as H } from "@/theme/carbon.jsx";
 import { Label, Mono, Muted, H1, Button, Tag } from "@/ui/kit.jsx";
 import { ESTIMATES, EST_KINDS } from "@/data/estimation.js";
+import { decksFor } from "@/data/roleScope.js";
 import { useProgress, progressStore } from "@/lib/progress/store.js";
 
 /* ══════════════════════════════════════════════════════════════════════════
@@ -17,9 +18,12 @@ import { useProgress, progressStore } from "@/lib/progress/store.js";
 
 const D = { 1: "warm-up", 2: "standard", 3: "hard", 4: "genuinely hard" };
 
-export default function Estimation() {
+export default function Estimation({ role }) {
   const prog = useProgress();
-  const [kinds, setKinds] = useState(() => new Set(EST_KINDS.map((k) => k.id)));
+  const [kinds, setKinds] = useState(() => {
+    const d = decksFor(role?.id, "est");
+    return new Set(d.length ? d : EST_KINDS.map((k) => k.id));
+  });
   const [i, setI] = useState(0);
   const [running, setRunning] = useState(false);
   const [mine, setMine] = useState({ chain: "", number: "", weakest: "" });
