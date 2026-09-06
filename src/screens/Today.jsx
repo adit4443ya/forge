@@ -5,7 +5,7 @@ import { Section, Panel, Button, Tag, Label, Mono, H1, Muted, Stat, Bar, Ring, N
 import { useNow } from "@/ui/hooks.js";
 import { useNav } from "@/shell/nav.js";
 import { useProgress, progressStore, weekNumber, sessionsThisWeek, streak, isSolved } from "@/lib/progress/store.js";
-import { SESSION_TEMPLATES, TEMPLATE_BY_ID, MODE_LIST, MODES, suggestSession } from "@/data/sessions.js";
+import { SESSION_TEMPLATES, TEMPLATE_BY_ID, MODE_LIST, MODES, suggestSession, templateForRole } from "@/data/sessions.js";
 import { PHASES, phaseForWeek } from "@/data/roadmap.js";
 import { TIERS } from "@/data/dsaCurriculum.js";
 import { dueCards, stats as reviewStats } from "@/lib/review.js";
@@ -39,9 +39,9 @@ function ModePicker({ value, onChange }) {
   );
 }
 
-function RunningSession({ session, nav, prog }) {
+function RunningSession({ session, nav, prog, role }) {
   const now = useNow(15000);
-  const t = TEMPLATE_BY_ID[session.templateId];
+  const t = templateForRole(TEMPLATE_BY_ID[session.templateId], role?.id);
   const mode = MODES[session.mode];
   const elapsedMin = Math.max(0, Math.round((now - session.startedAt) / 60000));
   const doneCount = session.done.length;
@@ -124,7 +124,7 @@ export default function Today({ role }) {
   const phase = phaseForWeek(week);
   const thisWeek = useMemo(() => sessionsThisWeek(prog.sessions, new Date(now)), [prog.sessions, now]);
   const suggested = useMemo(() => suggestSession(thisWeek), [thisWeek]);
-  const chosen = pick ? TEMPLATE_BY_ID[pick] : suggested;
+  const chosen = templateForRole(pick ? TEMPLATE_BY_ID[pick] : suggested, role?.id);
   const rs = useMemo(() => reviewStats(new Date(now)), [now]);
   const labsDone = LABS.labs.filter((l) => prog.labs[l.id]).length;
   const allIds = useMemo(() => TIERS.flatMap((t) => t.groups.flatMap((g) => g.ids)), []);
@@ -132,7 +132,7 @@ export default function Today({ role }) {
   const totalProblems = allIds.length;
   const st = useMemo(() => streak(prog.sessions), [prog.sessions]);
 
-  if (prog.session) return <div className="pane-pad"><RunningSession session={prog.session} nav={nav} prog={prog} /></div>;
+  if (prog.session) return <div className="pane-pad"><RunningSession session={prog.session} nav={nav} prog={prog} role={role} /></div>;
 
   return (
     <div className="pane-pad">
@@ -186,10 +186,14 @@ export default function Today({ role }) {
 
             <div style={{ display: "grid", gap: 2, marginBottom: "var(--sp-5)" }}>
               {chosen.steps.map((s, i) => (
-                <div key={i} className="anim-slide" style={{ "--i": i, display: "flex", alignItems: "baseline", gap: 10, padding: "7px 0", borderTop: i ? `1px solid ${tk.line}` : "none" }}>
+                <div key={i} className="anim-slide" style={{ "--i": i, display: "flex", alignItems: "baseline", gap: 10, padding: "9px 0", borderTop: i ? `1px solid ${tk.line}` : "none" }}>
                   <span className="mono" style={{ color: tk.faint, fontSize: "var(--fs-micro)", width: 16 }}>{i + 1}</span>
                   <span style={{ color: tk.faint }}>{STEP_ICON[s.kind]}</span>
-                  <span style={{ color: tk.text, fontSize: "var(--fs-sm)", fontWeight: 550, flex: 1 }}>{s.label}</span>
+                  <span style={{ flex: 1, minWidth: 0 }}>
+                    <span style={{ display: "block", color: tk.text, fontSize: "var(--fs-sm)", fontWeight: 550 }}>{s.label}</span>
+                    {/* The detail is where the role-specific instruction lives. */}
+                    {s.detail && <span style={{ display: "block", color: tk.faint, fontSize: "var(--fs-sm)", lineHeight: 1.6, marginTop: 2 }}>{s.detail}</span>}
+                  </span>
                   <Mono dim>{s.minutes}m</Mono>
                 </div>
               ))}

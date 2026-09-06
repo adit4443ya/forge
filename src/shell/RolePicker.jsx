@@ -18,12 +18,12 @@ export default function RolePicker() {
   const prog = useProgress();
   const [dismissed, setDismissed] = useState(false);
 
-  /* Only for a genuinely new visitor: no role chosen, nothing done yet. */
+  /* Shown to anyone who has never actively chosen, including existing users:
+     the default role was assigned, not picked, and it now decides what four
+     surfaces show. Suppressing it for anyone with progress meant the people
+     most affected by the default were the ones never asked. */
   const chosen = !!prog.prefs?.rolePicked;
-  const started = !!prog.startDate
-    || Object.keys(prog.labs || {}).length > 0
-    || Object.keys(prog.dsa || {}).length > 0;
-  if (chosen || started || dismissed) return null;
+  if (chosen || dismissed) return null;
 
   const pick = (id) => {
     progressStore.setRole(id);
@@ -38,7 +38,8 @@ export default function RolePicker() {
           <h2>Which role are you preparing for?</h2>
           <p>
             It decides which problems come first, which drills open, which labs you see and how the
-            Learn surface is organised. You can change it any time from the top bar.
+            Learn surface is organised. Until now it was defaulting to compiler without asking.
+            You can change it any time from the switch in the top bar.
           </p>
         </div>
 

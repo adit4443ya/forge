@@ -74,6 +74,18 @@ await p.goto(`${B}/labs`, { waitUntil: 'networkidle0' }); await w(900);
 const nHft = await p.$$eval('.lab-card', (e) => e.length);
 ok(`lab count differs by role (compiler ${nComp}, hft ${nHft})`, nComp !== nHft);
 
+console.log('\ntoday: the session itself differs');
+const sessionFor = async (roleId) => {
+  await setRole(roleId);
+  await p.goto(`${B}/today`, { waitUntil: 'networkidle0' }); await w(900);
+  return p.evaluate(() => document.body.innerText.replace(/\s+/g, ' '));
+};
+const tHft = await sessionFor('hft');
+const tComp = await sessionFor('compiler');
+ok('the session text differs by role', tHft !== tComp);
+ok('compiler session mentions IR or a pass', /IR|pass|transformation/i.test(tComp));
+ok('hft session mentions the tail or allocation', /tail|p99|allocat|cache line/i.test(tHft));
+
 await b.close();
 console.log(fails ? `\n\x1b[31m${fails} problem(s)\x1b[0m\n` : '\n\x1b[32mthe role switch changes every surface\x1b[0m\n');
 process.exit(fails ? 1 : 0);

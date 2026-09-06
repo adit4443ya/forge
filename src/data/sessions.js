@@ -76,6 +76,108 @@ export const SESSION_TEMPLATES = [
     ],
   },
 ];
+/* ── what a session becomes for each role ─────────────────────────────────
+   The shape (a coding session, a lab session, a depth session, a mock) is the
+   same everywhere because the discipline is. What changes is the content of
+   each step and what a step is FOR, because the days genuinely differ: a
+   compiler engineer spends theirs reducing and reading IR, a systems engineer
+   measuring, an HFT engineer arguing about a cache line and a memory order.
+
+   Only steps that actually differ are overridden; anything not listed here
+   keeps the base wording. */
+export const ROLE_SESSIONS = {
+  compiler: {
+    A: {
+      purpose: "Coding rounds are real for compiler loops too — Google-style ones especially. This is the session that keeps that half sharp.",
+      steps: {
+        1: { detail: "From your tier. Compiler loops favour graphs, trees and parsing — state the invariant before you type." },
+        2: { detail: "One tier up. Narrate it. The bar is explaining the transformation, not just passing the tests." },
+        3: { detail: "One line per mistake. If it was a wrong data structure, say which one you should have reached for." },
+      },
+    },
+    B: {
+      purpose: "The IR and pipeline tracks. You leave able to say which pass did what, with the dump to prove it.",
+      steps: {
+        0: { label: "Run the lab", detail: "Prefer the ir/, cross_level/ or codegen/ tracks. Read the IR before and after and name the transformation." },
+        1: { detail: "Claim, evidence, surprise. For a compiler lab the evidence is a dump or a diff, not a wall-clock number." },
+      },
+    },
+    C: {
+      purpose: "Read one pass or one mechanism until you can draw it. Depth here is what separates a compiler hire.",
+      steps: {
+        0: { label: "One section of an LLVM guide", detail: "SSA, the pass manager, instruction selection or register allocation. One section, then explain it to the wall." },
+        1: { label: "Ten compiler questions aloud", detail: "From the compilers or architecture deck in Rapid fire. Out loud or it does not count." },
+        2: { label: "One output quiz or bug hunt", detail: "Undefined behaviour and the optimizer, ideally — the ones where -O0 and -O2 disagree." },
+      },
+    },
+    D: { purpose: "Interview conditions. For a compiler loop that means a coding round AND a 'walk me through what this pass did' round." },
+  },
+
+  systems: {
+    A: {
+      purpose: "Keep the coding bar sharp while the rest of your week is measurement.",
+      steps: {
+        1: { detail: "From your tier. Favour array, matrix and heap work — the shapes that show up when you are counting things fast." },
+        3: { detail: "One line per mistake. Note whether the failure was the algorithm or the constant factor." },
+      },
+    },
+    B: {
+      purpose: "The measurement tracks. You leave with a number, a counter that explains it, and a spread you can defend.",
+      steps: {
+        0: { label: "Run the lab", detail: "Prefer perf/, cache/ or systems/. Pin first, warm up, and report min/p50/p99 — never a single number." },
+        1: { detail: "Claim, evidence, surprise. The evidence is the counter that explains the number, not the number alone." },
+      },
+    },
+    C: {
+      purpose: "Read one mechanism until you can predict what the counter will say before you run it.",
+      steps: {
+        0: { label: "One section on the machine", detail: "The microarchitecture guide, the Linux one, or the performance playbook. One section, then explain it." },
+        1: { label: "Ten systems questions aloud", detail: "From the systems or architecture deck. Say the mechanism, then the measurement that would prove it." },
+        2: { label: "One estimation chain", detail: "Write the assumptions down before revealing. Estimating is how you decide what to measure." },
+      },
+    },
+    D: { purpose: "Interview conditions. For a systems loop that means a coding round and a 'this is slow, find out why' round." },
+  },
+
+  hft: {
+    A: {
+      purpose: "The coding bar here is the same as any strong loop, with less tolerance for hand-waving about cost.",
+      steps: {
+        1: { detail: "From your tier. Say the complexity AND the constant — what it allocates, what it touches, how many cache lines." },
+        2: { detail: "One tier up. Narrate it, and be ready for 'now make it allocation-free'." },
+        3: { detail: "One line per mistake. Note anything that would have been unacceptable on a hot path." },
+      },
+    },
+    B: {
+      purpose: "The concurrency, cache and syscall tracks. You leave with a latency distribution and an argument about its tail.",
+      steps: {
+        0: { label: "Run the lab", detail: "Prefer concurrency/, cache/ or systems/. Report p99.9, not the mean — the tail is the product." },
+        1: { detail: "Claim, evidence, surprise. For a latency lab the evidence is the distribution and where the tail came from." },
+      },
+    },
+    C: {
+      purpose: "Alternate the two halves: the machine, and what the market is doing to you.",
+      steps: {
+        0: { label: "One section: low latency or microstructure", detail: "The Linux, networking or system-design guide, or the microstructure module. One section, then explain it." },
+        1: { label: "Ten questions aloud", detail: "From the HFT, C++ or probability decks. Adverse selection and memory ordering are the two they push hardest on." },
+        2: { label: "One estimation or a market-making round", detail: "Estimation for the numbers, Make a market for the feel of being picked off." },
+      },
+    },
+    D: { purpose: "Interview conditions. For an HFT loop that means coding, a C++/systems fundamentals round, and often a probability one." },
+  },
+};
+
+/** A template rewritten for a role. Falls back to the base template unchanged. */
+export function templateForRole(template, roleId) {
+  const o = ROLE_SESSIONS[roleId]?.[template.id];
+  if (!o) return template;
+  return {
+    ...template,
+    purpose: o.purpose || template.purpose,
+    steps: template.steps.map((st, i) => (o.steps?.[i] ? { ...st, ...o.steps[i] } : st)),
+  };
+}
+
 export const TEMPLATE_BY_ID = Object.fromEntries(SESSION_TEMPLATES.map((t) => [t.id, t]));
 
 /* Which session to suggest, from what you have already done this week. */
