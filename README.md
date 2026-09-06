@@ -87,6 +87,7 @@ bundle. Only the guide you are reading is sent, already rendered.
 | `npm run test:guides` | every guide opens by clicking it, plus legacy links, palette anchors and the back button |
 | `npm run test:labs` | every lab page renders, the runner shows copyable commands and reference output, evidence notes persist |
 | `npm run check:map` | every competency maps to real rapid-fire domains, guides, labs and problem sections |
+| `npm run test:auth` | the OAuth callback redirects instead of throwing, for every failure mode |
 
 Run the smoke test against a built server:
 

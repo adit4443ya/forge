@@ -161,7 +161,7 @@ Vercel → your project → **Settings → Environment Variables**. Add three, f
 | --- | --- |
 | `NEXT_PUBLIC_SUPABASE_URL` | `https://<ref>.supabase.co` |
 | `NEXT_PUBLIC_SUPABASE_ANON_KEY` | your anon key |
-| `NEXT_PUBLIC_SITE_URL` | your Vercel domain, no trailing slash |
+| `NEXT_PUBLIC_SITE_URL` | your Vercel domain **including `https://`**, no trailing slash |
 
 Then **Deployments → ⋯ → Redeploy**. Environment variables are baked in at
 build time, so an existing deployment will not pick them up.
@@ -207,6 +207,8 @@ If the dot is red, open the account menu — the sync error is printed there.
 | `redirect_uri_mismatch` from Google | Google has your app URL instead of Supabase's | Redirect URI must be `https://<ref>.supabase.co/auth/v1/callback` |
 | doctor: `PGRST125 Invalid path`, or auth health 404 | The URL is the REST endpoint, not the project URL | Strip `/rest/v1/` — keep only `https://<ref>.supabase.co` |
 | doctor: "reachable but rejected the key" | Wrong or truncated anon key | Re-copy the **anon / public** key; it is ~200+ chars and starts `eyJ` |
+| HTTP 500 straight after the Google consent screen | `NEXT_PUBLIC_SITE_URL` is missing `https://` | Add the scheme. The callback repairs it now and lands on /login with the reason, but fix the variable |
+| Vercel refuses to save a `NEXT_PUBLIC_*` variable | It is set to type **Secret** | These values ship to the browser by design. Delete it and re-add with type **Config** — never put `service_role` here |
 | Signs in, lands on a different deployment, not signed in | The redirect was not allowlisted, so Supabase used Site URL instead | Add the exact callback for where you are testing (`http://localhost:3000/auth/callback`) to Redirect URLs, and set Site URL to that same origin |
 | Progress "disappeared" after that bounce | localStorage is per-origin — the work is still on the origin you ticked it on | Go back to that origin. Nothing is lost, and an empty device never overwrites the cloud |
 | "Sign-in is off" on the login page | Env vars missing at **build** time | Add them in Vercel, then **redeploy** |
