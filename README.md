@@ -8,8 +8,8 @@ the pattern label as a spoiler in the problem list as well as the problem page, 
 revealed against each attempt — so "solved" means something specific.
 
 ```
-120 problems · 61 guided labs (113 steps) in 11 tracks
-23 guides (80k words) · 239 recall questions · 47 rapid-fire mechanisms
+120 problems · 61 guided labs (113 steps) in 11 tracks · 23 guides (80k words)
+239 recall questions · 56 rapid-fire mechanisms · 14 estimation chains
 ```
 
 ## Run it
@@ -85,6 +85,7 @@ bundle. Only the guide you are reading is sent, already rendered.
 | `npm run test:scroll` | the landing page scrolls, the app does not, nothing overflows sideways |
 | `npm run test:guides` | every guide opens by clicking it, plus legacy links, palette anchors and the back button |
 | `npm run test:labs` | every lab page renders, the runner shows copyable commands and reference output, evidence notes persist |
+| `npm run check:map` | every competency maps to real rapid-fire domains, guides, labs and problem sections |
 
 Run the smoke test against a built server:
 

@@ -4,6 +4,7 @@ import { useTargetChange } from "@/ui/hooks.js";
 import { tk, hue as H } from "@/theme/carbon.jsx";
 import { Section, Panel, Button, Tag, Label, Mono, H1, H2, Muted, Tabs, Accordion, Note, Empty, Bar, ExtLink } from "@/ui/kit.jsx";
 import { useNav } from "@/shell/nav.js";
+import CoverageMap from "./CoverageMap.jsx";
 import { useProgress } from "@/lib/progress/store.js";
 import { ROLE_BY_ID, LEVELS, LEVEL_META } from "@/data/roles.js";
 import { dueCards, stats as reviewStats, preview, rate, removeCard, allCards, describeInterval, RATINGS } from "@/lib/review.js";
@@ -39,6 +40,8 @@ function CompetencyTab({ role, focusId }) {
         </div>
         <Muted style={{ maxWidth: "70ch" }}>{role.reality}</Muted>
       </div>
+
+      <CoverageMap role={role} />
 
       <Section title="What the day actually looks like" i={1} hue={role.hue} style={{ marginTop: "var(--sp-6)" }}>
         <div style={{ display: "grid", gap: 0 }}>

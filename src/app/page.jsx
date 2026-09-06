@@ -28,8 +28,8 @@ const FEATURES = [
     d: "Not by company folklore. Four roles, each with the day it actually involves and its competencies sorted into foundation, working and expert. Problems, labs, guides and recall questions hang off those competencies.",
   },
   {
-    k: "05", t: "Rapid fire on the mechanisms",
-    d: `${STATS.rapid} questions across C++ internals, systems, architecture, compilers, probability and market microstructure. One at a time, nothing else on screen: commit out loud, reveal, then see the follow-up where most people come apart. Anything you do not nail goes into an FSRS queue and returns at the interval that makes it stick.`,
+    k: "05", t: "Rapid fire, and estimation",
+    d: `${STATS.rapid} mechanism questions across C++ internals, systems, architecture, compilers, probability and microstructure — one at a time, nothing else on screen: commit out loud, reveal, then see the follow-up where most people come apart. Plus ${STATS.estimates} estimation questions, which make you write your chain of assumptions before showing you a worked one, because those rounds score the structure and not the number.`,
   },
   {
     k: "06", t: "Your progress is yours",
@@ -43,7 +43,7 @@ const NUMBERS = [
   { n: STATS.problems, l: "problems, each tiered and timed" },
   { n: STATS.labs, l: `guided labs · ${STATS.labSteps} steps you actually run` },
   { n: STATS.guides, l: `long-form guides · ${Math.round(STATS.guideWords / 1000)}k words` },
-  { n: STATS.rapid + STATS.questions, l: "recall and rapid-fire questions" },
+  { n: STATS.rapid + STATS.questions + STATS.estimates, l: "recall, rapid-fire and estimation" },
 ];
 
 export default function Landing() {

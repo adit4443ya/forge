@@ -6,6 +6,7 @@ import remarkGfm from "remark-gfm";
 import { Prism as SyntaxHighlighter } from "react-syntax-highlighter";
 import { tk, hue as H, useSyntaxTheme } from "@/theme/carbon.jsx";
 import { Mono, Label } from "@/ui/kit.jsx";
+import { useProgress, progressStore } from "@/lib/progress/store.js";
 
 /* The reader. It receives one fully-loaded guide from a server component, so
    the markdown for the other twenty-two never reaches the browser. */
@@ -22,6 +23,9 @@ function textOf(node) {
 }
 
 export default function GuideReader({ guide, anchor = null }) {
+  const prog = useProgress();
+  const readKey = `read:guide:${guide.num}`;
+  const isRead = !!prog.bookmarks?.[readKey];
   const syn = useSyntaxTheme();
   const ref = useRef(null);
   const [pct, setPct] = useState(0);
@@ -79,6 +83,10 @@ export default function GuideReader({ guide, anchor = null }) {
           <Mono>Guide {guide.num}</Mono>
           <div style={{ flex: 1 }} />
           {guide.readTime && <Mono dim>{guide.readTime}</Mono>}
+          <button className="press lab-done" data-done={isRead ? "1" : undefined}
+            onClick={() => progressStore.toggleBookmark(readKey)}>
+            {isRead ? "✓ read" : "mark read"}
+          </button>
         </div>
         <div style={{ height: 2, background: tk.bg3 }}>
           <div style={{ width: `${pct}%`, height: "100%", background: tk.accent, transition: "width .1s linear" }} />

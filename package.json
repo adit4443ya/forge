@@ -12,9 +12,10 @@
     "doctor": "node scripts/doctor.mjs",
     "test:scroll": "node scripts/test-scroll.mjs",
     "test:guides": "node scripts/test-guides.mjs",
-    "verify": "npm run lint && node scripts/test-state.mjs && ./scripts/test-solutions.sh && node scripts/check-curriculum.mjs && node scripts/build-content.mjs && npm run build",
+    "verify": "npm run lint && node scripts/test-state.mjs && ./scripts/test-solutions.sh && node scripts/check-curriculum.mjs && node scripts/check-coverage-map.mjs && npm run build:content && npm run build",
     "test:labs": "node scripts/test-labs.mjs",
-    "build:content": "node scripts/build-content.mjs && node scripts/build-labs.mjs"
+    "build:content": "node scripts/build-content.mjs && node scripts/build-labs.mjs",
+    "check:map": "node scripts/check-coverage-map.mjs"
   },
   "dependencies": {
     "@supabase/ssr": "^0.7.0",

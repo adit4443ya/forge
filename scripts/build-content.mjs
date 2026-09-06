@@ -103,6 +103,7 @@ const stats = {
   problems,
   // Only the question entries carry `domain:` — the DOMAINS headers do not.
   rapid: (rapidSrc.match(/^  \{ id: "[^"]+", domain:/gm) || []).length,
+  estimates: (fs.readFileSync(path.join(root, 'src/data/estimation.js'), 'utf8').match(/^  \{\n?\s*id: "e/gm) || []).length,
   labSteps,
   labs: labsJson.labs.length,
   tracks: labsJson.tracks.length,
