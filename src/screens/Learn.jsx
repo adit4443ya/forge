@@ -100,7 +100,14 @@ function CompetencyTab({ role, focusId }) {
                           {c.sections?.length > 0 && (
                             <div>
                               <Label style={{ display: "block", marginBottom: 6 }}>Drill</Label>
-                              <div className="row">{c.sections.map((s) => <Tag key={s} hue="warn">{s}</Tag>)}</div>
+                              <div className="row" style={{ flexWrap: "wrap", gap: 6 }}>
+                                {c.sections.map((s) => (
+                                  <button key={s} className="press sec-chip"
+                                    onClick={(e) => { e.stopPropagation(); nav.go("practice", { kind: "section", id: s }); }}>
+                                    {s} <span style={{ opacity: .6 }}>→</span>
+                                  </button>
+                                ))}
+                              </div>
                             </div>
                           )}
                         </div>

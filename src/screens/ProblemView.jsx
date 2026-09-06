@@ -216,7 +216,7 @@ export default function ProblemView({ problem: p, mode: modeProp, onMode }) {
       {/* ── go wider ─────────────────────────────────────────── */}
       {sets.length > 0 && (
         <div className="anim-rise" style={{ "--i": 3, marginBottom: "var(--sp-5)" }}>
-          <Label style={{ display: "block", marginBottom: "var(--sp-2)" }}>Drill this pattern elsewhere</Label>
+          <Label style={{ display: "block", marginBottom: "var(--sp-2)" }}>Drill this pattern elsewhere — exact problems, not lists</Label>
           <div style={{ display: "grid", gap: "var(--sp-2)" }}>
             {sets.map((s, i) => {
               const j = JUDGES[s.judge] || {};
@@ -226,7 +226,7 @@ export default function ProblemView({ problem: p, mode: modeProp, onMode }) {
                     border: `1px solid ${tk.line}`, borderRadius: "var(--r-2)", background: tk.bg1 }}>
                   <Tag hue={j.color || "neutral"}>{j.name || s.judge}</Tag>
                   <span style={{ flex: 1, minWidth: 0 }}>
-                    <span style={{ display: "block", color: tk.text, fontSize: "var(--fs-sm)", fontWeight: 550 }}>{s.label}</span>
+                    <span style={{ display: "block", color: tk.text, fontSize: "var(--fs-sm)", fontWeight: 550 }}>{s.title || s.label}{s.id ? <span className="mono" style={{ color: tk.faint, fontWeight: 400 }}> · {s.id}</span> : null}</span>
                     {s.note && <span className="mono" style={{ display: "block", color: tk.faint, fontSize: "var(--fs-micro)", marginTop: 1 }}>{s.note}</span>}
                   </span>
                   <span style={{ color: tk.faint, fontSize: "var(--fs-sm)" }}>↗</span>

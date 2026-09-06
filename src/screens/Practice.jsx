@@ -70,7 +70,7 @@ function ProblemRow({ p, active, onClick, prog, i, reveal }) {
 
 function ProblemsTab({ target }) {
   const prog = useProgress();
-  const [q, setQ] = useState("");
+  const [q, setQ] = useState(() => (target?.kind === "section" ? target.id : ""));
   const [tierF, setTierF] = useState("all");
   const [statusF, setStatusF] = useState("all");
   const [mode, setMode] = useState(prog.session?.mode || "drill");
@@ -80,6 +80,9 @@ function ProblemsTab({ target }) {
 
   useTargetChange(target, (t) => { if (t.kind === "problem" && t.id) { setSel(t.id); setShowList(false); } });
   const [seenMode, setSeenMode] = useState(prog.session?.mode || null);
+  /* A ?section= deep link filters the list to that section. */
+  const [seenSection, setSeenSection] = useState(target?.kind === "section" ? target.n : null);
+  if (target?.kind === "section" && target.n !== seenSection) { setSeenSection(target.n); setQ(target.id); }
   if (prog.session?.mode && prog.session.mode !== seenMode) { setSeenMode(prog.session.mode); setMode(prog.session.mode); }
 
   const list = useMemo(() => {
@@ -307,6 +310,7 @@ export default function Practice({ target }) {
   useTargetChange(target, (t) => {
     if (t.kind === "tab") setTab(t.id);
     if (t.kind === "problem") setTab("problems");
+    if (t.kind === "section") setTab("problems");   // ProblemsTab filters on it
   });
 
   const tabs = [

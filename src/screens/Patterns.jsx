@@ -7,6 +7,7 @@ import { useProgress, isSolved } from "@/lib/progress/store.js";
 import { CHEATSHEET } from "@/dsaData.jsx";
 import { ALL_PROBLEMS as PROBLEMS } from "@/dsaData.jsx";
 import { allPatterns } from "@/data/patterns.js";
+import { externalProblem } from "@/data/externalLinks.js";
 
 /* ══════════════════════════════════════════════════════════════════════════
    PATTERNS — the templates, next to the problems that use them.
@@ -123,17 +124,25 @@ export default function Patterns() {
                     <div>
                       <Label style={{ display: "block", marginBottom: 7 }}>practise it</Label>
                       <div className="row" style={{ flexWrap: "wrap", gap: 7 }}>
-                        {linked.map((l) => l.hit ? (
-                          <button key={l.name} className="press pat-prob"
-                            data-solved={isSolved(prog.dsa?.[l.hit.id]) ? "1" : undefined}
-                            onClick={() => nav.openProblem(l.hit.id)}>
-                            {isSolved(prog.dsa?.[l.hit.id]) ? "✓ " : ""}{l.hit.title}
-                          </button>
-                        ) : (
-                          <span key={l.name} className="pat-prob pat-prob-ext" title="not in the bank — search it on a judge">
-                            {l.name} ↗
-                          </span>
-                        ))}
+                        {linked.map((l) => {
+                          if (l.hit) return (
+                            <button key={l.name} className="press pat-prob"
+                              data-solved={isSolved(prog.dsa?.[l.hit.id]) ? "1" : undefined}
+                              onClick={() => nav.openProblem(l.hit.id)}>
+                              {isSolved(prog.dsa?.[l.hit.id]) ? "✓ " : ""}{l.hit.title}
+                            </button>
+                          );
+                          /* Not in the bank: link to the exact problem page, never a search. */
+                          const ext = externalProblem(l.name);
+                          if (!ext) return null;
+                          return (
+                            <a key={l.name} className="press pat-prob pat-prob-ext" href={ext.href}
+                               target="_blank" rel="noopener noreferrer"
+                               title={`${ext.label}${ext.difficulty ? " · " + ext.difficulty : ""}${ext.paid ? " · needs LeetCode Premium" : ""}`}>
+                              {ext.title} <span className="pat-prob-src">{ext.label}{ext.paid ? " · premium" : ""} ↗</span>
+                            </a>
+                          );
+                        })}
                       </div>
                     </div>
                   )}
@@ -149,7 +158,8 @@ export default function Patterns() {
       <div style={{ marginTop: "var(--sp-6)", color: tk.faint, fontSize: "var(--fs-sm)", lineHeight: 1.7, maxWidth: "70ch" }}>
         Patterns marked <strong style={{ color: tk.info }}>extended</strong> are the ones a hard round reaches for once
         you have answered the standard set. A pattern with no solved problem next to it is one you have read, not one
-        you can use.
+        you can use. Problems not in this bank link straight to the exact page on the judge — every one of those links
+        was resolved against the judge&apos;s own API, so none of them is a guess.
       </div>
     </div>
   );

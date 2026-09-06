@@ -18,7 +18,10 @@
     "check:map": "node scripts/check-coverage-map.mjs",
     "test:auth": "node scripts/test-auth-callback.mjs",
     "test:mentalmath": "node scripts/test-mentalmath.mjs",
-    "check:content": "node scripts/check-content.mjs"
+    "check:content": "node scripts/check-content.mjs",
+    "check:links": "node scripts/check-links.mjs",
+    "check:links:verify": "node scripts/check-links.mjs --verify",
+    "test:links": "node scripts/test-links-ui.mjs"
   },
   "dependencies": {
     "@supabase/ssr": "^0.7.0",

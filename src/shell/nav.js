@@ -27,6 +27,7 @@ export function targetFromParams(params) {
   if (get("session")) return { kind: "session", id: get("session"), n: `session:${get("session")}` };
   if (get("tab")) return { kind: "tab", id: get("tab"), n: `tab:${get("tab")}` };
   if (get("module")) return { kind: "module", id: get("module"), n: `module:${get("module")}` };
+  if (get("section")) return { kind: "section", id: get("section"), n: `section:${get("section")}` };
   return null;
 }
 
@@ -41,6 +42,7 @@ export function hrefFor(surface, target) {
   else if (target.kind === "session") q.set("session", target.id);
   else if (target.kind === "tab") q.set("tab", target.id);
   else if (target.kind === "module") q.set("module", target.id);
+  else if (target.kind === "section") q.set("section", target.id);
   const s = q.toString();
   return s ? `${base}?${s}` : base;
 }

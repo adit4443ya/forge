@@ -138,7 +138,7 @@ export const PATTERNS_2 = [
     template: "split into halves A and B\nenumerate all 2^(n/2) subset sums of each\nsort one side, then binary search it for each element of the other",
     wrong: "Full enumeration at 2^40 is a trillion. Splitting makes it 2 × 2^20 to enumerate plus a log factor to combine — the classic square-root of the search space.",
     tip: "The recognition signal is the constraint. n ≤ 20 means straight bitmask; n ≤ 40 means meet in the middle; larger means there is a polynomial structure you have not found.",
-    problems: ["Partition Array Into Two Arrays to Minimize Sum Difference", "Closest Subsequence Sum", "Subsets with sum constraints"],
+    problems: ["Partition Array Into Two Arrays to Minimize Sum Difference", "Closest Subsequence Sum", "Ways to Split Array Into Three Subarrays"],
   },
   {
     pattern: "Union-Find with rollback / offline processing",
@@ -147,7 +147,7 @@ export const PATTERNS_2 = [
     template: "// deletions are hard; reverse time so they become additions\nprocess queries in reverse, adding edges\n// or: union by rank WITHOUT path compression, keeping an undo stack",
     wrong: "Rebuilding the structure per query. Reversing time turns every deletion into a union, which the structure does support — the trick is the ordering, not the data structure.",
     tip: "Path compression and rollback are incompatible: compression rewrites parents irreversibly. For rollback use union by rank or size only, accept O(log n), and push each parent change onto an undo stack.",
-    problems: ["Number of Islands II", "Bricks Falling When Hit", "Offline connectivity queries"],
+    problems: ["Number of Islands II", "Bricks Falling When Hit", "Redundant Connection"],
   },
   {
     pattern: "Prefix XOR and the hash map",

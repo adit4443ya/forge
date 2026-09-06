@@ -104,3 +104,28 @@ more confidently.
 The market-making counterparty is deliberately informed: it trades only when
 your quote is wrong relative to fair value. Every fill is therefore adverse.
 That is the lesson, not a bug — do not "balance" it.
+
+## Linking to problems
+
+Never point at a problem list or a search page. Every problem named anywhere in
+the content must resolve to one of two things:
+
+- a problem in the local bank, linked internally, or
+- an **exact** page on a judge — `leetcode.com/problems/<slug>/` or
+  `cses.fi/problemset/task/<id>`
+
+Add the mapping to `EXTERNAL_PROBLEMS` in `src/data/externalLinks.js`, and
+verify it rather than guessing the slug:
+
+```bash
+curl -s -X POST https://leetcode.com/graphql -H 'Content-Type: application/json' \
+  -d '{"query":"query{question(titleSlug:\"your-slug\"){questionFrontendId title isPaidOnly}}"}'
+curl -s https://cses.fi/problemset/task/1643 | grep -o '<title>[^<]*'
+```
+
+The recorded id and title come from that call, so `npm run check:links --verify`
+catches a renamed or removed problem. Mark `paid: true` for anything behind
+LeetCode Premium — the UI says so rather than sending someone to a paywall.
+
+`npm run check:links` fails if a name resolves to nothing, and
+`npm run test:links` fails if the UI renders a chip that is not clickable.

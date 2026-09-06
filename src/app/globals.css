@@ -932,3 +932,14 @@ a:hover { text-decoration: underline; text-underline-offset: 3px; }
 button.pat-prob:hover { color: var(--tk-text); border-color: var(--tk-accent); }
 .pat-prob[data-solved] { color: var(--tk-ok); border-color: var(--tk-okLine); background: var(--tk-okBg); }
 .pat-prob-ext { color: var(--tk-faint); border-style: dashed; cursor: default; }
+a.pat-prob { text-decoration: none; display: inline-flex; align-items: baseline; gap: 7px; }
+a.pat-prob:hover { color: var(--tk-text); border-color: var(--tk-info); background: var(--tk-infoBg); }
+.pat-prob-ext { border-style: dashed; cursor: pointer; }
+.pat-prob-src { font-family: var(--font-mono); font-size: var(--fs-micro); color: var(--tk-faint); }
+.sec-chip {
+  padding: 4px 10px; border-radius: var(--r-2); border: 1px solid var(--tk-warnLine);
+  background: var(--tk-warnBg); color: var(--tk-warn);
+  font-family: var(--font-mono); font-size: var(--fs-micro); letter-spacing: .03em;
+  transition: all var(--dur-1);
+}
+.sec-chip:hover { border-color: var(--tk-warn); filter: brightness(1.15); }
