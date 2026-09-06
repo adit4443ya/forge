@@ -94,8 +94,16 @@ const bankSrc = seg('export const PROBLEMS', 'export const NVIDIA_PROBLEMS')
 const problems = new Set([...bankSrc.matchAll(/^\s*id:\s*(\d+),/gm)].map((m) => +m[1])).size;
 const labsJson = JSON.parse(fs.readFileSync(path.join(root, 'src/data/labs.json'), 'utf8'));
 const rolesSrc = fs.readFileSync(path.join(root, 'src/data/roles.js'), 'utf8');
+const rapidSrc = fs.readFileSync(path.join(root, 'src/data/rapidfire.js'), 'utf8');
+const labsJsonPath = path.join(root, 'content/labs.json');
+const labSteps = fs.existsSync(labsJsonPath)
+  ? JSON.parse(fs.readFileSync(labsJsonPath, 'utf8')).labs.reduce((a, l) => a + (l.steps?.length || 0), 0)
+  : 0;
 const stats = {
   problems,
+  // Only the question entries carry `domain:` — the DOMAINS headers do not.
+  rapid: (rapidSrc.match(/^  \{ id: "[^"]+", domain:/gm) || []).length,
+  labSteps,
   labs: labsJson.labs.length,
   tracks: labsJson.tracks.length,
   guides: guides.length,

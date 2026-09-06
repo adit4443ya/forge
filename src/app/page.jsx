@@ -20,16 +20,16 @@ const FEATURES = [
     d: "A bank that labels every problem \"DP — Knapsack\" has already told you what to do. Here the list shows tier and status; you meet the problem before you meet its category, which is the only way the practice resembles the interview.",
   },
   {
-    k: "03", t: "Labs produce evidence, not checkmarks",
-    d: `${STATS.labs} runnable labs across ${STATS.tracks} tracks — perf counters, cache behaviour, codegen, concurrency, syscalls, AArch64 and SVE. A lab counts as finished when you can write down what it showed on your machine and what surprised you, not when you have read it.`,
+    k: "03", t: "Labs walk you through, step by step",
+    d: `${STATS.labs} labs across ${STATS.tracks} tracks — perf counters, cache behaviour, codegen, concurrency, syscalls, AArch64 and SVE. Each opens as a guided session: what it teaches, the build line, then ${STATS.labSteps} steps with the command to copy and the output that step produced on the machine that wrote the lab, so you compare against a real number instead of guessing. It is finished when you can write what it showed on YOUR machine and what surprised you.`,
   },
   {
     k: "04", t: "Organised by what the job asks of you",
     d: "Not by company folklore. Four roles, each with the day it actually involves and its competencies sorted into foundation, working and expert. Problems, labs, guides and recall questions hang off those competencies.",
   },
   {
-    k: "05", t: "Spaced repetition on what you got wrong",
-    d: "Answers you struggled with go into an FSRS queue and come back at the interval that makes them stick. Attempts record the mode and what you revealed, so \"solved\" means something specific.",
+    k: "05", t: "Rapid fire on the mechanisms",
+    d: `${STATS.rapid} questions across C++ internals, systems, architecture, compilers, probability and market microstructure. One at a time, nothing else on screen: commit out loud, reveal, then see the follow-up where most people come apart. Anything you do not nail goes into an FSRS queue and returns at the interval that makes it stick.`,
   },
   {
     k: "06", t: "Your progress is yours",
@@ -41,9 +41,9 @@ const FEATURES = [
 
 const NUMBERS = [
   { n: STATS.problems, l: "problems, each tiered and timed" },
-  { n: STATS.labs, l: `runnable labs in ${STATS.tracks} tracks` },
+  { n: STATS.labs, l: `guided labs · ${STATS.labSteps} steps you actually run` },
   { n: STATS.guides, l: `long-form guides · ${Math.round(STATS.guideWords / 1000)}k words` },
-  { n: STATS.questions, l: "rapid-recall questions" },
+  { n: STATS.rapid + STATS.questions, l: "recall and rapid-fire questions" },
 ];
 
 export default function Landing() {

@@ -47,3 +47,44 @@ permanently — that is not a test to skip.
 - No claim about what a specific company asks. Describe mechanisms.
 - No invented benchmark numbers. Ranges, or measure it.
 - The pattern is a spoiler. Nothing outside a gate may name it.
+
+## Adding a lab
+
+Labs are not authored here — they are parsed out of the `debug_lab` repository by
+`scripts/build-labs.mjs`, which reads the header comment of each source file:
+
+```c
+/* ============================================================
+ * PERF LAB #01: The title
+ * TRACK: perf | DIFFICULTY: 1 | NEEDS: tools/pin.sh
+ * ------------------------------------------------------------
+ * WHAT THIS TEACHES:
+ *   ...
+ *
+ * BUILD:  (cd perf && ./build.sh)   -> perf/bin/01_thing
+ *
+ * STEP 1 — WHAT YOU ARE DOING:
+ *   $ ./bin/01_thing
+ *   the output it produced on the machine that wrote the lab
+ *   Then a paragraph explaining what the output means.
+ *
+ * TRY THIS YOURSELF:
+ *   ...
+ */
+```
+
+The parser turns `$ ` lines into copyable commands, the lines under them into
+reference output, and a trailing paragraph of prose into the analysis shown
+below the output. Write labs in that shape and they render as guided sessions
+with no further work.
+
+Regenerate with `npm run build:content`, which also fails on duplicate guide
+numbers. The result is vendored into `content/labs.json`, so the site builds and
+deploys without `debug_lab` present.
+
+## Adding a rapid-fire question
+
+`src/data/rapidfire.js`. Each entry needs `q`, `a` (two or three sentences you
+could actually say), and `edge` — the follow-up where most people come apart.
+That third field is the point of the format; an entry without a real one is
+trivia, and trivia does not belong here.

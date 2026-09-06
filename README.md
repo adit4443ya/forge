@@ -8,7 +8,8 @@ the pattern label as a spoiler in the problem list as well as the problem page, 
 revealed against each attempt — so "solved" means something specific.
 
 ```
-114 problems · 61 runnable labs in 11 tracks · 23 guides (80k words) · 239 recall questions
+120 problems · 61 guided labs (113 steps) in 11 tracks
+23 guides (80k words) · 239 recall questions · 47 rapid-fire mechanisms
 ```
 
 ## Run it
@@ -55,11 +56,12 @@ one browser.
 
 ```
 content/guides/       23 markdown guides — read on the server, never bundled
+content/labs.json     61 labs parsed from debug_lab into guided steps (server-side)
 src/app/              routes: landing, /today /practice /learn /labs /progress, /learn/guide/[num]
 src/screens/          the five surfaces
 src/shell/            top bar, command palette, URL-backed navigation
 src/data/             roles, curriculum, prompts, external links, sessions
-src/data/generated/   built by scripts/build-content.mjs — do not edit
+src/data/generated/   built by scripts/build-content.mjs and build-labs.mjs — do not edit
 src/lib/progress/     state shape + CRDT merge, and the local-first store
 src/lib/supabase/     browser and server clients; both no-op when unconfigured
 supabase/schema.sql   tables, row-level security, indexes
@@ -82,6 +84,7 @@ bundle. Only the guide you are reading is sent, already rendered.
 | `npm run doctor` | the deployment is actually wired up: env, schema, RLS, Google provider |
 | `npm run test:scroll` | the landing page scrolls, the app does not, nothing overflows sideways |
 | `npm run test:guides` | every guide opens by clicking it, plus legacy links, palette anchors and the back button |
+| `npm run test:labs` | every lab page renders, the runner shows copyable commands and reference output, evidence notes persist |
 
 Run the smoke test against a built server:
 

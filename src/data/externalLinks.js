@@ -64,6 +64,7 @@ export const LC_SLUG = {
   641: "design-circular-deque", 732: "my-calendar-iii", 772: "basic-calculator-iii",
   28: "find-the-index-of-the-first-occurrence-in-a-string", 459: "repeated-substring-pattern",
   480: "sliding-window-median", 587: "erect-the-fence", 1044: "longest-duplicate-substring",
+  85: "maximal-rectangle", 410: "split-array-largest-sum",
 };
 
 export function leetcodeUrl(num, title = "") {

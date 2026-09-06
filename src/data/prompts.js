@@ -114,4 +114,10 @@ export const PROMPTS = {
   120: "Compare any two substrings of a string in constant time, and find the longest substring that appears twice. Then justify why your answer is actually correct.",
   121: "A window of fixed width slides along an array. After every step, report the median of the window. Each step must be logarithmic, not linear.",
   122: "Given points with integer coordinates: find the smallest convex boundary containing them all, and the closest pair among them. Do both without a single floating-point comparison.",
+  123: "Messages arrive at millions per second carrying ids. Drop any id already seen in the last T seconds, in memory that does not grow and with no work spike at any moment.",
+  124: "Each job takes some time and accrues a penalty for every second until it finishes. Choose the order that minimises the total penalty, and prove your ordering is optimal.",
+  125: "A stream of billions of items, kilobytes of memory, one pass. Report how many DISTINCT items there were, and state your error.",
+  126: "Given a grid of zeroes and ones, find the area of the largest rectangle containing only ones.",
+  127: "Split an array into k non-empty contiguous parts so that the largest part sum is as small as possible.",
+  128: "Order book updates arrive over an unreliable network with sequence numbers; some are dropped, some arrive out of order, some twice. Maintain a correct book, and know when you cannot.",
 };
