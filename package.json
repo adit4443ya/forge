@@ -10,7 +10,9 @@
     "lint": "eslint .",
     "smoke": "node scripts/smoke.mjs",
     "doctor": "node scripts/doctor.mjs",
-    "test:scroll": "node scripts/test-scroll.mjs"
+    "test:scroll": "node scripts/test-scroll.mjs",
+    "test:guides": "node scripts/test-guides.mjs",
+    "verify": "npm run lint && node scripts/test-state.mjs && ./scripts/test-solutions.sh && node scripts/check-curriculum.mjs && node scripts/build-content.mjs && npm run build"
   },
   "dependencies": {
     "@supabase/ssr": "^0.7.0",

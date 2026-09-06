@@ -35,7 +35,7 @@ export function hrefFor(surface, target) {
   if (!target) return base;
   const q = new URLSearchParams();
   if (target.kind === "problem") q.set("problem", target.id);
-  else if (target.kind === "guide") { q.set("guide", target.num); if (target.anchor) q.set("anchor", target.anchor); }
+  else if (target.kind === "guide") return `/learn/guide/${target.num}${target.anchor ? `#${target.anchor}` : ""}`;
   else if (target.kind === "competency") q.set("competency", target.id);
   else if (target.kind === "lab") q.set("lab", target.id);
   else if (target.kind === "session") q.set("session", target.id);

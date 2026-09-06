@@ -27,9 +27,15 @@ export default function GuideReader({ guide, anchor = null }) {
   const [pct, setPct] = useState(0);
   const [active, setActive] = useState("");
 
+  /* The anchor arrives as the URL hash (palette heading links), or as a prop. */
   useEffect(() => {
     ref.current?.scrollTo({ top: 0 });
-    if (anchor) setTimeout(() => ref.current?.querySelector(`[id="${CSS.escape(anchor)}"]`)?.scrollIntoView({ block: "start" }), 60);
+    const want = anchor || (typeof window !== "undefined" ? decodeURIComponent(window.location.hash.slice(1)) : "");
+    if (!want) return undefined;
+    const id = setTimeout(() => {
+      ref.current?.querySelector(`[id="${CSS.escape(want)}"]`)?.scrollIntoView({ block: "start" });
+    }, 80);
+    return () => clearTimeout(id);
   }, [guide.num, anchor]);
 
   const onScroll = (e) => {

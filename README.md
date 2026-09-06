@@ -81,6 +81,7 @@ bundle. Only the guide you are reading is sent, already rendered.
 | `npm run smoke` | headless Chrome walks every surface, the palette, the gates, persistence and the theme |
 | `npm run doctor` | the deployment is actually wired up: env, schema, RLS, Google provider |
 | `npm run test:scroll` | the landing page scrolls, the app does not, nothing overflows sideways |
+| `npm run test:guides` | every guide opens by clicking it, plus legacy links, palette anchors and the back button |
 
 Run the smoke test against a built server:
 

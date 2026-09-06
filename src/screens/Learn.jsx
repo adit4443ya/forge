@@ -329,6 +329,8 @@ export default function Learn({ role, target }) {
 
   useTargetChange(target, (t) => {
     if (t.kind === "tab") setTab(t.id);
+    // Guides moved to their own route; keep older links and bookmarks working.
+    if (t.kind === "guide") nav.openGuide(t.num, t.anchor);
     if (t.kind === "review") setTab("review");
     if (t.kind === "competency") { setTab("competencies"); setFocusComp(t.id); }
     if (t.kind === "module") { setTab("modules"); setFocusModule(t.id); }
