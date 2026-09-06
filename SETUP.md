@@ -53,7 +53,16 @@ correct — there is no backend yet.
 3. Wait for provisioning (~2 minutes).
 4. **Project Settings → API.** Copy two values:
    - **Project URL** → `https://<ref>.supabase.co` — call it `SUPABASE_URL`
-   - **anon / public** key → a long JWT — call it `ANON_KEY`
+   - **anon / public** key → a long JWT starting `eyJ` — call it `ANON_KEY`
+
+> **The one people get wrong.** That settings page also shows a *RESTful
+> endpoint*, `https://<ref>.supabase.co/rest/v1/`. That is **not** the project
+> URL. Copy the origin only — everything after `.supabase.co` must go. The app
+> strips it defensively and `npm run doctor` will tell you, but the `.env` is
+> clearer without it.
+>
+> Never put the `service_role` key here. It bypasses row-level security and
+> this value ships to every browser.
 
 `<ref>` is the random subdomain, e.g. `abcdefghijklm`. **Write it down.**
 
@@ -192,6 +201,8 @@ If the dot is red, open the account menu — the sync error is printed there.
 | Symptom | Cause | Fix |
 | --- | --- | --- |
 | `redirect_uri_mismatch` from Google | Google has your app URL instead of Supabase's | Redirect URI must be `https://<ref>.supabase.co/auth/v1/callback` |
+| doctor: `PGRST125 Invalid path`, or auth health 404 | The URL is the REST endpoint, not the project URL | Strip `/rest/v1/` — keep only `https://<ref>.supabase.co` |
+| doctor: "reachable but rejected the key" | Wrong or truncated anon key | Re-copy the **anon / public** key; it is ~200+ chars and starts `eyJ` |
 | Signs in, bounces back signed out | App callback not allowlisted | Add `<SITE_URL>/auth/callback` to Supabase → URL Configuration → Redirect URLs |
 | "Sign-in is off" on the login page | Env vars missing at **build** time | Add them in Vercel, then **redeploy** |
 | `Access blocked: has not completed verification` | Consent screen still in Testing | Step 8, Publish app |

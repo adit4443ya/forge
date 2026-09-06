@@ -15,9 +15,18 @@ for (const f of ['.env.local', '.env']) {
   }
 }
 
-const URL_ = process.env.NEXT_PUBLIC_SUPABASE_URL || '';
-const KEY = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY || '';
-const SITE = process.env.NEXT_PUBLIC_SITE_URL || '';
+const RAW_URL = (process.env.NEXT_PUBLIC_SUPABASE_URL || '').trim();
+const KEY = (process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY || '').trim();
+const SITE = (process.env.NEXT_PUBLIC_SITE_URL || '').trim();
+
+/* The dashboard shows several URLs; only the origin is the project URL. */
+const normalize = (v) => {
+  if (!v) return '';
+  try { return new URL(v).origin; }
+  catch { return v.replace(/\/(rest|auth|storage|realtime|functions)\/v\d.*$/, '').replace(/\/+$/, ''); }
+};
+const URL_ = normalize(RAW_URL);
+const trimmedPath = RAW_URL && URL_ && RAW_URL.replace(/\/+$/, '') !== URL_;
 
 let bad = 0;
 const ok   = (m, d = '') => console.log(`  \x1b[32m✓\x1b[0m ${m}${d ? `  \x1b[90m${d}\x1b[0m` : ''}`);
@@ -30,12 +39,22 @@ console.log('\x1b[1m1. Environment\x1b[0m');
 const placeholder = /YOUR-PROJECT|your-anon-key/i;
 if (!URL_) fail('NEXT_PUBLIC_SUPABASE_URL is not set', 'Supabase → Project Settings → API → Project URL');
 else if (placeholder.test(URL_)) fail('NEXT_PUBLIC_SUPABASE_URL is still the placeholder', 'paste your real project URL');
-else if (!/^https:\/\/[a-z0-9-]+\.supabase\.co\/?$/.test(URL_)) fail(`NEXT_PUBLIC_SUPABASE_URL looks wrong: ${URL_}`, 'expected https://<ref>.supabase.co');
-else ok('NEXT_PUBLIC_SUPABASE_URL', URL_);
+else if (!/^https:\/\/[a-z0-9-]+\.supabase\.co$/.test(URL_)) {
+  fail(`NEXT_PUBLIC_SUPABASE_URL is not a Supabase project URL: ${RAW_URL}`,
+       'expected exactly https://<ref>.supabase.co — the dashboard also shows a REST endpoint, which is not this');
+} else if (trimmedPath) {
+  // The app normalises this, so it works — but the .env is misleading. Say so once, loudly.
+  ok('NEXT_PUBLIC_SUPABASE_URL', URL_);
+  console.log(`      \x1b[33m→ your .env has "${RAW_URL}" — that is the REST endpoint, not the project URL.\x1b[0m`);
+  console.log(`      \x1b[33m  The app strips it, but edit .env.local to just ${URL_} to avoid confusion.\x1b[0m`);
+} else ok('NEXT_PUBLIC_SUPABASE_URL', URL_);
 
 if (!KEY) fail('NEXT_PUBLIC_SUPABASE_ANON_KEY is not set', 'Supabase → Project Settings → API → anon public key');
 else if (placeholder.test(KEY)) fail('NEXT_PUBLIC_SUPABASE_ANON_KEY is still the placeholder');
-else ok('NEXT_PUBLIC_SUPABASE_ANON_KEY', KEY.slice(0, 12) + '…' + ` (${KEY.length} chars)`);
+else if (!/^eyJ[A-Za-z0-9_-]+\.[A-Za-z0-9_-]+\.[A-Za-z0-9_-]+$/.test(KEY) && !/^sb_publishable_/.test(KEY)) {
+  fail('NEXT_PUBLIC_SUPABASE_ANON_KEY does not look like an anon key',
+       'it should be a long JWT starting eyJ… (or a sb_publishable_… key). The service_role key must NEVER be used here.');
+} else ok('NEXT_PUBLIC_SUPABASE_ANON_KEY', KEY.slice(0, 12) + '…' + ` (${KEY.length} chars)`);
 
 if (SITE) ok('NEXT_PUBLIC_SITE_URL', SITE);
 else info('NEXT_PUBLIC_SITE_URL not set — OAuth will use the request origin. Fine locally; set it in production.');
@@ -51,9 +70,12 @@ const headers = { apikey: KEY, Authorization: `Bearer ${KEY}` };
 const timeout = (ms) => { const c = new AbortController(); setTimeout(() => c.abort(), ms); return c.signal; };
 
 console.log('\n\x1b[1m2. Reachability\x1b[0m');
+let keyAccepted = false;
 try {
   const r = await fetch(`${base}/auth/v1/health`, { headers, signal: timeout(8000) });
-  if (r.ok) ok('Supabase auth is reachable');
+  if (r.ok) { keyAccepted = true; ok('Supabase auth is reachable and the key is accepted'); }
+  else if (r.status === 401) fail('the project is reachable but rejected the key', 'copy the anon / public key again from Project Settings → API');
+  else if (r.status === 404) fail(`auth health 404 at ${base}/auth/v1/health`, 'the URL is not a project origin — strip any /rest/v1/ or /auth/v1/ suffix');
   else fail(`auth health returned HTTP ${r.status}`, 'check the project URL and that the project is not paused');
 } catch (e) {
   fail(`cannot reach ${base}`, e.name === 'AbortError' ? 'timed out — is the project paused?' : e.message);
@@ -70,7 +92,10 @@ for (const table of ['progress', 'attempts']) {
       if (rows.length === 0) ok(`table "${table}" exists and RLS hides other users' rows`);
       else fail(`table "${table}" returned ${rows.length} row(s) to an anonymous caller`, 'RLS is not enabled — re-run supabase/schema.sql');
     } else if (r.status === 401 || r.status === 403) {
-      ok(`table "${table}" exists and is protected`, `HTTP ${r.status}`);
+      // A rejected key produces 401 whether or not the table exists, so this
+      // only means something once the key is known good.
+      if (keyAccepted) ok(`table "${table}" exists and is protected`, `HTTP ${r.status}`);
+      else fail(`cannot check table "${table}" — the key was rejected`, 'fix the anon key first, then re-run');
     } else if (/does not exist|schema cache/i.test(body)) {
       fail(`table "${table}" does not exist`, 'run supabase/schema.sql in the Supabase SQL editor');
     } else {
@@ -85,6 +110,7 @@ try {
   const s = await r.json();
   const google = s?.external?.google;
   if (google) ok('Google sign-in is enabled');
+  else if (!keyAccepted) fail('cannot read auth settings — the key was rejected', 'fix the anon key first, then re-run');
   else fail('Google provider is NOT enabled', 'Supabase → Authentication → Providers → Google → enable, paste Client ID + Secret');
   const enabled = Object.entries(s?.external || {}).filter(([, v]) => v).map(([k]) => k);
   if (enabled.length) info(`providers enabled: ${enabled.join(', ')}`);
