@@ -23,7 +23,8 @@
     "check:links:verify": "node scripts/check-links.mjs --verify",
     "test:links": "node scripts/test-links-ui.mjs",
     "test:role": "node scripts/test-role.mjs",
-    "test:nav": "node scripts/test-navigation.mjs"
+    "test:nav": "node scripts/test-navigation.mjs",
+    "test:audit": "node scripts/test-audit-fixes.mjs"
   },
   "dependencies": {
     "@supabase/ssr": "^0.7.0",

@@ -34,6 +34,20 @@ for (const [name, e] of Object.entries(EXTERNAL_PROBLEMS)) {
 }
 if (!bad) console.log(`  \x1b[32m✓\x1b[0m every external link is an exact problem page, not a search`);
 
+/* The repositories the site tells people to clone must actually exist. The
+   labs are the product's differentiator; a 404 there is worse than no link. */
+{
+  const { REPO } = await import('../src/data/links.js');
+  for (const [name, url] of [['forge', REPO.forge], ['labs', REPO.labs]]) {
+    try {
+      const r = await fetch(url, { method: 'HEAD', redirect: 'follow' });
+      if (r.ok) console.log(`  \x1b[32m✓\x1b[0m the ${name} repository resolves  \x1b[90m${url}\x1b[0m`);
+      else { bad++; console.log(`  \x1b[31m✗\x1b[0m the ${name} repository is ${r.status}: ${url}`);
+             console.log('      \x1b[33m→ the site tells people to clone this. Create and push it, or the link is a dead end.\x1b[0m'); }
+    } catch (e) { console.log(`  \x1b[90m·\x1b[0m could not reach ${url} (${e.message})`); }
+  }
+}
+
 if (process.argv.includes('--verify')) {
   console.log('\n  verifying slugs against the judge…');
   let checked = 0, failed = 0;

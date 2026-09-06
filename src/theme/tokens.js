@@ -20,7 +20,7 @@ const dark = {
   /* hairlines */
   line: "#23232B", line2: "#32323C", lineHot: "#43434F",
   /* ink */
-  text: "#EDEDF0", dim: "#9B9BA6", faint: "#66666F", inverse: "#08080A",
+  text: "#EDEDF0", dim: "#9B9BA6", faint: "#8A8A94", inverse: "#08080A",   /* faint carries nav and captions: keep it >= 4.5:1 */
   /* the one hue */
   accent: "#E8B339", accentHi: "#F5C763", accentLo: "#8A6A20",
   accentBg: "rgba(232,179,57,0.10)", accentBg2: "rgba(232,179,57,0.18)", accentLine: "rgba(232,179,57,0.34)",
@@ -47,7 +47,7 @@ const light = {
   colorScheme: "light",
   bg: "#FBFBF9", bg1: "#FFFFFF", bg2: "#F6F6F3", bg3: "#EFEFEB", bg4: "#E7E7E2",
   line: "#E3E3DD", line2: "#D2D2CA", lineHot: "#B9B9B0",
-  text: "#16161A", dim: "#5E5E68", faint: "#8B8B93", inverse: "#FFFFFF",
+  text: "#16161A", dim: "#5E5E68", faint: "#6E6E77", inverse: "#FFFFFF",   /* faint carries nav and captions: keep it >= 4.5:1 */
   accent: "#A9720A", accentHi: "#8A5D06", accentLo: "#D8AB4E",
   accentBg: "rgba(169,114,10,0.08)", accentBg2: "rgba(169,114,10,0.14)", accentLine: "rgba(169,114,10,0.30)",
   ok: "#16794B", okBg: "rgba(22,121,75,0.08)", okLine: "rgba(22,121,75,0.26)",

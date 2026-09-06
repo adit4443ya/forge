@@ -5,6 +5,7 @@ import { Section, Panel, Button, Tag, Label, Mono, H1, Muted, Bar, Note, Empty, 
 import { useProgress, progressStore } from "@/lib/progress/store.js";
 import { useTargetChange } from "@/ui/hooks.js";
 import { LAB_INDEX, LAB_TRACKS } from "@/data/generated/labs.js";
+import { REPO } from "@/data/links.js";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 
@@ -132,7 +133,9 @@ export default function Labs({ role, target }) {
       <Note hue="info" title="how a lab works">
         Open a lab and it walks you through it: what it teaches, the build line, then each step with the command to copy and the
         output that step produced on the machine that wrote the lab — so you compare against a real number instead of guessing.
-        Clone <span className="mono" style={{ color: tk.text }}>debug_lab</span> next to this site and run the commands in a terminal.
+        Clone the labs and run the commands in a terminal:{" "}
+        <a href={REPO.labs} target="_blank" rel="noopener noreferrer"
+           style={{ color: tk.accent, fontFamily: "var(--font-mono)" }}>{REPO.labs.replace("https://", "")} ↗</a>.
         The AArch64 track needs one setup run first, <span className="mono" style={{ color: tk.text }}>tools/a64-setup.sh</span>, which needs no root.
       </Note>
     </div>

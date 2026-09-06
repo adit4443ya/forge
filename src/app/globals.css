@@ -982,8 +982,9 @@ a.pat-prob:hover { color: var(--tk-text); border-color: var(--tk-info); backgrou
 .rp-tag { margin-top: 2px; font-family: var(--font-mono); font-size: var(--fs-micro); color: var(--tk-faint); }
 .rp-reality {
   margin: 0; color: var(--tk-dim); font-size: var(--fs-sm); line-height: 1.65;
-  display: -webkit-box; -webkit-line-clamp: 4; line-clamp: 4; -webkit-box-orient: vertical; overflow: hidden;
+  display: -webkit-box; -webkit-line-clamp: 5; line-clamp: 5; -webkit-box-orient: vertical; overflow: hidden;
 }
+.rp-card:focus-visible { outline: 2px solid var(--tk-accent); outline-offset: 2px; }
 .rp-day { margin: 0; padding: 0; list-style: none; display: grid; gap: 5px; }
 .rp-day li { position: relative; padding-left: 14px; color: var(--tk-faint); font-size: var(--fs-sm); line-height: 1.5; }
 .rp-day li::before { content: "·"; position: absolute; left: 4px; color: var(--tk-accent); font-weight: 700; }
@@ -996,3 +997,45 @@ a.pat-prob:hover { color: var(--tk-text); border-color: var(--tk-info); backgrou
   background: transparent; border: none; color: var(--tk-faint); font-size: var(--fs-sm);
 }
 .rp-skip:hover { color: var(--tk-text); text-decoration: underline; }
+.lp-sub a, .lp-foot a[href^="http"] { color: var(--tk-accent); text-decoration: none; border-bottom: 1px solid color-mix(in srgb, var(--tk-accent) 35%, transparent); }
+.lp-sub a:hover { border-bottom-color: var(--tk-accent); }
+
+/* ══════════════════════════════════════════════════════════════════════════
+   NARROW VIEWPORTS
+   An audit at 390px found the whole right-hand cluster of the top bar sitting
+   off-screen with no horizontal scroll — role, search, theme and account were
+   unreachable on a phone, on every page — and the guide reader squeezed to a
+   76px column by a fixed 314px table-of-contents rail.
+   ══════════════════════════════════════════════════════════════════════════ */
+@media (max-width: 700px) {
+  /* The bar scrolls sideways rather than hiding controls off the edge. */
+  .topbar {
+    gap: 8px; padding: 0 10px;
+    overflow-x: auto; overflow-y: hidden;
+    scrollbar-width: none; -ms-overflow-style: none;
+  }
+  .topbar::-webkit-scrollbar { display: none; }
+  .topbar > * { flex-shrink: 0; }
+  .tabs { gap: 0; }
+  .tab { padding: 6px 8px; font-size: var(--fs-micro); }
+  .search-btn { padding: 5px 8px; }
+  .chip-btn { padding: 5px 8px; }
+
+  /* The guide's contents rail becomes a strip above the article. */
+  .prose { max-width: 100%; }
+}
+
+/* The guide reader is a two-column grid; collapse it rather than squeezing. */
+@media (max-width: 860px) {
+  .guide-grid { grid-template-columns: 1fr !important; }
+  .guide-toc {
+    border-left: none !important; border-bottom: 1px solid var(--tk-line);
+    max-height: 190px; padding: var(--sp-3) var(--sp-4) !important;
+  }
+}
+
+/* Long shell commands must scroll, not vanish past the edge. */
+.prose pre, .lab-cmd-body, .lab-out, .pat-template pre {
+  overflow-x: auto; max-width: 100%;
+}
+.prose pre > code { white-space: pre; }

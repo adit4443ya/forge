@@ -1,7 +1,7 @@
 "use client";
 import { useMemo, useState } from "react";
 import { tk, hue as H } from "@/theme/carbon.jsx";
-import { Section, Panel, Button, Tag, Label, Mono, H1, Muted, Stat, Bar, Ring, Note, Empty } from "@/ui/kit.jsx";
+import { Section, Panel, Button, Tag, Label, Mono, H1, Muted, Stat, Bar, Ring, Note, Empty, mmss } from "@/ui/kit.jsx";
 import { useNow } from "@/ui/hooks.js";
 import { useNav } from "@/shell/nav.js";
 import { useProgress, progressStore, weekNumber, sessionsThisWeek, streak, isSolved } from "@/lib/progress/store.js";
@@ -40,7 +40,7 @@ function ModePicker({ value, onChange }) {
 }
 
 function RunningSession({ session, nav, prog, role }) {
-  const now = useNow(15000);
+  const now = useNow(1000);   // a session clock has to look like one
   const t = templateForRole(TEMPLATE_BY_ID[session.templateId], role?.id);
   const mode = MODES[session.mode];
   const elapsedMin = Math.max(0, Math.round((now - session.startedAt) / 60000));
@@ -62,7 +62,9 @@ function RunningSession({ session, nav, prog, role }) {
     <>
       <Section title="Session in progress" hue="accent" right={
         <div style={{ display: "flex", gap: "var(--sp-2)" }}>
-          <Button size="sm" onClick={() => progressStore.endSession(elapsedMin || t.minutes)} hue="ok" variant="solid">Finish · log {elapsedMin || t.minutes} min</Button>
+          <Button size="sm" onClick={() => progressStore.endSession(elapsedMin)} hue="ok" variant="solid">
+            Finish · log {elapsedMin} min
+          </Button>
           <Button size="sm" onClick={() => progressStore.cancelSession()}>Discard</Button>
         </div>
       }>
@@ -74,7 +76,7 @@ function RunningSession({ session, nav, prog, role }) {
                 <span style={{ fontSize: "var(--fs-xl)", fontWeight: 700, color: tk.text }}>{t.icon} Session {t.id} · {t.name}</span>
                 <Tag hue="accent">{mode.icon} {mode.name}</Tag>
               </div>
-              <Mono style={{ display: "block", marginTop: 3 }}>{elapsedMin} of {t.minutes} min elapsed · {t.purpose}</Mono>
+              <Mono style={{ display: "block", marginTop: 3 }}>{mmss(Math.max(0, Math.floor((now - session.startedAt) / 1000)))} elapsed · {t.minutes} min planned · {t.purpose}</Mono>
             </div>
           </div>
 
@@ -113,6 +115,11 @@ function RunningSession({ session, nav, prog, role }) {
   );
 }
 
+/* A plan cannot have started before this product existed, and cannot start
+   more than a year out; anything else is a typo, not an intention. */
+const MIN_START = "2024-01-01";
+const MAX_START = new Date(Date.now() + 365 * 86400000).toISOString().slice(0, 10);
+
 export default function Today({ role }) {
   const nav = useNav();
   const prog = useProgress();
@@ -150,13 +157,25 @@ export default function Today({ role }) {
             : <>Week {week} <span style={{ color: tk.faint, fontWeight: 400 }}>·</span> <span style={{ color: tk.accent }}>{phase.name}</span></>}
         </H1>
         <Muted style={{ marginTop: 8, maxWidth: "68ch" }}>{week == null ? "Three sessions a week. Everything on this site is ordered around them." : phase.goal}</Muted>
-        {week == null && (
-          <div style={{ marginTop: "var(--sp-4)", display: "flex", alignItems: "center", gap: 10 }}>
-            <Label>Start date</Label>
-            <input type="date" value={prog.startDate || ""} onChange={(e) => progressStore.setStartDate(e.target.value)}
-              className="mono" style={{ padding: "6px 10px", borderRadius: "var(--r-2)", border: `1px solid ${tk.line}`, background: tk.bg1, color: tk.text, fontSize: "var(--fs-sm)" }} />
-          </div>
-        )}
+        {/* Always editable, and bounded. Unbounded input stored a typo'd year
+            verbatim and rendered "Week 105608"; once set, the field used to
+            disappear, so the only way to correct it was wiping all progress. */}
+        <div style={{ marginTop: "var(--sp-4)", display: "flex", alignItems: "center", gap: 10, flexWrap: "wrap" }}>
+          <Label>Start date</Label>
+          <input type="date" value={prog.startDate || ""} min={MIN_START} max={MAX_START}
+            onChange={(e) => {
+              const v = e.target.value;
+              if (!v) { progressStore.setStartDate(null); return; }
+              if (v >= MIN_START && v <= MAX_START) progressStore.setStartDate(v);
+            }}
+            className="mono" style={{ padding: "6px 10px", borderRadius: "var(--r-2)", border: `1px solid ${tk.line}`, background: tk.bg1, color: tk.text, fontSize: "var(--fs-sm)" }} />
+          {!prog.startDate && (
+            <Button size="sm" hue="accent" onClick={() => progressStore.setStartDate(new Date().toISOString().slice(0, 10))}>
+              Start today
+            </Button>
+          )}
+          {prog.startDate && <Mono dim>week {week} · change it any time</Mono>}
+        </div>
       </div>
 
       {/* ── the one thing to do ──────────────────────────────── */}

@@ -168,14 +168,14 @@ public:
         size_t t = tail.load(std::memory_order_relaxed);
         if (t - head.load(std::memory_order_relaxed) == N) return false;
         buf[t % N] = v;
-        tail.store(t + 1, std::memory_order_relaxed);   // BUG
+        tail.store(t + 1, std::memory_order_relaxed);
         return true;
     }
     bool pop(T& out) {
         size_t h = head.load(std::memory_order_relaxed);
-        if (h == tail.load(std::memory_order_relaxed)) return false;   // BUG
+        if (h == tail.load(std::memory_order_relaxed)) return false;
         out = buf[h % N];
-        head.store(h + 1, std::memory_order_relaxed);   // BUG
+        head.store(h + 1, std::memory_order_relaxed);
         return true;
     }
 };`,
@@ -220,17 +220,17 @@ public:
     int get(int k, long now) {
         auto it = m.find(k);
         if (it == m.end()) return -1;
-        lru.remove(k);                 // BUG: O(n)
+        lru.remove(k);
         lru.push_front(k);
-        return it->second.v;           // BUG: never checks expiry
+        return it->second.v;
     }
     void put(int k, int v, long now, long ttl) {
         if (m.size() == cap) {
-            m.erase(lru.back());       // BUG: evicts by recency even if something is expired
+            m.erase(lru.back());
             lru.pop_back();
         }
         m[k] = {v, now + ttl};
-        lru.push_front(k);             // BUG: duplicate key pushed twice
+        lru.push_front(k);
     }
 };`,
     bugs: [
@@ -277,10 +277,10 @@ public:
     id: 253, title: "A parser that trusts its input", category: "Safety",
     buggyCode: `struct Header { uint16_t len; uint8_t type; };
 void handle(const char* buf, size_t n) {
-    const Header* h = reinterpret_cast<const Header*>(buf);   // BUG x2
+    const Header* h = reinterpret_cast<const Header*>(buf);
     if (h->len > n) return;
     char msg[256];
-    memcpy(msg, buf + sizeof(Header), h->len);                // BUG
+    memcpy(msg, buf + sizeof(Header), h->len);
     dispatch(h->type, msg, h->len);
 }`,
     bugs: [
@@ -317,14 +317,14 @@ void handle(const char* buf, size_t n) {
     bool stop = false;
 public:
     void submit(Job j) {
-        q.push(std::move(j));            // BUG: no lock
+        q.push(std::move(j));
         cv.notify_one();
     }
     void worker() {
         for (;;) {
             std::unique_lock lk(m);
-            if (q.empty()) cv.wait(lk);  // BUG: no predicate
-            if (stop) return;            // BUG: may return with jobs pending
+            if (q.empty()) cv.wait(lk);
+            if (stop) return;
             Job j = std::move(q.front()); q.pop();
             lk.unlock();
             j();

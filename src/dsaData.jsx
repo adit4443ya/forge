@@ -4745,12 +4745,12 @@ export const NVIDIA_BUG_HUNT = [
     id: 1, title: "Dangling Pointer — Return Address of Local",
     category: "Memory Safety", difficulty: "High Probability",
     buggyCode: `char* getGreeting() {
-    char msg[] = "Hello NVIDIA";  // local array on stack!
-    return msg;                   // BUG: dangling pointer after return
+    char msg[] = "Hello there";
+    return msg;
 }
 int main() {
     char* s = getGreeting();
-    printf("%s\\n", s);          // UB: stack frame is gone
+    printf("%s\\n", s);
 }`,
     bugs: [
       "msg[] is stack-allocated — destroyed when getGreeting() returns",
@@ -4777,8 +4777,8 @@ std::string getGreeting() { return "Hello NVIDIA"; }`,
     category: "Bounds & Indexing", difficulty: "High Probability",
     buggyCode: `int sumArray(int* arr, int n) {
     int sum = 0;
-    for (int i = 0; i <= n; i++) {  // BUG: should be i < n
-        sum += arr[i];               // arr[n] is out of bounds!
+    for (int i = 0; i <= n; i++) {
+        sum += arr[i];
     }
     return sum;
 }`,
@@ -4800,9 +4800,9 @@ std::string getGreeting() { return "Hello NVIDIA"; }`,
     category: "Data Structure Safety", difficulty: "High Probability",
     buggyCode: `struct Stack {
     int data[100]; int top = -1;
-    void push(int val) { data[++top] = val; }  // BUG: no overflow check
-    int  pop()         { return data[top--]; }  // BUG: no underflow check
-    int  peek()        { return data[top];   }  // BUG: crashes if empty
+    void push(int val) { data[++top] = val; }
+    int  pop()         { return data[top--]; }
+    int  peek()        { return data[top];   }
 };`,
     bugs: [
       "push(): top can exceed 99 → out-of-bounds write (OOB)",
@@ -4820,7 +4820,7 @@ std::string getGreeting() { return "Hello NVIDIA"; }`,
   {
     id: 4, title: "Call by Value vs. Reference — Swap Bug",
     category: "Function Semantics", difficulty: "High Probability",
-    buggyCode: `void swapNodes(Node* a, Node* b) {  // BUG: by value!
+    buggyCode: `void swapNodes(Node* a, Node* b) {
     Node* temp = a; a = b; b = temp;  // swaps LOCAL copies only
 }
 // p and q unchanged after the call!`,
@@ -4842,7 +4842,7 @@ void swapNodes(Node** a, Node** b) {
     id: 5, title: "Precision Loss — Integer Division Before Cast",
     category: "Type Safety", difficulty: "Medium Probability",
     buggyCode: `double divide(int a, int b) {
-    return a / b;  // BUG: integer division! 7/2 = 3, not 3.5
+    return a / b;
 }`,
     bugs: [
       "a/b is integer division — truncates BEFORE assigning to double",
@@ -4859,7 +4859,7 @@ void swapNodes(Node** a, Node** b) {
     buggyCode: `char* processInput(const char* input) {
     char* buf = (char*)malloc(strlen(input) + 1);
     strcpy(buf, input);
-    if (strlen(buf) == 0) return NULL;  // BUG: buf leaked!
+    if (strlen(buf) == 0) return NULL;
     return buf;
 }`,
     bugs: [
@@ -4876,8 +4876,8 @@ void swapNodes(Node** a, Node** b) {
   {
     id: 7, title: "= Instead of == (Assignment in Condition)",
     category: "Logic Error", difficulty: "Medium Probability",
-    buggyCode: `if (user->role = ADMIN) { ... }  // BUG: always true!
-if (code = 0)            { ... }  // BUG: always false!`,
+    buggyCode: `if (user->role = ADMIN) { ... }
+if (code = 0)            { ... }`,
     bugs: [
       "= assigns and evaluates to assigned value — ADMIN is truthy, so always true",
       "code = 0 always false (0 is falsy) — success branch never runs"
@@ -4891,10 +4891,10 @@ if (code == 0)            { ... }  // FIXED
     id: 8, title: "NULL Pointer Dereference Without Check",
     category: "Memory Safety", difficulty: "High Probability",
     buggyCode: `int getLength(char* str) {
-    return strlen(str);        // BUG: segfault if str is NULL
+    return strlen(str);
 }
 Node* find(Node* head, int v) {
-    while (head->val != v) {   // BUG: segfault if head is NULL
+    while (head->val != v) {
         head = head->next;
     }
     return head;
@@ -4919,7 +4919,7 @@ Node* find(Node* head, int v) {
     buggyCode: `std::vector<int> v = {1,2,3,4,5,6};
 for (auto it = v.begin(); it != v.end(); ++it) {
     if (*it % 2 == 0)
-        v.erase(it);   // BUG: erase invalidates 'it', then ++it is UB
+        v.erase(it);
 }`,
     bugs: [
       "vector::erase invalidates 'it' and every iterator after it",
@@ -4943,7 +4943,7 @@ v.erase(std::remove_if(v.begin(), v.end(),
     category: "Move Semantics", difficulty: "Medium Probability",
     buggyCode: `std::unique_ptr<int> a = std::make_unique<int>(42);
 std::unique_ptr<int> b = std::move(a);   // ownership transferred to b
-std::cout << *a << "\\n";                 // BUG: a is now nullptr → UB`,
+std::cout << *a << "\\n";`,
     bugs: [
       "After std::move, 'a' holds nullptr (unique_ptr's moved-from state is defined as null)",
       "Dereferencing *a is a null-pointer dereference → UB / crash",
@@ -4964,12 +4964,11 @@ std::cout << *b << "\\n";        // use b — it owns the value now
     int* data;
     Buf(int n) { data = new int[n]; }
     ~Buf() { delete[] data; }
-    // BUG: no copy ctor / copy assignment defined
 };
 void f() {
     Buf a(10);
     Buf b = a;     // shallow copy: b.data == a.data
-}                  // ~b then ~a both delete[] the SAME pointer → double free`,
+}`,
     bugs: [
       "Compiler-generated copy ctor does a shallow (member-wise) copy → two objects own one buffer",
       "Both destructors delete[] the same pointer → double free (heap corruption)",
@@ -5000,7 +4999,7 @@ struct Buf {
     buggyCode: `int counter = 0;                       // shared, non-atomic
 void worker() {
     for (int i = 0; i < 100000; ++i)
-        ++counter;                     // BUG: read-modify-write race
+        ++counter;
 }
 // std::thread t1(worker), t2(worker); t1.join(); t2.join();
 // counter is < 200000 and non-deterministic`,
@@ -5031,7 +5030,7 @@ void worker() {
     buggyCode: `int binarySearch(vector<int>& a, int target) {
     int lo = 0, hi = a.size() - 1;
     while (lo <= hi) {
-        int mid = (lo + hi) / 2;       // BUG: lo + hi can overflow int
+        int mid = (lo + hi) / 2;
         if (a[mid] == target) return mid;
         else if (a[mid] < target) lo = mid + 1;
         else hi = mid - 1;
@@ -5065,7 +5064,7 @@ struct Circle : Shape {
     Circle(double r): r(r) {}
     double area() const override { return 3.14159 * r * r; }
 };
-std::vector<Shape> shapes;          // BUG: container of VALUES
+std::vector<Shape> shapes;
 shapes.push_back(Circle(2.0));      // sliced to a Shape!
 double a = shapes[0].area();        // returns 0, not ~12.57`,
     bugs: [

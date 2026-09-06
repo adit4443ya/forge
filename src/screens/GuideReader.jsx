@@ -92,13 +92,13 @@ export default function GuideReader({ guide, anchor = null }) {
           <div style={{ width: `${pct}%`, height: "100%", background: tk.accent, transition: "width .1s linear" }} />
         </div>
       </div>
-      <div style={{ display: "grid", gridTemplateColumns: "1fr 250px", flex: 1, minHeight: 0 }}>
+      <div className="guide-grid" style={{ display: "grid", gridTemplateColumns: "1fr 250px", flex: 1, minHeight: 0 }}>
         <div ref={ref} onScroll={onScroll} style={{ overflowY: "auto", padding: "var(--sp-6) var(--sp-6) var(--sp-8)" }}>
           <div className="prose anim-fade" style={{ margin: "0 auto" }}>
             <ReactMarkdown remarkPlugins={[remarkGfm]} components={md}>{guide.body}</ReactMarkdown>
           </div>
         </div>
-        <aside className="hide-sm" style={{ borderLeft: `1px solid ${tk.line}`, overflowY: "auto", padding: "var(--sp-4) var(--sp-3)" }}>
+        <aside className="guide-toc" style={{ borderLeft: `1px solid ${tk.line}`, overflowY: "auto", padding: "var(--sp-4) var(--sp-3)" }}>
           <Label style={{ display: "block", marginBottom: "var(--sp-2)" }}>On this page</Label>
           {guide.headings.map((h, i) => {
             const id = headingId(h.text), on = id === active;

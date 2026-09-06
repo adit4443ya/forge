@@ -7,6 +7,7 @@ import { Prism as SyntaxHighlighter } from "react-syntax-highlighter";
 import { tk, hue as H, useSyntaxTheme } from "@/theme/carbon.jsx";
 import { Label, Mono, Muted, Tag, Button } from "@/ui/kit.jsx";
 import { useProgress, progressStore } from "@/lib/progress/store.js";
+import { REPO } from "@/data/links.js";
 
 /* ══════════════════════════════════════════════════════════════════════════
    LAB RUNNER — a lab as a guided session, not a checkbox.
@@ -194,7 +195,9 @@ export default function LabRunner({ lab, track, prev, next }) {
         {/* ── build ────────────────────────────────────────────── */}
         {lab.build && (
           <section className="lab-block">
-            <Label hue={hue}>first, build it</Label>
+            <Label hue={hue}>first, get the code</Label>
+            <Cmd commands={[`git clone ${REPO.labs}.git && cd ${REPO.labsName}`]} output="" />
+            <Label hue={hue}>then build it</Label>
             <Cmd commands={lab.build.split("\n")} output="" />
             {lab.artifact && <Mono dim>produces {lab.artifact}</Mono>}
           </section>

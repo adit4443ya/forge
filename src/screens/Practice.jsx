@@ -294,7 +294,7 @@ function LaddersTab() {
     <div className="pane-pad pane-narrow">
       <H1>When this bank runs out</H1>
       <Muted style={{ marginTop: 8, marginBottom: "var(--sp-5)" }}>
-        Ninety-two curated problems teach the patterns. They do not build volume, and they cannot simulate a clock you did not set
+        The {PROBLEMS.length} curated problems teach the patterns. They do not build volume, and they cannot simulate a clock you did not set
         yourself. These five sets do, and they are the ones candidates for these roles actually train on. Go wide here after you
         have gone deep above.
       </Muted>
@@ -330,11 +330,15 @@ function LaddersTab() {
   );
 }
 
+/* The valid tabs, so a stale ?tab= cannot render an empty page. */
+const TAB_IDS = ["problems", "rapid", "estimate", "mental", "market", "drills", "patterns", "concepts", "mocks", "ladders"];
+
 export default function Practice({ target, role }) {
   const router = useRouter();
-  const [tab, setTab] = useState(() => (target?.kind === "tab" ? target.id : "problems"));
+  const [tab, setTab] = useState(() => (target?.kind === "tab" && TAB_IDS.includes(target.id) ? target.id : "problems"));
   useTargetChange(target, (t) => {
-    if (t.kind === "tab") setTab(t.id);
+    /* A stale bookmark or a typo must not render an empty page. */
+    if (t.kind === "tab") setTab(TAB_IDS.includes(t.id) ? t.id : "problems");
     if (t.kind === "problem") setTab("problems");
     if (t.kind === "section") setTab("problems");   // ProblemsTab filters on it
   });

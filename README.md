@@ -88,6 +88,7 @@ bundle. Only the guide you are reading is sent, already rendered.
 | `npm run test:guides` | every guide opens by clicking it, plus legacy links, palette anchors and the back button |
 | `npm run test:labs` | every lab page renders, the runner shows copyable commands and reference output, evidence notes persist |
 | `npm run check:links` | every problem named anywhere resolves to the bank or an exact judge page; `check:links:verify` re-asks the judge |
+| `npm run test:audit` | the findings from the black-box audit stay fixed: gated content absent from the DOM, no leaked bug comments, labs obtainable, real session timing, keyboard-usable modal, readable at 390px |
 | `npm run test:nav` | tabs and problem selection reach the URL, so Back works and views can be linked |
 | `npm run test:role` | the role switch actually re-sorts every surface, and the first-run picker appears once |
 | `npm run test:links` | no chip in the UI names a problem without linking somewhere |

@@ -2,12 +2,13 @@ import Link from "next/link";
 import { STATS } from "@/data/generated/stats.js";
 import { ROLES } from "@/data/roles.js";
 import { CLOUD_ENABLED } from "@/lib/supabase/config";
+import { REPO } from "@/data/links.js";
 
 export const metadata = {
   title: "Forge — practice that behaves like the interview",
   description:
     `${STATS.problems} problems behind timed hint gates, ${STATS.labs} labs you run on your own machine, ` +
-    `and ${STATS.guides} long-form guides. For engineers targeting compiler, systems, HFT and quant roles.`,
+    `and ${STATS.guides} long-form guides. For engineers targeting compiler, systems and high-frequency-trading roles.`,
 };
 
 const FEATURES = [
@@ -21,11 +22,11 @@ const FEATURES = [
   },
   {
     k: "03", t: "Labs walk you through, step by step",
-    d: `${STATS.labs} labs across ${STATS.tracks} tracks — perf counters, cache behaviour, codegen, concurrency, syscalls, AArch64 and SVE. Each opens as a guided session: what it teaches, the build line, then ${STATS.labSteps} steps with the command to copy and the output that step produced on the machine that wrote the lab, so you compare against a real number instead of guessing. It is finished when you can write what it showed on YOUR machine and what surprised you.`,
+    d: `${STATS.labs} labs across ${STATS.tracks} tracks, in their own public repository — perf counters, cache behaviour, codegen, concurrency, syscalls, AArch64 and SVE. Each opens as a guided session: what it teaches, the build line, then ${STATS.labSteps} steps with the command to copy and the output that step produced on the machine that wrote the lab, so you compare against a real number instead of guessing. It is finished when you can write what it showed on YOUR machine and what surprised you.`,
   },
   {
     k: "04", t: "Organised by what the job asks of you",
-    d: "Not by company folklore. Four roles, each with the day it actually involves and its competencies sorted into foundation, working and expert. Problems, labs, guides and recall questions hang off those competencies.",
+    d: `Not by company folklore. ${STATS.roles} roles, each with the day it actually involves and its competencies sorted into foundation, working and expert. Problems, labs, guides and recall questions hang off those competencies, and picking one re-sorts every surface.`,
   },
   {
     k: "05", t: "Rapid fire, and estimation",
@@ -58,7 +59,7 @@ export default function Landing() {
         <nav className="lp-nav-links">
           <a href="#how">How it works</a>
           <a href="#roles">Roles</a>
-          <a href="#stack">Open source</a>
+          <a href={REPO.forge} target="_blank" rel="noopener noreferrer">Source ↗</a>
         </nav>
         <Link className="lp-cta-sm press" href="/today">Open the app →</Link>
       </header>
@@ -66,7 +67,7 @@ export default function Landing() {
       <section className="lp-hero">
         <div className="lp-eyebrow">
           <span className="lp-dot" />
-          compiler · systems · high-frequency trading · quant
+          compiler · systems · high-frequency trading
         </div>
         <h1>
           Practice that behaves<br />like the interview.
@@ -110,7 +111,7 @@ export default function Landing() {
       </section>
 
       <section id="roles" className="lp-section">
-        <h2 className="lp-h2">Four roles, in depth</h2>
+        <h2 className="lp-h2">{STATS.roles === 3 ? "Three" : STATS.roles} roles, in depth</h2>
         <p className="lp-sub">
           Pick one and every surface re-sorts around it: which problems matter, which labs to run,
           which guides to read, which questions you must answer without preparation.
@@ -139,7 +140,10 @@ export default function Landing() {
         <h2 className="lp-h2">Run it yourself</h2>
         <p className="lp-sub">
           Next.js and React, with Supabase for Google sign-in and Postgres when you want it — and
-          fully functional without it. Clone, <code>npm install</code>, <code>npm run dev</code>.
+          fully functional without it. Two repositories:{" "}
+          <a href={REPO.forge} target="_blank" rel="noopener noreferrer">the site</a>, and{" "}
+          <a href={REPO.labs} target="_blank" rel="noopener noreferrer">the labs</a> you run on your own machine.
+          Clone either, <code>npm install</code>, <code>npm run dev</code>.
         </p>
         <div className="lp-stack-grid">
           <div><span className="mono">Next.js · React</span><small>App Router, server-rendered guides</small></div>

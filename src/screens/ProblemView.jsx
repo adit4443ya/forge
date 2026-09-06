@@ -62,9 +62,15 @@ function Gate({ stage, unlocked, unlockAt, elapsed, onUnlock, allowEarly, childr
           </button>
         </div>
       )}
-      <div className={`reveal${open && !locked ? " open" : ""}`}>
-        <div className="reveal-inner"><div style={{ padding: "0 14px 14px 40px" }}>{children}</div></div>
-      </div>
+      {/* A locked gate must not RENDER its content. Hiding it with CSS left the
+          hint, the pattern and the whole solution in the DOM — findable with
+          Ctrl+F, and read aloud to anyone using a screen reader, while the badge
+          said PATTERN HIDDEN. The gate is the product; it has to be real. */}
+      {!locked && (
+        <div className={`reveal${open ? " open" : ""}`}>
+          <div className="reveal-inner"><div style={{ padding: "0 14px 14px 40px" }}>{children}</div></div>
+        </div>
+      )}
     </div>
   );
 }
