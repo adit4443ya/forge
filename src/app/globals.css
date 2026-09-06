@@ -1088,3 +1088,8 @@ a.pat-prob:hover { color: var(--tk-text); border-color: var(--tk-info); backgrou
 }
 .rev-way strong { display: block; color: var(--tk-text); font-size: var(--fs-sm); }
 .rev-way em { display: block; margin-top: 3px; color: var(--tk-faint); font-size: var(--fs-sm); font-style: normal; line-height: 1.6; }
+
+/* Anchored targets must not land under a sticky header. Applies to guide
+   headings reached from the contents rail and to any scrolled-to panel. */
+.prose h1[id], .prose h2[id], .prose h3[id] { scroll-margin-top: var(--sp-5); }
+[data-competency] { scroll-margin-top: var(--sp-5); }

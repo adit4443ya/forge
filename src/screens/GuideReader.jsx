@@ -46,15 +46,20 @@ export default function GuideReader({ guide, anchor = null }) {
     const el = e.currentTarget, max = el.scrollHeight - el.clientHeight;
     setPct(max > 0 ? (el.scrollTop / max) * 100 : 0);
     const top = el.getBoundingClientRect().top;
-    const hs = Array.from(el.querySelectorAll("h2[id],h3[id]"));
+    const hs = Array.from(el.querySelectorAll("h1[id],h2[id],h3[id]"));
     let cur = "";
     for (let i = hs.length - 1; i >= 0; i--) if (hs[i].getBoundingClientRect().top - top <= 90) { cur = hs[i].id; break; }
     setActive(cur);
   };
 
   const md = useMemo(() => ({
-    h2: ({ children }) => <h2 id={headingId(String(children))}>{children}</h2>,
-    h3: ({ children }) => <h3 id={headingId(String(children))}>{children}</h3>,
+    /* String(children) yields "[object Object]" the moment a heading contains
+       inline code or bold — which produced ids like
+       "q-why-is-object-object-not-a-cycle-counter" and a contents link that
+       landed nowhere. textOf flattens the tree properly. */
+    h1: ({ children }) => <h1 id={headingId(textOf(children))}>{children}</h1>,
+    h2: ({ children }) => <h2 id={headingId(textOf(children))}>{children}</h2>,
+    h3: ({ children }) => <h3 id={headingId(textOf(children))}>{children}</h3>,
     code({ inline, className, children, ...props }) {
       const lang = /language-(\w+)/.exec(className || "")?.[1];
       if (inline || !lang) return <code className={className} {...props}>{children}</code>;
@@ -101,7 +106,7 @@ export default function GuideReader({ guide, anchor = null }) {
         <aside className="guide-toc" style={{ borderLeft: `1px solid ${tk.line}`, overflowY: "auto", padding: "var(--sp-4) var(--sp-3)" }}>
           <Label style={{ display: "block", marginBottom: "var(--sp-2)" }}>On this page</Label>
           {guide.headings.map((h, i) => {
-            const id = headingId(h.text), on = id === active;
+            const id = h.id || headingId(h.text), on = id === active;
             return (
               <button key={i} onClick={() => ref.current?.querySelector(`[id="${CSS.escape(id)}"]`)?.scrollIntoView({ behavior: "smooth", block: "start" })}
                 className="truncate press"

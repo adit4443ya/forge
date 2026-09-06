@@ -7,6 +7,11 @@ export const GUIDES = [
   "title": "SSA Construction & Destruction: Complete Deep Dive",
   "headings": [
    {
+    "level": 1,
+    "text": "PART 1 — WHY SSA EXISTS",
+    "id": "part-1-why-ssa-exists"
+   },
+   {
     "level": 2,
     "text": "The Core Problem SSA Solves",
     "id": "the-core-problem-ssa-solves"
@@ -22,9 +27,14 @@ export const GUIDES = [
     "id": "the-problem-ssa-hits-at-join-points"
    },
    {
+    "level": 1,
+    "text": "PART 2 — BUILDING BLOCKS BEFORE CYTRON'S ALGORITHM",
+    "id": "part-2-building-blocks-before-cytron-s-algorithm"
+   },
+   {
     "level": 2,
-    "text": "2.1 — Control Flow Graph",
-    "id": "2-1-control-flow-graph"
+    "text": "2.1 — Control Flow Graph (CFG)",
+    "id": "2-1-control-flow-graph-cfg"
    },
    {
     "level": 2,
@@ -40,6 +50,11 @@ export const GUIDES = [
     "level": 2,
     "text": "2.4 — Dominance Frontier",
     "id": "2-4-dominance-frontier"
+   },
+   {
+    "level": 1,
+    "text": "PART 3 — CYTRON'S ALGORITHM",
+    "id": "part-3-cytron-s-algorithm"
    },
    {
     "level": 2,
@@ -67,6 +82,16 @@ export const GUIDES = [
     "id": "larger-example-loop"
    },
    {
+    "level": 1,
+    "text": "PART 4 — PRUNED SSA AND SEMI-PRUNED SSA",
+    "id": "part-4-pruned-ssa-and-semi-pruned-ssa"
+   },
+   {
+    "level": 1,
+    "text": "PART 5 — DE-SSA (SSA DESTRUCTION)",
+    "id": "part-5-de-ssa-ssa-destruction"
+   },
+   {
     "level": 2,
     "text": "The Naïve Approach — Insert Copies",
     "id": "the-na-ve-approach-insert-copies"
@@ -90,6 +115,11 @@ export const GUIDES = [
     "level": 2,
     "text": "Complete De-SSA Example End-to-End",
     "id": "complete-de-ssa-example-end-to-end"
+   },
+   {
+    "level": 1,
+    "text": "PART 6 — SSA VS. MEMORYSSA: THE MODERN PARADIGM",
+    "id": "part-6-ssa-vs-memoryssa-the-modern-paradigm"
    },
    {
     "level": 3,
@@ -117,6 +147,11 @@ export const GUIDES = [
     "id": "when-coalescing-fails-copy-must-stay"
    },
    {
+    "level": 1,
+    "text": "PART 7 — TIPS & QnA",
+    "id": "part-7-tips-qna"
+   },
+   {
     "level": 2,
     "text": "Tips",
     "id": "tips"
@@ -125,6 +160,11 @@ export const GUIDES = [
     "level": 2,
     "text": "QnA",
     "id": "qna"
+   },
+   {
+    "level": 1,
+    "text": "PART 8 — MEMORY SSA (DEEP DIVE)",
+    "id": "part-8-memory-ssa-deep-dive"
    },
    {
     "level": 3,
@@ -153,8 +193,8 @@ export const GUIDES = [
    },
    {
     "level": 2,
-    "text": "7.2 — Memory SSA in Action",
-    "id": "7-2-memory-ssa-in-action"
+    "text": "7.2 — Memory SSA in Action (LLVM Style)",
+    "id": "7-2-memory-ssa-in-action-llvm-style"
    },
    {
     "level": 2,
@@ -167,9 +207,14 @@ export const GUIDES = [
     "id": "faq-is-memory-ssa-minimal"
    },
    {
+    "level": 1,
+    "text": "PART 9 — WHERE SSA WINS vs WHERE MEMORYSSA WINS",
+    "id": "part-9-where-ssa-wins-vs-where-memoryssa-wins"
+   },
+   {
     "level": 2,
-    "text": "Where Scalar SSA Wins",
-    "id": "where-scalar-ssa-wins"
+    "text": "Where Scalar SSA Wins (Optimizations Over Register Values)",
+    "id": "where-scalar-ssa-wins-optimizations-over-register-values"
    },
    {
     "level": 3,
@@ -178,18 +223,18 @@ export const GUIDES = [
    },
    {
     "level": 3,
-    "text": "2. Dead Code Elimination",
-    "id": "2-dead-code-elimination"
+    "text": "2. Dead Code Elimination (DCE)",
+    "id": "2-dead-code-elimination-dce"
    },
    {
     "level": 3,
-    "text": "3. Aggressive DCE",
-    "id": "3-aggressive-dce"
+    "text": "3. Aggressive DCE (killing dead cycles)",
+    "id": "3-aggressive-dce-killing-dead-cycles"
    },
    {
     "level": 3,
-    "text": "4. Global Value Numbering",
-    "id": "4-global-value-numbering"
+    "text": "4. Global Value Numbering (GVN)",
+    "id": "4-global-value-numbering-gvn"
    },
    {
     "level": 3,
@@ -198,23 +243,23 @@ export const GUIDES = [
    },
    {
     "level": 3,
-    "text": "6. Induction Variable Analysis",
-    "id": "6-induction-variable-analysis"
+    "text": "6. Induction Variable Analysis (SCEV)",
+    "id": "6-induction-variable-analysis-scev"
    },
    {
     "level": 2,
-    "text": "Where MemorySSA Wins",
-    "id": "where-memoryssa-wins"
+    "text": "Where MemorySSA Wins (Optimizations Over Memory State)",
+    "id": "where-memoryssa-wins-optimizations-over-memory-state"
    },
    {
     "level": 3,
-    "text": "1. LICM  — Hoisting Loads",
-    "id": "1-licm-hoisting-loads"
+    "text": "1. LICM (Loop Invariant Code Motion) — Hoisting Loads",
+    "id": "1-licm-loop-invariant-code-motion-hoisting-loads"
    },
    {
     "level": 3,
-    "text": "2. Dead Store Elimination",
-    "id": "2-dead-store-elimination"
+    "text": "2. Dead Store Elimination (DSE)",
+    "id": "2-dead-store-elimination-dse"
    },
    {
     "level": 3,
@@ -228,8 +273,8 @@ export const GUIDES = [
    },
    {
     "level": 2,
-    "text": "The Critical Distinction",
-    "id": "the-critical-distinction"
+    "text": "The Critical Distinction (Interview Gold)",
+    "id": "the-critical-distinction-interview-gold"
    }
   ],
   "category": "LLVM & Compiler Infrastructure",
@@ -244,6 +289,11 @@ export const GUIDES = [
   "file": "02_optimization_passes.md",
   "title": "Deep Dive: Compiler Optimizations — Vectorization, SIMD, Inlining, Unrolling & More",
   "headings": [
+   {
+    "level": 1,
+    "text": "PART 1 — VECTORIZATION & SIMD",
+    "id": "part-1-vectorization-simd"
+   },
    {
     "level": 2,
     "text": "What Is Vectorization Fundamentally",
@@ -261,18 +311,18 @@ export const GUIDES = [
    },
    {
     "level": 3,
-    "text": "1. Loop Vectorization",
-    "id": "1-loop-vectorization"
+    "text": "1. Loop Vectorization (Auto-Vectorization)",
+    "id": "1-loop-vectorization-auto-vectorization"
    },
    {
     "level": 3,
-    "text": "2. SLP Vectorization",
-    "id": "2-slp-vectorization"
+    "text": "2. SLP Vectorization (Superword Level Parallelism)",
+    "id": "2-slp-vectorization-superword-level-parallelism"
    },
    {
     "level": 3,
-    "text": "3. Auto-Vectorization with Intrinsics",
-    "id": "3-auto-vectorization-with-intrinsics"
+    "text": "3. Auto-Vectorization with Intrinsics (Manual Assist)",
+    "id": "3-auto-vectorization-with-intrinsics-manual-assist"
    },
    {
     "level": 3,
@@ -286,8 +336,8 @@ export const GUIDES = [
    },
    {
     "level": 3,
-    "text": "1. Data Dependencies",
-    "id": "1-data-dependencies"
+    "text": "1. Data Dependencies (Loop-Carried)",
+    "id": "1-data-dependencies-loop-carried"
    },
    {
     "level": 3,
@@ -296,8 +346,8 @@ export const GUIDES = [
    },
    {
     "level": 3,
-    "text": "3. Non-Unit Stride",
-    "id": "3-non-unit-stride"
+    "text": "3. Non-Unit Stride (Strided Access)",
+    "id": "3-non-unit-stride-strided-access"
    },
    {
     "level": 3,
@@ -316,18 +366,23 @@ export const GUIDES = [
    },
    {
     "level": 3,
-    "text": "CPU",
-    "id": "cpu"
+    "text": "CPU (x86/ARM)",
+    "id": "cpu-x86-arm"
    },
    {
     "level": 3,
-    "text": "GPU",
-    "id": "gpu"
+    "text": "GPU (NVIDIA)",
+    "id": "gpu-nvidia"
    },
    {
     "level": 3,
-    "text": "DSP",
-    "id": "dsp"
+    "text": "DSP (Qualcomm Hexagon HVX)",
+    "id": "dsp-qualcomm-hexagon-hvx"
+   },
+   {
+    "level": 1,
+    "text": "PART 2 — INLINING",
+    "id": "part-2-inlining"
    },
    {
     "level": 2,
@@ -360,6 +415,11 @@ export const GUIDES = [
     "id": "pgo-profile-guided-inlining"
    },
    {
+    "level": 1,
+    "text": "PART 3 — LOOP UNROLLING",
+    "id": "part-3-loop-unrolling"
+   },
+   {
     "level": 2,
     "text": "What Unrolling Is",
     "id": "what-unrolling-is"
@@ -375,19 +435,24 @@ export const GUIDES = [
     "id": "unrolling-pros-cons"
    },
    {
+    "level": 1,
+    "text": "PART 4 — OTHER KEY OPTIMIZATIONS",
+    "id": "part-4-other-key-optimizations"
+   },
+   {
     "level": 2,
     "text": "Constant Propagation & Folding",
     "id": "constant-propagation-folding"
    },
    {
     "level": 2,
-    "text": "Dead Code Elimination",
-    "id": "dead-code-elimination"
+    "text": "Dead Code Elimination (DCE)",
+    "id": "dead-code-elimination-dce"
    },
    {
     "level": 2,
-    "text": "Common Subexpression Elimination",
-    "id": "common-subexpression-elimination"
+    "text": "Common Subexpression Elimination (CSE)",
+    "id": "common-subexpression-elimination-cse"
    },
    {
     "level": 2,
@@ -401,8 +466,8 @@ export const GUIDES = [
    },
    {
     "level": 2,
-    "text": "Loop Tiling",
-    "id": "loop-tiling"
+    "text": "Loop Tiling (Blocking)",
+    "id": "loop-tiling-blocking"
    },
    {
     "level": 2,
@@ -415,19 +480,29 @@ export const GUIDES = [
     "id": "tail-call-optimization"
    },
    {
+    "level": 1,
+    "text": "PART 5 — QnA Covering Edge Cases",
+    "id": "part-5-qna-covering-edge-cases"
+   },
+   {
     "level": 2,
     "text": "The One Mental Model to Carry Into Interviews",
     "id": "the-one-mental-model-to-carry-into-interviews"
    },
    {
-    "level": 2,
-    "text": "Loop Invariant Code Motion  & Scalar Promotion",
-    "id": "loop-invariant-code-motion-scalar-promotion"
+    "level": 1,
+    "text": "PART 6 — ADVANCED SYSTEM & COMPILER-LEVEL OPTIMIZATIONS",
+    "id": "part-6-advanced-system-compiler-level-optimizations"
    },
    {
     "level": 2,
-    "text": "SCEV",
-    "id": "scev"
+    "text": "Loop Invariant Code Motion (LICM) & Scalar Promotion",
+    "id": "loop-invariant-code-motion-licm-scalar-promotion"
+   },
+   {
+    "level": 2,
+    "text": "SCEV (Scalar Evolution)",
+    "id": "scev-scalar-evolution"
    },
    {
     "level": 2,
@@ -436,13 +511,13 @@ export const GUIDES = [
    },
    {
     "level": 2,
-    "text": "If-Conversion",
-    "id": "if-conversion"
+    "text": "If-Conversion (Predication & Branchless Code)",
+    "id": "if-conversion-predication-branchless-code"
    },
    {
     "level": 2,
-    "text": "Memory Alias Analysis & __restrict__",
-    "id": "memory-alias-analysis-restrict"
+    "text": "Memory Alias Analysis & __restrict__ (TBAA)",
+    "id": "memory-alias-analysis-restrict-tbaa"
    },
    {
     "level": 2,
@@ -451,38 +526,48 @@ export const GUIDES = [
    },
    {
     "level": 2,
-    "text": "Devirtualization",
-    "id": "devirtualization"
+    "text": "Devirtualization (VTable Bypass)",
+    "id": "devirtualization-vtable-bypass"
    },
    {
     "level": 2,
-    "text": "Polyhedral Optimizations",
-    "id": "polyhedral-optimizations"
+    "text": "Polyhedral Optimizations (ISL & MLIR Affine)",
+    "id": "polyhedral-optimizations-isl-mlir-affine"
    },
    {
     "level": 2,
-    "text": "Link-Time Optimization",
-    "id": "link-time-optimization"
+    "text": "Link-Time Optimization (Full LTO vs ThinLTO)",
+    "id": "link-time-optimization-full-lto-vs-thinlto"
    },
    {
     "level": 2,
-    "text": "Profile-Guided Optimization  & AutoFDO",
-    "id": "profile-guided-optimization-autofdo"
+    "text": "Profile-Guided Optimization (PGO) & AutoFDO",
+    "id": "profile-guided-optimization-pgo-autofdo"
    },
    {
     "level": 2,
-    "text": "Indirect Call Promotion",
-    "id": "indirect-call-promotion"
+    "text": "Indirect Call Promotion (ICP)",
+    "id": "indirect-call-promotion-icp"
    },
    {
     "level": 2,
-    "text": "Software Prefetching",
-    "id": "software-prefetching"
+    "text": "Software Prefetching (__builtin_prefetch)",
+    "id": "software-prefetching-builtin-prefetch"
    },
    {
     "level": 2,
-    "text": "Machine Outlining",
-    "id": "machine-outlining"
+    "text": "Machine Outlining (Code Compression)",
+    "id": "machine-outlining-code-compression"
+   },
+   {
+    "level": 1,
+    "text": "PART 7 — QnA Covering Advanced Optimizations",
+    "id": "part-7-qna-covering-advanced-optimizations"
+   },
+   {
+    "level": 1,
+    "text": "PART 8 — THE BRANCH DILEMMA: VECTORIZE VS UNROLL",
+    "id": "part-8-the-branch-dilemma-vectorize-vs-unroll"
    },
    {
     "level": 2,
@@ -520,34 +605,44 @@ export const GUIDES = [
     "id": "8-3-the-grand-judgment-which-to-choose"
    },
    {
-    "level": 2,
-    "text": "Scenario 1: The Matrix Multiply",
-    "id": "scenario-1-the-matrix-multiply"
+    "level": 1,
+    "text": "PART 9 — THE SCENARIO PLAYBOOK",
+    "id": "part-9-the-scenario-playbook"
    },
    {
     "level": 2,
-    "text": "Scenario 2: The Branching Sum",
-    "id": "scenario-2-the-branching-sum"
+    "text": "Scenario 1: The Matrix Multiply (The Classic)",
+    "id": "scenario-1-the-matrix-multiply-the-classic"
    },
    {
     "level": 2,
-    "text": "Scenario 3: The Particle System",
-    "id": "scenario-3-the-particle-system"
+    "text": "Scenario 2: The Branching Sum (The Predictability Trap)",
+    "id": "scenario-2-the-branching-sum-the-predictability-trap"
    },
    {
     "level": 2,
-    "text": "Scenario 4: The Pointer Chaser",
-    "id": "scenario-4-the-pointer-chaser"
+    "text": "Scenario 3: The Particle System (AoS vs SoA)",
+    "id": "scenario-3-the-particle-system-aos-vs-soa"
    },
    {
     "level": 2,
-    "text": "Scenario 5: The \"Instruction Soup\"",
-    "id": "scenario-5-the-instruction-soup"
+    "text": "Scenario 4: The Pointer Chaser (Linked Lists)",
+    "id": "scenario-4-the-pointer-chaser-linked-lists"
    },
    {
     "level": 2,
-    "text": "Scenario 6: The Invisible Bottleneck",
-    "id": "scenario-6-the-invisible-bottleneck"
+    "text": "Scenario 5: The \"Instruction Soup\" (Big Loop Body)",
+    "id": "scenario-5-the-instruction-soup-big-loop-body"
+   },
+   {
+    "level": 2,
+    "text": "Scenario 6: The Invisible Bottleneck (I/O vs Compute)",
+    "id": "scenario-6-the-invisible-bottleneck-i-o-vs-compute"
+   },
+   {
+    "level": 1,
+    "text": "🚀 FINAL INTERVIEW KILLER TIPS",
+    "id": "final-interview-killer-tips"
    }
   ],
   "category": "LLVM & Compiler Infrastructure",
@@ -562,6 +657,16 @@ export const GUIDES = [
   "file": "03_llvm_backend_pipeline.md",
   "title": "LLVM Backend Deep Dive: Instruction Selection, Register Allocation & Beyond",
   "headings": [
+   {
+    "level": 1,
+    "text": "PART 1 — THE LLVM BACKEND PIPELINE (Big Picture)",
+    "id": "part-1-the-llvm-backend-pipeline-big-picture"
+   },
+   {
+    "level": 1,
+    "text": "PART 2 — INSTRUCTION SELECTION: SELECTIONDAG",
+    "id": "part-2-instruction-selection-selectiondag"
+   },
    {
     "level": 2,
     "text": "What is SelectionDAG?",
@@ -584,8 +689,8 @@ export const GUIDES = [
    },
    {
     "level": 3,
-    "text": "Step 1: Build Initial DAG",
-    "id": "step-1-build-initial-dag"
+    "text": "Step 1: Build Initial DAG (SelectionDAGBuilder)",
+    "id": "step-1-build-initial-dag-selectiondagbuilder"
    },
    {
     "level": 3,
@@ -599,13 +704,13 @@ export const GUIDES = [
    },
    {
     "level": 3,
-    "text": "Step 4: DAG Combining",
-    "id": "step-4-dag-combining"
+    "text": "Step 4: DAG Combining (Optimization)",
+    "id": "step-4-dag-combining-optimization"
    },
    {
     "level": 3,
-    "text": "Step 5: Target-Specific Pattern Matching",
-    "id": "step-5-target-specific-pattern-matching"
+    "text": "Step 5: Target-Specific Pattern Matching (TableGen ISel)",
+    "id": "step-5-target-specific-pattern-matching-tablegen-isel"
    },
    {
     "level": 3,
@@ -629,13 +734,18 @@ export const GUIDES = [
    },
    {
     "level": 3,
-    "text": "Node Folding",
-    "id": "node-folding"
+    "text": "Node Folding (crucial for efficiency)",
+    "id": "node-folding-crucial-for-efficiency"
    },
    {
     "level": 2,
     "text": "Q&A: SelectionDAG",
     "id": "q-a-selectiondag"
+   },
+   {
+    "level": 1,
+    "text": "PART 3 — INSTRUCTION SELECTION: GLOBALISEL",
+    "id": "part-3-instruction-selection-globalisel"
    },
    {
     "level": 2,
@@ -644,8 +754,8 @@ export const GUIDES = [
    },
    {
     "level": 2,
-    "text": "Generic MIR",
-    "id": "generic-mir"
+    "text": "Generic MIR (gMIR)",
+    "id": "generic-mir-gmir"
    },
    {
     "level": 2,
@@ -683,6 +793,11 @@ export const GUIDES = [
     "id": "selectiondag-vs-globalisel-complete-comparison"
    },
    {
+    "level": 1,
+    "text": "PART 4 — TABLEGEN DEEP DIVE",
+    "id": "part-4-tablegen-deep-dive"
+   },
+   {
     "level": 2,
     "text": "What is TableGen?",
     "id": "what-is-tablegen"
@@ -694,13 +809,18 @@ export const GUIDES = [
    },
    {
     "level": 3,
-    "text": "How XQCI  Would Be Added",
-    "id": "how-xqci-would-be-added"
+    "text": "How XQCI (Qualcomm Custom RISC-V Instructions) Would Be Added",
+    "id": "how-xqci-qualcomm-custom-risc-v-instructions-would-be-added"
    },
    {
     "level": 2,
     "text": "Q&A: TableGen",
     "id": "q-a-tablegen"
+   },
+   {
+    "level": 1,
+    "text": "PART 5 — REGISTER ALLOCATION: COMPLETE DEEP DIVE",
+    "id": "part-5-register-allocation-complete-deep-dive"
    },
    {
     "level": 2,
@@ -724,8 +844,8 @@ export const GUIDES = [
    },
    {
     "level": 2,
-    "text": "Step 3: Graph Coloring",
-    "id": "step-3-graph-coloring"
+    "text": "Step 3: Graph Coloring (Classic Approach)",
+    "id": "step-3-graph-coloring-classic-approach"
    },
    {
     "level": 3,
@@ -734,8 +854,8 @@ export const GUIDES = [
    },
    {
     "level": 2,
-    "text": "Step 4: LLVM's Greedy Register Allocator",
-    "id": "step-4-llvm-s-greedy-register-allocator"
+    "text": "Step 4: LLVM's Greedy Register Allocator (Production Reality)",
+    "id": "step-4-llvm-s-greedy-register-allocator-production-reality"
    },
    {
     "level": 3,
@@ -754,8 +874,8 @@ export const GUIDES = [
    },
    {
     "level": 2,
-    "text": "Step 5: Live-Range Splitting",
-    "id": "step-5-live-range-splitting"
+    "text": "Step 5: Live-Range Splitting (LLVM's Superpower)",
+    "id": "step-5-live-range-splitting-llvm-s-superpower"
    },
    {
     "level": 3,
@@ -779,18 +899,18 @@ export const GUIDES = [
    },
    {
     "level": 3,
-    "text": "LLVM's isRematerializable check",
+    "text": "LLVM's isRematerializable() check",
     "id": "llvm-s-isrematerializable-check"
    },
    {
     "level": 2,
-    "text": "Step 7: Coalescing",
-    "id": "step-7-coalescing"
+    "text": "Step 7: Coalescing (Eliminating Copies)",
+    "id": "step-7-coalescing-eliminating-copies"
    },
    {
     "level": 3,
-    "text": "Coalescing Algorithm",
-    "id": "coalescing-algorithm"
+    "text": "Coalescing Algorithm (Briggs / Aggressive)",
+    "id": "coalescing-algorithm-briggs-aggressive"
    },
    {
     "level": 3,
@@ -799,8 +919,8 @@ export const GUIDES = [
    },
    {
     "level": 2,
-    "text": "Hardware Register Constraints",
-    "id": "hardware-register-constraints"
+    "text": "Hardware Register Constraints (Critical)",
+    "id": "hardware-register-constraints-critical"
    },
    {
     "level": 3,
@@ -833,6 +953,11 @@ export const GUIDES = [
     "id": "q-a-register-allocation"
    },
    {
+    "level": 1,
+    "text": "PART 6 — INSTRUCTION SCHEDULING",
+    "id": "part-6-instruction-scheduling"
+   },
+   {
     "level": 2,
     "text": "Why Scheduling Matters",
     "id": "why-scheduling-matters"
@@ -849,13 +974,18 @@ export const GUIDES = [
    },
    {
     "level": 2,
-    "text": "List Scheduling",
-    "id": "list-scheduling"
+    "text": "List Scheduling (LLVM's Primary Algorithm)",
+    "id": "list-scheduling-llvm-s-primary-algorithm"
    },
    {
     "level": 2,
     "text": "In-Order vs Out-of-Order Processors",
     "id": "in-order-vs-out-of-order-processors"
+   },
+   {
+    "level": 1,
+    "text": "PART 7 — PUTTING IT ALL TOGETHER: ONE FUNCTION, FULL PIPELINE",
+    "id": "part-7-putting-it-all-together-one-function-full-pipeline"
    },
    {
     "level": 3,
@@ -864,8 +994,8 @@ export const GUIDES = [
    },
    {
     "level": 3,
-    "text": "Step 1: LLVM IR",
-    "id": "step-1-llvm-ir"
+    "text": "Step 1: LLVM IR (Post-Optimization)",
+    "id": "step-1-llvm-ir-post-optimization"
    },
    {
     "level": 3,
@@ -879,8 +1009,8 @@ export const GUIDES = [
    },
    {
     "level": 3,
-    "text": "Step 4: MachineInstr",
-    "id": "step-4-machineinstr"
+    "text": "Step 4: MachineInstr (post-ISel)",
+    "id": "step-4-machineinstr-post-isel"
    },
    {
     "level": 3,
@@ -894,8 +1024,18 @@ export const GUIDES = [
    },
    {
     "level": 3,
-    "text": "Step 7: Final Assembly",
-    "id": "step-7-final-assembly"
+    "text": "Step 7: Final Assembly (AArch64)",
+    "id": "step-7-final-assembly-aarch64"
+   },
+   {
+    "level": 1,
+    "text": "Interview Cheat Sheet",
+    "id": "interview-cheat-sheet"
+   },
+   {
+    "level": 1,
+    "text": "APPENDIX — QUICK REFERENCE CHEAT SHEET",
+    "id": "appendix-quick-reference-cheat-sheet"
    },
    {
     "level": 2,
@@ -904,13 +1044,13 @@ export const GUIDES = [
    },
    {
     "level": 2,
-    "text": "2. TableGen",
-    "id": "2-tablegen"
+    "text": "2. TableGen (.td files)",
+    "id": "2-tablegen-td-files"
    },
    {
     "level": 2,
-    "text": "3. Register Allocation",
-    "id": "3-register-allocation"
+    "text": "3. Register Allocation (RA)",
+    "id": "3-register-allocation-ra"
    },
    {
     "level": 2,
@@ -931,9 +1071,19 @@ export const GUIDES = [
   "title": "LLVM Deep Dive: Pass Infrastructure & The New Pass Manager (NPM)",
   "headings": [
    {
+    "level": 1,
+    "text": "1. The Core Architecture: Two Managers, One Pipeline",
+    "id": "1-the-core-architecture-two-managers-one-pipeline"
+   },
+   {
     "level": 3,
-    "text": "The IR Units",
-    "id": "the-ir-units"
+    "text": "The IR Units (IRUnitT)",
+    "id": "the-ir-units-irunitt"
+   },
+   {
+    "level": 1,
+    "text": "2. What exactly is in a PassManager?",
+    "id": "2-what-exactly-is-in-a-passmanager"
    },
    {
     "level": 3,
@@ -941,9 +1091,19 @@ export const GUIDES = [
     "id": "internal-mechanics"
    },
    {
+    "level": 1,
+    "text": "3. AnalysisManager: The Intelligent Cache",
+    "id": "3-analysismanager-the-intelligent-cache"
+   },
+   {
     "level": 3,
     "text": "How it works:",
     "id": "how-it-works"
+   },
+   {
+    "level": 1,
+    "text": "4. The PreservedAnalyses Catastrophe",
+    "id": "4-the-preservedanalyses-catastrophe"
    },
    {
     "level": 3,
@@ -951,19 +1111,29 @@ export const GUIDES = [
     "id": "why-catastrophic"
    },
    {
-    "level": 3,
-    "text": "A. The Function Pass",
-    "id": "a-the-function-pass"
+    "level": 1,
+    "text": "5. Adding New Passes: The Implementation Pipeline",
+    "id": "5-adding-new-passes-the-implementation-pipeline"
    },
    {
     "level": 3,
-    "text": "B. The Module Pass",
-    "id": "b-the-module-pass"
+    "text": "A. The Function Pass (The Workhorse)",
+    "id": "a-the-function-pass-the-workhorse"
    },
    {
     "level": 3,
-    "text": "C. The Loop Pass",
-    "id": "c-the-loop-pass"
+    "text": "B. The Module Pass (Global Scope)",
+    "id": "b-the-module-pass-global-scope"
+   },
+   {
+    "level": 3,
+    "text": "C. The Loop Pass (The Specialist)",
+    "id": "c-the-loop-pass-the-specialist"
+   },
+   {
+    "level": 1,
+    "text": "6. Wiring It All Together: The Pass Pipeline",
+    "id": "6-wiring-it-all-together-the-pass-pipeline"
    },
    {
     "level": 3,
@@ -971,9 +1141,19 @@ export const GUIDES = [
     "id": "the-registration-flow"
    },
    {
+    "level": 1,
+    "text": "7. Summary Checklist for Pass Authors",
+    "id": "7-summary-checklist-for-pass-authors"
+   },
+   {
+    "level": 1,
+    "text": "APPENDIX — MIDDLE-END INTERVIEW Q&A",
+    "id": "appendix-middle-end-interview-q-a"
+   },
+   {
     "level": 2,
-    "text": "Part 1: Middle-End",
-    "id": "part-1-middle-end"
+    "text": "Part 1: Middle-End (SSA & Dominance)",
+    "id": "part-1-middle-end-ssa-dominance"
    },
    {
     "level": 3,
@@ -1012,13 +1192,13 @@ export const GUIDES = [
    },
    {
     "level": 3,
-    "text": "1. LICM",
-    "id": "1-licm"
+    "text": "1. LICM (Loop Invariant Code Motion)",
+    "id": "1-licm-loop-invariant-code-motion"
    },
    {
     "level": 3,
-    "text": "2. GVN",
-    "id": "2-gvn"
+    "text": "2. GVN (Global Value Numbering)",
+    "id": "2-gvn-global-value-numbering"
    },
    {
     "level": 3,
@@ -1047,8 +1227,8 @@ export const GUIDES = [
    },
    {
     "level": 3,
-    "text": "What is TBAA ?",
-    "id": "what-is-tbaa"
+    "text": "What is TBAA (Type-Based Alias Analysis)?",
+    "id": "what-is-tbaa-type-based-alias-analysis"
    },
    {
     "level": 3,
@@ -1100,8 +1280,8 @@ export const GUIDES = [
    },
    {
     "level": 2,
-    "text": "Section 2: High-Frequency Trading  & Low Latency Optimizations",
-    "id": "section-2-high-frequency-trading-low-latency-optimizations"
+    "text": "Section 2: High-Frequency Trading (HFT) & Low Latency Optimizations",
+    "id": "section-2-high-frequency-trading-hft-low-latency-optimizations"
    },
    {
     "level": 3,
@@ -1125,8 +1305,8 @@ export const GUIDES = [
    },
    {
     "level": 3,
-    "text": "4. Hardware Prefetching",
-    "id": "4-hardware-prefetching"
+    "text": "4. Hardware Prefetching (_mm_prefetch)",
+    "id": "4-hardware-prefetching-mm-prefetch"
    },
    {
     "level": 3,
@@ -1135,13 +1315,13 @@ export const GUIDES = [
    },
    {
     "level": 3,
-    "text": "6. NUMA-Aware Memory Allocation",
-    "id": "6-numa-aware-memory-allocation"
+    "text": "6. NUMA-Aware Memory Allocation (Non-Uniform Memory Access)",
+    "id": "6-numa-aware-memory-allocation-non-uniform-memory-access"
    },
    {
     "level": 3,
-    "text": "7. OS Bypass & Kernel Bypass",
-    "id": "7-os-bypass-kernel-bypass"
+    "text": "7. OS Bypass & Kernel Bypass (DPDK / Solarflare)",
+    "id": "7-os-bypass-kernel-bypass-dpdk-solarflare"
    },
    {
     "level": 3,
@@ -1150,8 +1330,8 @@ export const GUIDES = [
    },
    {
     "level": 3,
-    "text": "9. Measuring Sub-Microsecond Latency",
-    "id": "9-measuring-sub-microsecond-latency"
+    "text": "9. Measuring Sub-Microsecond Latency (RDTSC)",
+    "id": "9-measuring-sub-microsecond-latency-rdtsc"
    },
    {
     "level": 3,
@@ -1165,8 +1345,8 @@ export const GUIDES = [
    },
    {
     "level": 3,
-    "text": "11. Condition Variable Flow",
-    "id": "11-condition-variable-flow"
+    "text": "11. Condition Variable Flow (Atomic Unlock-Sleep-Relock)",
+    "id": "11-condition-variable-flow-atomic-unlock-sleep-relock"
    },
    {
     "level": 2,
@@ -1175,18 +1355,18 @@ export const GUIDES = [
    },
    {
     "level": 3,
-    "text": "1. SFINAE",
-    "id": "1-sfinae"
+    "text": "1. SFINAE (Substitution Failure Is Not An Error)",
+    "id": "1-sfinae-substitution-failure-is-not-an-error"
    },
    {
     "level": 3,
-    "text": "2. C++20 Concepts",
-    "id": "2-c-20-concepts"
+    "text": "2. C++20 Concepts (The SFINAE Killer)",
+    "id": "2-c-20-concepts-the-sfinae-killer"
    },
    {
     "level": 3,
-    "text": "3. CRTP",
-    "id": "3-crtp"
+    "text": "3. CRTP (Curiously Recurring Template Pattern)",
+    "id": "3-crtp-curiously-recurring-template-pattern"
    },
    {
     "level": 3,
@@ -1195,18 +1375,18 @@ export const GUIDES = [
    },
    {
     "level": 3,
-    "text": "5. Variadic Templates & Fold Expressions",
-    "id": "5-variadic-templates-fold-expressions"
+    "text": "5. Variadic Templates & Fold Expressions (C++17)",
+    "id": "5-variadic-templates-fold-expressions-c-17"
    },
    {
     "level": 3,
-    "text": "6. constexpr if",
-    "id": "6-constexpr-if"
+    "text": "6. constexpr if (C++17)",
+    "id": "6-constexpr-if-c-17"
    },
    {
     "level": 3,
-    "text": "7. std::variant and std::visit",
-    "id": "7-std-variant-and-std-visit"
+    "text": "7. std::variant and std::visit (C++17)",
+    "id": "7-std-variant-and-std-visit-c-17"
    },
    {
     "level": 3,
@@ -1220,8 +1400,8 @@ export const GUIDES = [
    },
    {
     "level": 3,
-    "text": "1. Smart Pointers",
-    "id": "1-smart-pointers"
+    "text": "1. Smart Pointers (std::unique_ptr & std::shared_ptr)",
+    "id": "1-smart-pointers-std-unique-ptr-std-shared-ptr"
    },
    {
     "level": 3,
@@ -1235,8 +1415,8 @@ export const GUIDES = [
    },
    {
     "level": 3,
-    "text": "4. The Rule of Zero",
-    "id": "4-the-rule-of-zero"
+    "text": "4. The Rule of Zero (RAII Mastery)",
+    "id": "4-the-rule-of-zero-raii-mastery"
    },
    {
     "level": 3,
@@ -1275,23 +1455,23 @@ export const GUIDES = [
    },
    {
     "level": 3,
-    "text": "3. Thread-Safe Singletons",
-    "id": "3-thread-safe-singletons"
+    "text": "3. Thread-Safe Singletons (The Meyers Singleton)",
+    "id": "3-thread-safe-singletons-the-meyers-singleton"
    },
    {
     "level": 3,
-    "text": "4. The Static Initialization Order Fiasco",
-    "id": "4-the-static-initialization-order-fiasco"
+    "text": "4. The Static Initialization Order Fiasco (SIOF)",
+    "id": "4-the-static-initialization-order-fiasco-siof"
    },
    {
     "level": 3,
-    "text": "5. constinit",
-    "id": "5-constinit"
+    "text": "5. constinit (C++20)",
+    "id": "5-constinit-c-20"
    },
    {
     "level": 3,
-    "text": "6. Inline Variables",
-    "id": "6-inline-variables"
+    "text": "6. Inline Variables (C++17)",
+    "id": "6-inline-variables-c-17"
    },
    {
     "level": 3,
@@ -1330,8 +1510,8 @@ export const GUIDES = [
    },
    {
     "level": 3,
-    "text": "6. The Master Executive Summary",
-    "id": "6-the-master-executive-summary"
+    "text": "6. The Master Executive Summary (10 Minute Recall)",
+    "id": "6-the-master-executive-summary-10-minute-recall"
    }
   ],
   "category": "C++ Systems Engineering",
@@ -1358,13 +1538,13 @@ export const GUIDES = [
    },
    {
     "level": 3,
-    "text": "Multiple Inheritance",
-    "id": "multiple-inheritance"
+    "text": "Multiple Inheritance (Non-Virtual)",
+    "id": "multiple-inheritance-non-virtual"
    },
    {
     "level": 3,
-    "text": "Virtual Inheritance",
-    "id": "virtual-inheritance"
+    "text": "Virtual Inheritance (Diamond Problem)",
+    "id": "virtual-inheritance-diamond-problem"
    },
    {
     "level": 2,
@@ -1373,18 +1553,18 @@ export const GUIDES = [
    },
    {
     "level": 3,
-    "text": "Case 1: Upcast",
-    "id": "case-1-upcast"
+    "text": "Case 1: Upcast (Derived → Base)",
+    "id": "case-1-upcast-derived-base"
    },
    {
     "level": 3,
-    "text": "Case 2: Downcast",
-    "id": "case-2-downcast"
+    "text": "Case 2: Downcast (Base → Derived)",
+    "id": "case-2-downcast-base-derived"
    },
    {
     "level": 3,
-    "text": "Case 3: Cross-cast",
-    "id": "case-3-cross-cast"
+    "text": "Case 3: Cross-cast (Sibling to Sibling)",
+    "id": "case-3-cross-cast-sibling-to-sibling"
    },
    {
     "level": 3,
@@ -1515,9 +1695,14 @@ export const GUIDES = [
   "title": "C++ Concurrency, Atomics, and Memory Models",
   "headings": [
    {
+    "level": 1,
+    "text": "PART 1 — THE C++ MEMORY MODEL & DATA RACES",
+    "id": "part-1-the-c-memory-model-data-races"
+   },
+   {
     "level": 2,
-    "text": "What Is a Data Race ?",
-    "id": "what-is-a-data-race"
+    "text": "What Is a Data Race (Precisely)?",
+    "id": "what-is-a-data-race-precisely"
    },
    {
     "level": 2,
@@ -1530,34 +1715,59 @@ export const GUIDES = [
     "id": "sc-drf-the-promise-the-standard-makes"
    },
    {
+    "level": 1,
+    "text": "PART 2 — THE SIX memory_order VALUES",
+    "id": "part-2-the-six-memory-order-values"
+   },
+   {
     "level": 3,
     "text": "memory_order_relaxed",
     "id": "memory-order-relaxed"
    },
    {
     "level": 3,
-    "text": "memory_order_release",
-    "id": "memory-order-release"
+    "text": "memory_order_release (stores / RMW)",
+    "id": "memory-order-release-stores-rmw"
    },
    {
     "level": 3,
-    "text": "memory_order_acquire",
-    "id": "memory-order-acquire"
+    "text": "memory_order_acquire (loads / RMW)",
+    "id": "memory-order-acquire-loads-rmw"
    },
    {
     "level": 3,
-    "text": "memory_order_acq_rel",
-    "id": "memory-order-acq-rel"
+    "text": "memory_order_acq_rel (read-modify-write only)",
+    "id": "memory-order-acq-rel-read-modify-write-only"
    },
    {
     "level": 3,
-    "text": "memory_order_seq_cst",
-    "id": "memory-order-seq-cst"
+    "text": "memory_order_seq_cst (the default)",
+    "id": "memory-order-seq-cst-the-default"
    },
    {
     "level": 3,
-    "text": "memory_order_consume",
-    "id": "memory-order-consume"
+    "text": "memory_order_consume (avoid)",
+    "id": "memory-order-consume-avoid"
+   },
+   {
+    "level": 1,
+    "text": "PART 3 — ACQUIRE/RELEASE vs SEQ_CST",
+    "id": "part-3-acquire-release-vs-seq-cst"
+   },
+   {
+    "level": 1,
+    "text": "PART 4 — C++ ATOMICS ↔ AArch64 MAPPING (Know This Cold)",
+    "id": "part-4-c-atomics-aarch64-mapping-know-this-cold"
+   },
+   {
+    "level": 1,
+    "text": "PART 5 — WHY WEAK MEMORY MODELS MATTER",
+    "id": "part-5-why-weak-memory-models-matter"
+   },
+   {
+    "level": 1,
+    "text": "PART 6 — SYNCHRONIZATION PRIMITIVES",
+    "id": "part-6-synchronization-primitives"
    },
    {
     "level": 2,
@@ -1573,6 +1783,11 @@ export const GUIDES = [
     "level": 2,
     "text": "Spinlock vs Mutex, and False Sharing",
     "id": "spinlock-vs-mutex-and-false-sharing"
+   },
+   {
+    "level": 1,
+    "text": "PART 7 — Q&A DRILL",
+    "id": "part-7-q-a-drill"
    },
    {
     "level": 3,
@@ -1611,8 +1826,8 @@ export const GUIDES = [
    },
    {
     "level": 3,
-    "text": "Q: Two std::atomic counters incremented by different threads are slow despite being independent. Why?",
-    "id": "q-two-std-atomic-counters-incremented-by-different-threads-are-slow-despite-being-independent-why"
+    "text": "Q: Two std::atomic<int> counters incremented by different threads are slow despite being independent. Why?",
+    "id": "q-two-std-atomic-int-counters-incremented-by-different-threads-are-slow-despite-being-independent-why"
    }
   ],
   "category": "C++ Systems Engineering",
@@ -1627,6 +1842,16 @@ export const GUIDES = [
   "file": "08_openmp_lowering.md",
   "title": "OpenMP Lowering End-to-End: Clang & Flang — Complete Deep Dive",
   "headings": [
+   {
+    "level": 1,
+    "text": "PART 0 — TERMINOLOGY (read this first)",
+    "id": "part-0-terminology-read-this-first"
+   },
+   {
+    "level": 1,
+    "text": "PART 1 — THE OPENMP EXECUTION MODEL (the \"what\", before the \"how\")",
+    "id": "part-1-the-openmp-execution-model-the-what-before-the-how"
+   },
    {
     "level": 2,
     "text": "1.1 Fork-Join",
@@ -1644,8 +1869,18 @@ export const GUIDES = [
    },
    {
     "level": 2,
-    "text": "1.4 Internal Control Variables",
-    "id": "1-4-internal-control-variables"
+    "text": "1.4 Internal Control Variables (ICVs)",
+    "id": "1-4-internal-control-variables-icvs"
+   },
+   {
+    "level": 1,
+    "text": "PART 2 — THE BIG PICTURE (both frontends, one destination)",
+    "id": "part-2-the-big-picture-both-frontends-one-destination"
+   },
+   {
+    "level": 1,
+    "text": "PART 3 — THE CLANG PIPELINE (C/C++) IN DEPTH",
+    "id": "part-3-the-clang-pipeline-c-c-in-depth"
    },
    {
     "level": 2,
@@ -1659,8 +1894,8 @@ export const GUIDES = [
    },
    {
     "level": 2,
-    "text": "3.3 Outlining",
-    "id": "3-3-outlining"
+    "text": "3.3 Outlining (the heart of it)",
+    "id": "3-3-outlining-the-heart-of-it"
    },
    {
     "level": 2,
@@ -1669,23 +1904,33 @@ export const GUIDES = [
    },
    {
     "level": 2,
-    "text": "3.5 Serialized  path",
-    "id": "3-5-serialized-path"
+    "text": "3.5 Serialized (else) path",
+    "id": "3-5-serialized-else-path"
+   },
+   {
+    "level": 1,
+    "text": "PART 4 — THE FLANG PIPELINE (Fortran) IN DEPTH",
+    "id": "part-4-the-flang-pipeline-fortran-in-depth"
    },
    {
     "level": 2,
-    "text": "4.1 Frontend stages",
-    "id": "4-1-frontend-stages"
+    "text": "4.1 Frontend stages (source → MLIR)",
+    "id": "4-1-frontend-stages-source-mlir"
    },
    {
     "level": 2,
-    "text": "4.2 The MLIR omp dialect",
-    "id": "4-2-the-mlir-omp-dialect"
+    "text": "4.2 The MLIR omp dialect (the representation Flang targets)",
+    "id": "4-2-the-mlir-omp-dialect-the-representation-flang-targets"
    },
    {
     "level": 2,
     "text": "4.3 MLIR → LLVM IR: conversion + translation",
     "id": "4-3-mlir-llvm-ir-conversion-translation"
+   },
+   {
+    "level": 1,
+    "text": "PART 5 — THE SHARED LAYER: OMPIRBuilder + libomp ABI",
+    "id": "part-5-the-shared-layer-ompirbuilder-libomp-abi"
    },
    {
     "level": 2,
@@ -1694,8 +1939,13 @@ export const GUIDES = [
    },
    {
     "level": 2,
-    "text": "5.2 The libomp call vocabulary",
-    "id": "5-2-the-libomp-call-vocabulary"
+    "text": "5.2 The libomp call vocabulary (the contract both frontends honor)",
+    "id": "5-2-the-libomp-call-vocabulary-the-contract-both-frontends-honor"
+   },
+   {
+    "level": 1,
+    "text": "PART 6 — DATA SHARING IN DEPTH (the trickiest part)",
+    "id": "part-6-data-sharing-in-depth-the-trickiest-part"
    },
    {
     "level": 2,
@@ -1729,23 +1979,43 @@ export const GUIDES = [
    },
    {
     "level": 2,
-    "text": "6.7 default",
-    "id": "6-7-default"
+    "text": "6.7 default(none|shared|private|firstprivate)",
+    "id": "6-7-default-none-shared-private-firstprivate"
+   },
+   {
+    "level": 1,
+    "text": "PART 7 — PARALLEL FORK/JOIN MECHANICS (zoomed in)",
+    "id": "part-7-parallel-fork-join-mechanics-zoomed-in"
+   },
+   {
+    "level": 1,
+    "text": "PART 8 — WORKSHARING LOOPS & SCHEDULING",
+    "id": "part-8-worksharing-loops-scheduling"
    },
    {
     "level": 2,
-    "text": "8.1 Static schedule",
-    "id": "8-1-static-schedule"
+    "text": "8.1 Static schedule (default; compile-time-ish division)",
+    "id": "8-1-static-schedule-default-compile-time-ish-division"
    },
    {
     "level": 2,
-    "text": "8.2 Dynamic / guided",
-    "id": "8-2-dynamic-guided"
+    "text": "8.2 Dynamic / guided (runtime hands out chunks on demand)",
+    "id": "8-2-dynamic-guided-runtime-hands-out-chunks-on-demand"
    },
    {
     "level": 2,
     "text": "8.3 sections and single",
     "id": "8-3-sections-and-single"
+   },
+   {
+    "level": 1,
+    "text": "PART 9 — NESTED PARALLEL REGIONS",
+    "id": "part-9-nested-parallel-regions"
+   },
+   {
+    "level": 1,
+    "text": "PART 10 — TASK-BASED PARALLELISM",
+    "id": "part-10-task-based-parallelism"
    },
    {
     "level": 2,
@@ -1759,8 +2029,8 @@ export const GUIDES = [
    },
    {
     "level": 2,
-    "text": "10.3 Undeferred / if / final tasks",
-    "id": "10-3-undeferred-if-final-tasks"
+    "text": "10.3 Undeferred / if(0) / final tasks",
+    "id": "10-3-undeferred-if-0-final-tasks"
    },
    {
     "level": 2,
@@ -1778,6 +2048,11 @@ export const GUIDES = [
     "id": "10-6-taskloop"
    },
    {
+    "level": 1,
+    "text": "PART 11 — TEAMS & TARGET OFFLOADING (devices/GPUs)",
+    "id": "part-11-teams-target-offloading-devices-gpus"
+   },
+   {
     "level": 2,
     "text": "11.1 teams — a league",
     "id": "11-1-teams-a-league"
@@ -1791,6 +2066,31 @@ export const GUIDES = [
     "level": 2,
     "text": "11.3 map clause vocabulary",
     "id": "11-3-map-clause-vocabulary"
+   },
+   {
+    "level": 1,
+    "text": "PART 12 — SYNCHRONIZATION CONSTRUCTS",
+    "id": "part-12-synchronization-constructs"
+   },
+   {
+    "level": 1,
+    "text": "PART 13 — CLANG vs FLANG: SIDE BY SIDE",
+    "id": "part-13-clang-vs-flang-side-by-side"
+   },
+   {
+    "level": 1,
+    "text": "PART 14 — CODE MAP (where to look)",
+    "id": "part-14-code-map-where-to-look"
+   },
+   {
+    "level": 1,
+    "text": "PART 15 — ONE EXAMPLE, FULLY TRACED",
+    "id": "part-15-one-example-fully-traced"
+   },
+   {
+    "level": 1,
+    "text": "APPENDIX — QUICK REVISION CHECKLIST",
+    "id": "appendix-quick-revision-checklist"
    }
   ],
   "category": "LLVM & Compiler Infrastructure",
@@ -1835,8 +2135,8 @@ export const GUIDES = [
   "headings": [
    {
     "level": 2,
-    "text": "Part 1: Middle-End",
-    "id": "part-1-middle-end"
+    "text": "Part 1: Middle-End (SSA & Dominance)",
+    "id": "part-1-middle-end-ssa-dominance"
    },
    {
     "level": 3,
@@ -1875,13 +2175,13 @@ export const GUIDES = [
    },
    {
     "level": 3,
-    "text": "1. LICM",
-    "id": "1-licm"
+    "text": "1. LICM (Loop Invariant Code Motion)",
+    "id": "1-licm-loop-invariant-code-motion"
    },
    {
     "level": 3,
-    "text": "2. GVN",
-    "id": "2-gvn"
+    "text": "2. GVN (Global Value Numbering)",
+    "id": "2-gvn-global-value-numbering"
    },
    {
     "level": 3,
@@ -1910,8 +2210,8 @@ export const GUIDES = [
    },
    {
     "level": 3,
-    "text": "What is TBAA ?",
-    "id": "what-is-tbaa"
+    "text": "What is TBAA (Type-Based Alias Analysis)?",
+    "id": "what-is-tbaa-type-based-alias-analysis"
    },
    {
     "level": 3,
@@ -1920,8 +2220,8 @@ export const GUIDES = [
    },
    {
     "level": 2,
-    "text": "Part 4: Back-End",
-    "id": "part-4-back-end"
+    "text": "Part 4: Back-End (Instruction Selection)",
+    "id": "part-4-back-end-instruction-selection"
    },
    {
     "level": 3,
@@ -1990,8 +2290,8 @@ export const GUIDES = [
    },
    {
     "level": 3,
-    "text": "RISC-V Calling Conventions",
-    "id": "risc-v-calling-conventions"
+    "text": "RISC-V Calling Conventions (RV32 vs RV64)",
+    "id": "risc-v-calling-conventions-rv32-vs-rv64"
    },
    {
     "level": 2,
@@ -2052,24 +2352,34 @@ export const GUIDES = [
   "title": "LLVM Developer Tooling: Commands Reference",
   "headings": [
    {
-    "level": 2,
-    "text": "Minimal Debug Build",
-    "id": "minimal-debug-build"
+    "level": 1,
+    "text": "PART 1 — BUILDING LLVM",
+    "id": "part-1-building-llvm"
    },
    {
     "level": 2,
-    "text": "Release Build",
-    "id": "release-build"
+    "text": "Minimal Debug Build (fastest iteration for development)",
+    "id": "minimal-debug-build-fastest-iteration-for-development"
    },
    {
     "level": 2,
-    "text": "Build Just One Tool",
-    "id": "build-just-one-tool"
+    "text": "Release Build (for benchmarking compiler performance)",
+    "id": "release-build-for-benchmarking-compiler-performance"
    },
    {
     "level": 2,
-    "text": "Emit LLVM IR",
-    "id": "emit-llvm-ir"
+    "text": "Build Just One Tool (saves time)",
+    "id": "build-just-one-tool-saves-time"
+   },
+   {
+    "level": 1,
+    "text": "PART 2 — CLANG: EMITTING IR AND CONTROLLING COMPILATION",
+    "id": "part-2-clang-emitting-ir-and-controlling-compilation"
+   },
+   {
+    "level": 2,
+    "text": "Emit LLVM IR (Unoptimized)",
+    "id": "emit-llvm-ir-unoptimized"
    },
    {
     "level": 2,
@@ -2088,8 +2398,13 @@ export const GUIDES = [
    },
    {
     "level": 2,
-    "text": "Address Sanitizer / UBSan",
-    "id": "address-sanitizer-ubsan"
+    "text": "Address Sanitizer / UBSan (day-to-day debugging)",
+    "id": "address-sanitizer-ubsan-day-to-day-debugging"
+   },
+   {
+    "level": 1,
+    "text": "PART 3 — OPT: THE IR OPTIMIZER",
+    "id": "part-3-opt-the-ir-optimizer"
    },
    {
     "level": 2,
@@ -2098,8 +2413,8 @@ export const GUIDES = [
    },
    {
     "level": 2,
-    "text": "Printing IR",
-    "id": "printing-ir"
+    "text": "Printing IR (inspect before/after a pass)",
+    "id": "printing-ir-inspect-before-after-a-pass"
    },
    {
     "level": 2,
@@ -2123,8 +2438,8 @@ export const GUIDES = [
    },
    {
     "level": 2,
-    "text": "Inspect Scalar Evolution",
-    "id": "inspect-scalar-evolution"
+    "text": "Inspect Scalar Evolution (SCEV)",
+    "id": "inspect-scalar-evolution-scev"
    },
    {
     "level": 2,
@@ -2145,6 +2460,11 @@ export const GUIDES = [
     "level": 2,
     "text": "Check if optimization fires",
     "id": "check-if-optimization-fires"
+   },
+   {
+    "level": 1,
+    "text": "PART 4 — LLC: IR TO MACHINE CODE",
+    "id": "part-4-llc-ir-to-machine-code"
    },
    {
     "level": 2,
@@ -2168,8 +2488,8 @@ export const GUIDES = [
    },
    {
     "level": 2,
-    "text": "Print SelectionDAG",
-    "id": "print-selectiondag"
+    "text": "Print SelectionDAG (extremely useful for backend debugging)",
+    "id": "print-selectiondag-extremely-useful-for-backend-debugging"
    },
    {
     "level": 2,
@@ -2185,6 +2505,16 @@ export const GUIDES = [
     "level": 2,
     "text": "Verify Machine IR",
     "id": "verify-machine-ir"
+   },
+   {
+    "level": 1,
+    "text": "PART 5 — llvm-dis AND llvm-as: BITCODE CONVERSION",
+    "id": "part-5-llvm-dis-and-llvm-as-bitcode-conversion"
+   },
+   {
+    "level": 1,
+    "text": "PART 6 — FileCheck: TESTING IR TRANSFORMATIONS",
+    "id": "part-6-filecheck-testing-ir-transformations"
    },
    {
     "level": 2,
@@ -2212,6 +2542,11 @@ export const GUIDES = [
     "id": "filecheck-with-multiple-run-lines"
    },
    {
+    "level": 1,
+    "text": "PART 7 — LIT: LLVM INTEGRATED TESTER",
+    "id": "part-7-lit-llvm-integrated-tester"
+   },
+   {
     "level": 2,
     "text": "Basic test running",
     "id": "basic-test-running"
@@ -2235,6 +2570,11 @@ export const GUIDES = [
     "level": 2,
     "text": "Running LLVM's test suite for a specific component",
     "id": "running-llvm-s-test-suite-for-a-specific-component"
+   },
+   {
+    "level": 1,
+    "text": "PART 8 — DEBUGGING LLVM PASSES",
+    "id": "part-8-debugging-llvm-passes"
    },
    {
     "level": 2,
@@ -2262,6 +2602,11 @@ export const GUIDES = [
     "id": "using-gdb-lldb-with-llvm"
    },
    {
+    "level": 1,
+    "text": "PART 9 — INSPECTING OBJECT FILES AND LINKING",
+    "id": "part-9-inspecting-object-files-and-linking"
+   },
+   {
     "level": 2,
     "text": "Disassemble compiled object",
     "id": "disassemble-compiled-object"
@@ -2278,13 +2623,18 @@ export const GUIDES = [
    },
    {
     "level": 2,
-    "text": "Link Time Optimization",
-    "id": "link-time-optimization"
+    "text": "Link Time Optimization (LTO)",
+    "id": "link-time-optimization-lto"
    },
    {
     "level": 2,
     "text": "Inspect IR in an LTO bitcode file",
     "id": "inspect-ir-in-an-lto-bitcode-file"
+   },
+   {
+    "level": 1,
+    "text": "PART 10 — PERFORMANCE PROFILING",
+    "id": "part-10-performance-profiling"
    },
    {
     "level": 2,
@@ -2293,13 +2643,18 @@ export const GUIDES = [
    },
    {
     "level": 2,
-    "text": "Perf + LLVM",
-    "id": "perf-llvm"
+    "text": "Perf + LLVM (Linux)",
+    "id": "perf-llvm-linux"
    },
    {
     "level": 2,
     "text": "opt-viewer: Optimization Remarks as HTML",
     "id": "opt-viewer-optimization-remarks-as-html"
+   },
+   {
+    "level": 1,
+    "text": "PART 11 — MISCELLANEOUS ESSENTIAL TOOLS",
+    "id": "part-11-miscellaneous-essential-tools"
    },
    {
     "level": 2,
@@ -2308,8 +2663,8 @@ export const GUIDES = [
    },
    {
     "level": 2,
-    "text": "llvm-mca: Machine Code Analyzer",
-    "id": "llvm-mca-machine-code-analyzer"
+    "text": "llvm-mca: Machine Code Analyzer (instruction throughput)",
+    "id": "llvm-mca-machine-code-analyzer-instruction-throughput"
    },
    {
     "level": 2,
@@ -2330,6 +2685,16 @@ export const GUIDES = [
     "level": 2,
     "text": "clang-tidy: Linting",
     "id": "clang-tidy-linting"
+   },
+   {
+    "level": 1,
+    "text": "PART 12 — QUICK CHEATSHEET FOR INTERVIEWS",
+    "id": "part-12-quick-cheatsheet-for-interviews"
+   },
+   {
+    "level": 1,
+    "text": "PART 13 — INTERVIEW Q&A ON TOOLING",
+    "id": "part-13-interview-q-a-on-tooling"
    }
   ],
   "category": "Interview Prep & Tooling",
@@ -2346,33 +2711,38 @@ export const GUIDES = [
   "headings": [
    {
     "level": 2,
-    "text": "Scenario 1: The Matrix Multiply",
-    "id": "scenario-1-the-matrix-multiply"
+    "text": "Scenario 1: The Matrix Multiply (The Classic)",
+    "id": "scenario-1-the-matrix-multiply-the-classic"
    },
    {
     "level": 2,
-    "text": "Scenario 2: The Branching Sum",
-    "id": "scenario-2-the-branching-sum"
+    "text": "Scenario 2: The Branching Sum (The Predictability Trap)",
+    "id": "scenario-2-the-branching-sum-the-predictability-trap"
    },
    {
     "level": 2,
-    "text": "Scenario 3: The Particle System",
-    "id": "scenario-3-the-particle-system"
+    "text": "Scenario 3: The Particle System (AoS vs SoA)",
+    "id": "scenario-3-the-particle-system-aos-vs-soa"
    },
    {
     "level": 2,
-    "text": "Scenario 4: The Pointer Chaser",
-    "id": "scenario-4-the-pointer-chaser"
+    "text": "Scenario 4: The Pointer Chaser (Linked Lists)",
+    "id": "scenario-4-the-pointer-chaser-linked-lists"
    },
    {
     "level": 2,
-    "text": "Scenario 5: The \"Instruction Soup\"",
-    "id": "scenario-5-the-instruction-soup"
+    "text": "Scenario 5: The \"Instruction Soup\" (Big Loop Body)",
+    "id": "scenario-5-the-instruction-soup-big-loop-body"
    },
    {
     "level": 2,
-    "text": "Scenario 6: The Invisible Bottleneck",
-    "id": "scenario-6-the-invisible-bottleneck"
+    "text": "Scenario 6: The Invisible Bottleneck (I/O vs Compute)",
+    "id": "scenario-6-the-invisible-bottleneck-i-o-vs-compute"
+   },
+   {
+    "level": 1,
+    "text": "🚀 FINAL INTERVIEW KILLER TIPS",
+    "id": "final-interview-killer-tips"
    },
    {
     "level": 2,
@@ -2403,6 +2773,11 @@ export const GUIDES = [
   "title": "AArch64 Architecture: The Compiler Engineer's Deep Dive",
   "headings": [
    {
+    "level": 1,
+    "text": "PART 1 — THE REGISTER FILE",
+    "id": "part-1-the-register-file"
+   },
+   {
     "level": 2,
     "text": "General Purpose Registers",
     "id": "general-purpose-registers"
@@ -2416,6 +2791,11 @@ export const GUIDES = [
     "level": 2,
     "text": "System Registers Relevant to Codegen",
     "id": "system-registers-relevant-to-codegen"
+   },
+   {
+    "level": 1,
+    "text": "PART 2 — AAPCS64: THE CALLING CONVENTION",
+    "id": "part-2-aapcs64-the-calling-convention"
    },
    {
     "level": 2,
@@ -2433,6 +2813,11 @@ export const GUIDES = [
     "id": "stack-rules"
    },
    {
+    "level": 1,
+    "text": "PART 3 — ADDRESSING MODES & LOAD/STORE",
+    "id": "part-3-addressing-modes-load-store"
+   },
+   {
     "level": 2,
     "text": "The Addressing Modes",
     "id": "the-addressing-modes"
@@ -2444,8 +2829,13 @@ export const GUIDES = [
    },
    {
     "level": 2,
-    "text": "Immediates Are Weird",
-    "id": "immediates-are-weird"
+    "text": "Immediates Are Weird (and TableGen knows)",
+    "id": "immediates-are-weird-and-tablegen-knows"
+   },
+   {
+    "level": 1,
+    "text": "PART 4 — BRANCHES, FLAGS, AND CONDITIONAL EXECUTION",
+    "id": "part-4-branches-flags-and-conditional-execution"
    },
    {
     "level": 2,
@@ -2456,6 +2846,11 @@ export const GUIDES = [
     "level": 2,
     "text": "CSEL Family — Branchless Codegen",
     "id": "csel-family-branchless-codegen"
+   },
+   {
+    "level": 1,
+    "text": "PART 5 — THE WEAK MEMORY MODEL (ARM's Sharpest Edge)",
+    "id": "part-5-the-weak-memory-model-arm-s-sharpest-edge"
    },
    {
     "level": 2,
@@ -2471,6 +2866,16 @@ export const GUIDES = [
     "level": 2,
     "text": "C++ → AArch64 Mapping You Must Know Cold",
     "id": "c-aarch64-mapping-you-must-know-cold"
+   },
+   {
+    "level": 1,
+    "text": "PART 6 — ARMv8.x / ARMv9 FEATURE LANDSCAPE",
+    "id": "part-6-armv8-x-armv9-feature-landscape"
+   },
+   {
+    "level": 1,
+    "text": "PART 7 — Q&A DRILL",
+    "id": "part-7-q-a-drill"
    },
    {
     "level": 3,
@@ -2516,6 +2921,11 @@ export const GUIDES = [
   "title": "NEON & SVE: ARM Vectorization for the LLVM Backend Engineer",
   "headings": [
    {
+    "level": 1,
+    "text": "PART 1 — NEON (Advanced SIMD): THE FIXED-WIDTH BASELINE",
+    "id": "part-1-neon-advanced-simd-the-fixed-width-baseline"
+   },
+   {
     "level": 2,
     "text": "The Model",
     "id": "the-model"
@@ -2524,6 +2934,11 @@ export const GUIDES = [
     "level": 2,
     "text": "NEON in LLVM IR",
     "id": "neon-in-llvm-ir"
+   },
+   {
+    "level": 1,
+    "text": "PART 2 — SVE: SCALABLE VECTORS (The Headline Act)",
+    "id": "part-2-sve-scalable-vectors-the-headline-act"
    },
    {
     "level": 2,
@@ -2541,9 +2956,14 @@ export const GUIDES = [
     "id": "the-rest-of-the-sve-toolbox"
    },
    {
+    "level": 1,
+    "text": "PART 3 — HOW LLVM MODELS SCALABLE VECTORS",
+    "id": "part-3-how-llvm-models-scalable-vectors"
+   },
+   {
     "level": 2,
-    "text": "``",
-    "id": ""
+    "text": "<vscale x N x T>",
+    "id": "vscale-x-n-x-t"
    },
    {
     "level": 2,
@@ -2559,6 +2979,16 @@ export const GUIDES = [
     "level": 2,
     "text": "Cost Model Reality",
     "id": "cost-model-reality"
+   },
+   {
+    "level": 1,
+    "text": "PART 4 — INTRINSICS (ACLE) — THE USER-FACING SURFACE",
+    "id": "part-4-intrinsics-acle-the-user-facing-surface"
+   },
+   {
+    "level": 1,
+    "text": "PART 5 — Q&A DRILL",
+    "id": "part-5-q-a-drill"
    },
    {
     "level": 3,
@@ -2587,8 +3017,8 @@ export const GUIDES = [
    },
    {
     "level": 3,
-    "text": "Q: vscale_range function attribute — what is it for?",
-    "id": "q-vscale-range-function-attribute-what-is-it-for"
+    "text": "Q: vscale_range(1,16) function attribute — what is it for?",
+    "id": "q-vscale-range-1-16-function-attribute-what-is-it-for"
    }
   ],
   "category": "ARM & AArch64 Backend",
@@ -2604,9 +3034,19 @@ export const GUIDES = [
   "title": "The AArch64 Backend in LLVM + Your First 90 Days on the ARM Team",
   "headings": [
    {
+    "level": 1,
+    "text": "PART 1 — GEOGRAPHY OF llvm/lib/Target/AArch64/",
+    "id": "part-1-geography-of-llvm-lib-target-aarch64"
+   },
+   {
     "level": 2,
     "text": "TableGen in Two Minutes of Truth",
     "id": "tablegen-in-two-minutes-of-truth"
+   },
+   {
+    "level": 1,
+    "text": "PART 2 — WHAT MAKES THE AArch64 TARGET SPECIAL",
+    "id": "part-2-what-makes-the-aarch64-target-special"
    },
    {
     "level": 2,
@@ -2629,6 +3069,16 @@ export const GUIDES = [
     "id": "4-the-cost-model-is-a-product-surface"
    },
    {
+    "level": 1,
+    "text": "PART 3 — SCHEDULING MODELS: WHERE CPU TUNING LIVES",
+    "id": "part-3-scheduling-models-where-cpu-tuning-lives"
+   },
+   {
+    "level": 1,
+    "text": "PART 4 — THE DAILY WORKFLOW (Learn Before Day 1)",
+    "id": "part-4-the-daily-workflow-learn-before-day-1"
+   },
+   {
     "level": 2,
     "text": "Build Lean",
     "id": "build-lean"
@@ -2644,9 +3094,14 @@ export const GUIDES = [
     "id": "inspection-toolbox"
    },
    {
+    "level": 1,
+    "text": "PART 5 — FIRST 90 DAYS: THE RAMP PLAN",
+    "id": "part-5-first-90-days-the-ramp-plan"
+   },
+   {
     "level": 2,
-    "text": "Before Day 1",
-    "id": "before-day-1"
+    "text": "Before Day 1 (your remaining weeks — ~1.5 hrs/day, not more)",
+    "id": "before-day-1-your-remaining-weeks-1-5-hrs-day-not-more"
    },
    {
     "level": 2,
@@ -2662,6 +3117,11 @@ export const GUIDES = [
     "level": 2,
     "text": "Weeks 9–12: Own Something Small",
     "id": "weeks-9-12-own-something-small"
+   },
+   {
+    "level": 1,
+    "text": "PART 6 — Q&A DRILL (Team-Plausible Questions)",
+    "id": "part-6-q-a-drill-team-plausible-questions"
    },
    {
     "level": 3,
@@ -2795,6 +3255,16 @@ export const GUIDES = [
   "title": "Linux for Low Latency",
   "headings": [
    {
+    "level": 1,
+    "text": "PART 1 — WHERE LATENCY COMES FROM ON A LINUX BOX",
+    "id": "part-1-where-latency-comes-from-on-a-linux-box"
+   },
+   {
+    "level": 1,
+    "text": "PART 2 — CPU ISOLATION AND PINNING",
+    "id": "part-2-cpu-isolation-and-pinning"
+   },
+   {
     "level": 2,
     "text": "What you can do without root",
     "id": "what-you-can-do-without-root"
@@ -2808,6 +3278,11 @@ export const GUIDES = [
     "level": 2,
     "text": "How you know it worked",
     "id": "how-you-know-it-worked"
+   },
+   {
+    "level": 1,
+    "text": "PART 3 — SCHEDULING",
+    "id": "part-3-scheduling"
    },
    {
     "level": 2,
@@ -2830,6 +3305,16 @@ export const GUIDES = [
     "id": "verify"
    },
    {
+    "level": 1,
+    "text": "PART 4 — POWER, FREQUENCY, IDLE STATES",
+    "id": "part-4-power-frequency-idle-states"
+   },
+   {
+    "level": 1,
+    "text": "PART 5 — MEMORY",
+    "id": "part-5-memory"
+   },
+   {
     "level": 2,
     "text": "Page faults",
     "id": "page-faults"
@@ -2848,6 +3333,26 @@ export const GUIDES = [
     "level": 2,
     "text": "Other memory hygiene",
     "id": "other-memory-hygiene"
+   },
+   {
+    "level": 1,
+    "text": "PART 6 — INTERRUPTS, SOFTIRQS, TIMERS",
+    "id": "part-6-interrupts-softirqs-timers"
+   },
+   {
+    "level": 1,
+    "text": "PART 7 — I/O AND THE SYSCALL BUDGET",
+    "id": "part-7-i-o-and-the-syscall-budget"
+   },
+   {
+    "level": 1,
+    "text": "PART 8 — THE TUNING CHECKLIST",
+    "id": "part-8-the-tuning-checklist"
+   },
+   {
+    "level": 1,
+    "text": "PART 9 — Q&A DRILL",
+    "id": "part-9-q-a-drill"
    },
    {
     "level": 3,
@@ -2908,6 +3413,16 @@ export const GUIDES = [
   "title": "Networking for Trading Systems",
   "headings": [
    {
+    "level": 1,
+    "text": "PART 1 — THE SHAPE OF A TRADING SYSTEM'S NETWORK",
+    "id": "part-1-the-shape-of-a-trading-system-s-network"
+   },
+   {
+    "level": 1,
+    "text": "PART 2 — UDP MULTICAST MARKET DATA",
+    "id": "part-2-udp-multicast-market-data"
+   },
+   {
     "level": 2,
     "text": "Why multicast",
     "id": "why-multicast"
@@ -2926,6 +3441,36 @@ export const GUIDES = [
     "level": 2,
     "text": "Feed message parsing",
     "id": "feed-message-parsing"
+   },
+   {
+    "level": 1,
+    "text": "PART 3 — WHAT THE KERNEL NETWORK STACK COSTS",
+    "id": "part-3-what-the-kernel-network-stack-costs"
+   },
+   {
+    "level": 1,
+    "text": "PART 4 — KERNEL BYPASS AND HARDWARE",
+    "id": "part-4-kernel-bypass-and-hardware"
+   },
+   {
+    "level": 1,
+    "text": "PART 5 — TCP FOR ORDER ENTRY",
+    "id": "part-5-tcp-for-order-entry"
+   },
+   {
+    "level": 1,
+    "text": "PART 6 — TIMESTAMPS, CLOCKS, AND PROVING IT",
+    "id": "part-6-timestamps-clocks-and-proving-it"
+   },
+   {
+    "level": 1,
+    "text": "PART 7 — A FEED HANDLER'S HOT LOOP (the design you should be able to draw)",
+    "id": "part-7-a-feed-handler-s-hot-loop-the-design-you-should-be-able-to-draw"
+   },
+   {
+    "level": 1,
+    "text": "PART 8 — Q&A DRILL",
+    "id": "part-8-q-a-drill"
    },
    {
     "level": 3,
@@ -2986,6 +3531,51 @@ export const GUIDES = [
   "title": "x86 Microarchitecture Field Guide",
   "headings": [
    {
+    "level": 1,
+    "text": "PART 1 — THE PIPELINE IN ONE PAGE",
+    "id": "part-1-the-pipeline-in-one-page"
+   },
+   {
+    "level": 1,
+    "text": "PART 2 — DEPENDENCY CHAINS: LATENCY-BOUND VS THROUGHPUT-BOUND",
+    "id": "part-2-dependency-chains-latency-bound-vs-throughput-bound"
+   },
+   {
+    "level": 1,
+    "text": "PART 3 — BRANCH PREDICTION",
+    "id": "part-3-branch-prediction"
+   },
+   {
+    "level": 1,
+    "text": "PART 4 — CACHES, TLB, AND THE MEMORY SYSTEM",
+    "id": "part-4-caches-tlb-and-the-memory-system"
+   },
+   {
+    "level": 1,
+    "text": "PART 5 — SIMD ON x86",
+    "id": "part-5-simd-on-x86"
+   },
+   {
+    "level": 1,
+    "text": "PART 6 — ATOMICS, FENCES, AND THE MEMORY MODEL",
+    "id": "part-6-atomics-fences-and-the-memory-model"
+   },
+   {
+    "level": 1,
+    "text": "PART 7 — TIME, FREQUENCY, HYBRID CORES",
+    "id": "part-7-time-frequency-hybrid-cores"
+   },
+   {
+    "level": 1,
+    "text": "PART 8 — COUNTERS: WHICH EVENT ANSWERS WHICH QUESTION",
+    "id": "part-8-counters-which-event-answers-which-question"
+   },
+   {
+    "level": 1,
+    "text": "PART 9 — Q&A DRILL",
+    "id": "part-9-q-a-drill"
+   },
+   {
     "level": 3,
     "text": "Q: What bounds a loop that does one multiply-add per element on a value from the previous iteration?",
     "id": "q-what-bounds-a-loop-that-does-one-multiply-add-per-element-on-a-value-from-the-previous-iteration"
@@ -3044,6 +3634,51 @@ export const GUIDES = [
   "title": "The Performance-Investigation Playbook",
   "headings": [
    {
+    "level": 1,
+    "text": "PART 1 — DEFINE THE QUESTION",
+    "id": "part-1-define-the-question"
+   },
+   {
+    "level": 1,
+    "text": "PART 2 — MEASURE",
+    "id": "part-2-measure"
+   },
+   {
+    "level": 1,
+    "text": "PART 3 — LOCATE",
+    "id": "part-3-locate"
+   },
+   {
+    "level": 1,
+    "text": "PART 4 — EXPLAIN: THE DECISION TREE",
+    "id": "part-4-explain-the-decision-tree"
+   },
+   {
+    "level": 1,
+    "text": "PART 5 — DECIDE THE LEVER",
+    "id": "part-5-decide-the-lever"
+   },
+   {
+    "level": 1,
+    "text": "PART 6 — PROVE",
+    "id": "part-6-prove"
+   },
+   {
+    "level": 1,
+    "text": "PART 7 — THE TRAPS, IN ONE PLACE",
+    "id": "part-7-the-traps-in-one-place"
+   },
+   {
+    "level": 1,
+    "text": "PART 8 — FOUR MINI-SCENARIOS (talk them through out loud)",
+    "id": "part-8-four-mini-scenarios-talk-them-through-out-loud"
+   },
+   {
+    "level": 1,
+    "text": "PART 9 — Q&A DRILL",
+    "id": "part-9-q-a-drill"
+   },
+   {
     "level": 3,
     "text": "Q: A senior engineer says \"just add prefetches\". What do you check first?",
     "id": "q-a-senior-engineer-says-just-add-prefetches-what-do-you-check-first"
@@ -3087,14 +3722,24 @@ export const GUIDES = [
   "title": "Toolchain Field Manual: the question first, then the command",
   "headings": [
    {
+    "level": 1,
+    "text": "PART 1 — THE PIPELINE MAP",
+    "id": "part-1-the-pipeline-map"
+   },
+   {
+    "level": 1,
+    "text": "PART 2 — QUESTIONS → COMMANDS",
+    "id": "part-2-questions-commands"
+   },
+   {
     "level": 2,
     "text": "\"Did this loop vectorize, and if not, why?\"",
     "id": "did-this-loop-vectorize-and-if-not-why"
    },
    {
     "level": 2,
-    "text": "\"Which pass changed  this?\"",
-    "id": "which-pass-changed-this"
+    "text": "\"Which pass changed (or broke) this?\"",
+    "id": "which-pass-changed-or-broke-this"
    },
    {
     "level": 2,
@@ -3113,8 +3758,8 @@ export const GUIDES = [
    },
    {
     "level": 2,
-    "text": "\"Where does the time go?\"",
-    "id": "where-does-the-time-go"
+    "text": "\"Where does the time go?\" (the perf ladder)",
+    "id": "where-does-the-time-go-the-perf-ladder"
    },
    {
     "level": 2,
@@ -3135,6 +3780,31 @@ export const GUIDES = [
     "level": 2,
     "text": "\"Reduce this crash / miscompile to something I can report\"",
     "id": "reduce-this-crash-miscompile-to-something-i-can-report"
+   },
+   {
+    "level": 1,
+    "text": "PART 3 — opt AND llc: THE FLAGS THAT MATTER",
+    "id": "part-3-opt-and-llc-the-flags-that-matter"
+   },
+   {
+    "level": 1,
+    "text": "PART 4 — BINARY TOOLS, GNU AND LLVM FLAVOURS",
+    "id": "part-4-binary-tools-gnu-and-llvm-flavours"
+   },
+   {
+    "level": 1,
+    "text": "PART 5 — ANDROID: SOONG AND simpleperf (not run on this machine)",
+    "id": "part-5-android-soong-and-simpleperf-not-run-on-this-machine"
+   },
+   {
+    "level": 1,
+    "text": "PART 6 — BUILD SYSTEMS, ONE MAP",
+    "id": "part-6-build-systems-one-map"
+   },
+   {
+    "level": 1,
+    "text": "PART 7 — Q&A DRILL",
+    "id": "part-7-q-a-drill"
    },
    {
     "level": 3,
@@ -3185,39 +3855,59 @@ export const GUIDES = [
   "title": "System Design for Systems Engineers",
   "headings": [
    {
-    "level": 2,
-    "text": "2.1 Limit order book",
-    "id": "2-1-limit-order-book"
+    "level": 1,
+    "text": "PART 1 — HOW TO RUN THE 45 MINUTES",
+    "id": "part-1-how-to-run-the-45-minutes"
+   },
+   {
+    "level": 1,
+    "text": "PART 2 — THE SEVEN DESIGNS",
+    "id": "part-2-the-seven-designs"
    },
    {
     "level": 2,
-    "text": "2.2 Market data feed handler",
-    "id": "2-2-market-data-feed-handler"
+    "text": "2.1 Limit order book (HFT-style, single instrument, 10M messages/s)",
+    "id": "2-1-limit-order-book-hft-style-single-instrument-10m-messages-s"
    },
    {
     "level": 2,
-    "text": "2.3 Asynchronous logging",
-    "id": "2-3-asynchronous-logging"
+    "text": "2.2 Market data feed handler (HFT-style)",
+    "id": "2-2-market-data-feed-handler-hft-style"
    },
    {
     "level": 2,
-    "text": "2.4 In-memory cache with expiry and concurrency",
-    "id": "2-4-in-memory-cache-with-expiry-and-concurrency"
+    "text": "2.3 Asynchronous logging (both styles)",
+    "id": "2-3-asynchronous-logging-both-styles"
    },
    {
     "level": 2,
-    "text": "2.5 Tick time-series store",
-    "id": "2-5-tick-time-series-store"
+    "text": "2.4 In-memory cache with expiry and concurrency (distributed-systems single node, then sharded)",
+    "id": "2-4-in-memory-cache-with-expiry-and-concurrency-distributed-systems-single-node-then-sharded"
    },
    {
     "level": 2,
-    "text": "2.6 Timer wheel and rate limiter",
-    "id": "2-6-timer-wheel-and-rate-limiter"
+    "text": "2.5 Tick time-series store (both styles)",
+    "id": "2-5-tick-time-series-store-both-styles"
    },
    {
     "level": 2,
-    "text": "2.7 A distributed build cache for a compiler team",
-    "id": "2-7-a-distributed-build-cache-for-a-compiler-team"
+    "text": "2.6 Timer wheel and rate limiter (both styles)",
+    "id": "2-6-timer-wheel-and-rate-limiter-both-styles"
+   },
+   {
+    "level": 2,
+    "text": "2.7 A distributed build cache for a compiler team (distributed-systems)",
+    "id": "2-7-a-distributed-build-cache-for-a-compiler-team-distributed-systems"
+   },
+   {
+    "level": 1,
+    "text": "PART 3 — THE TWO RUBRICS",
+    "id": "part-3-the-two-rubrics"
+   },
+   {
+    "level": 1,
+    "text": "PART 4 — Q&A DRILL",
+    "id": "part-4-q-a-drill"
    },
    {
     "level": 3,
@@ -3308,14 +3998,19 @@ export const GUIDES = [
     "id": "simple-triton-kernel-you-should-know-cold"
    },
    {
+    "level": 1,
+    "text": "PART 3 — Code Examples: The Full Stack",
+    "id": "part-3-code-examples-the-full-stack"
+   },
+   {
     "level": 3,
     "text": "1. PyTorch 2.0 — TorchDynamo & Inductor",
     "id": "1-pytorch-2-0-torchdynamo-inductor"
    },
    {
     "level": 3,
-    "text": "2. TensorFlow — XLA",
-    "id": "2-tensorflow-xla"
+    "text": "2. TensorFlow — XLA (JIT Compilation)",
+    "id": "2-tensorflow-xla-jit-compilation"
    },
    {
     "level": 3,

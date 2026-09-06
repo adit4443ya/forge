@@ -25,11 +25,28 @@ const guides = files.map((file) => {
   const body = raw.replace(/^<!--[\s\S]*?-->\s*/, '');
   const title = stripMd(/^#\s+(.*)/m.exec(body)?.[1] || name);
   const headings = [];
+  /* Skip fenced code: a shell comment starts with '#', and counting those as
+     h1 headings produced 67 contents entries pointing at nothing. */
+  let inFence = false;
   for (const line of body.split('\n')) {
-    const m = /^(#{2,3})\s+(.*)$/.exec(line);
+    if (/^\s*(```|~~~)/.test(line)) { inFence = !inFence; continue; }
+    if (inFence) continue;
+    /* Include h1: these guides use "# PART n" as real section headings, and
+       omitting them left the contents rail listing only sub-subsections. */
+    const m = /^(#{1,3})\s+(.*)$/.exec(line);
     if (m) {
-      const text = stripMd(m[2]).replace(/\(.*?\)/g, '').trim();
-      if (text) headings.push({ level: m[1].length, text, id: headingId(text) });
+      /* Do NOT strip parentheses here: the reader derives the same id from the
+         rendered text, and any difference makes the contents link land nowhere. */
+      /* Headings need their own normalisation. stripMd removes anything that
+         looks like an HTML tag, which deletes a heading such as
+         `<vscale x N x T>` entirely and leaves it with an empty id. Strip
+         markdown syntax only, matching what the reader sees rendered. */
+      const text = m[2]
+        .replace(/`([^`]*)`/g, '$1')          // inline code -> its contents
+        .replace(/\*\*?([^*]+)\*\*?/g, '$1')  // bold / italic
+        .replace(/\[([^\]]+)\]\([^)]*\)/g, '$1') // links -> their text
+        .trim();
+      if (text && text !== title) headings.push({ level: m[1].length, text, id: headingId(text) });
     }
   }
   const words = body.split(/\s+/).length;

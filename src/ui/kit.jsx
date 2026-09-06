@@ -42,11 +42,12 @@ export const Section = ({ title, right, children, hue = "neutral", style, i = 0 
 );
 
 /* ── surfaces ─────────────────────────────────────────────────────── */
-export const Panel = ({ children, hue = "neutral", onClick, active, style, className = "", i = 0, hoverable }) => {
+export const Panel = ({ children, hue = "neutral", onClick, active, style, className = "", i = 0, hoverable, ...rest }) => {
   const h = H(hue);
   const interactive = !!onClick || hoverable;
   return (
     <div
+      {...rest}
       className={`${interactive ? "lift " : ""}${className}`}
       onClick={onClick}
       role={onClick ? "button" : undefined}

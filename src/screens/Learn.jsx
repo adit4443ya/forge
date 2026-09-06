@@ -1,5 +1,5 @@
 "use client";
-import { useCallback, useMemo, useState } from "react";
+import { useCallback, useEffect, useMemo, useState } from "react";
 import { useRouter } from "next/navigation";
 import { useTargetChange } from "@/ui/hooks.js";
 import { tk, hue as H } from "@/theme/carbon.jsx";
@@ -30,7 +30,20 @@ function CompetencyTab({ role, focusId }) {
   const prog = useProgress();
   const [open, setOpen] = useState(focusId || null);
   const [seenFocus, setSeenFocus] = useState(focusId || null);
-  if (focusId && focusId !== seenFocus) { setSeenFocus(focusId); setOpen(focusId); }
+  const [scrollTo, setScrollTo] = useState(null);
+  if (focusId && focusId !== seenFocus) { setSeenFocus(focusId); setOpen(focusId); setScrollTo(focusId); }
+
+  /* Opening a competency without scrolling to it looked like nothing happened:
+     "start here" is above the fold and the panel it opens usually is not. */
+  useEffect(() => {
+    if (!scrollTo) return undefined;
+    const id = setTimeout(() => {
+      document.querySelector(`[data-competency="${scrollTo}"]`)
+        ?.scrollIntoView({ behavior: "smooth", block: "start" });
+      setScrollTo(null);
+    }, 80);
+    return () => clearTimeout(id);
+  }, [scrollTo]);
 
   return (
     <div className="pane-pad pane-narrow">
@@ -67,7 +80,7 @@ function CompetencyTab({ role, focusId }) {
                 const labs = LAB_INDEX.filter((l) => (c.labs || []).some((p) => l.id === p || l.id.startsWith(p)));
                 const done = labs.filter((l) => prog.labs[l.id]).length;
                 return (
-                  <Panel key={c.id} i={i} hue={on ? role.hue : "neutral"} active={on} onClick={() => setOpen(on ? null : c.id)} style={{ padding: "var(--sp-4)" }}>
+                  <Panel key={c.id} i={i} hue={on ? role.hue : "neutral"} active={on} onClick={() => setOpen(on ? null : c.id)} style={{ padding: "var(--sp-4)" }} data-competency={c.id}>
                     <div style={{ display: "flex", alignItems: "baseline", gap: 10, flexWrap: "wrap" }}>
                       <span style={{ color: tk.text, fontWeight: 650, fontSize: "var(--fs-md)" }}>{c.name}</span>
                       <div style={{ flex: 1 }} />
