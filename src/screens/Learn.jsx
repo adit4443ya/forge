@@ -1,5 +1,6 @@
 "use client";
-import { useMemo, useState } from "react";
+import { useCallback, useMemo, useState } from "react";
+import { useRouter } from "next/navigation";
 import { useTargetChange } from "@/ui/hooks.js";
 import { tk, hue as H } from "@/theme/carbon.jsx";
 import { Section, Panel, Button, Tag, Label, Mono, H1, H2, Muted, Tabs, Accordion, Note, Empty, Bar, ExtLink } from "@/ui/kit.jsx";
@@ -333,7 +334,13 @@ function ModulesTab({ role, focusModule }) {
 
 export default function Learn({ role, target }) {
   const nav = useNav();
+  const router = useRouter();
   const [tab, setTab] = useState(() => (target?.kind === "tab" ? target.id : "competencies"));
+  /* Same as Practice: the tab is navigation and belongs in the URL. */
+  const goTab = useCallback((id) => {
+    setTab(id);
+    router.push(id === "competencies" ? "/learn" : `/learn?tab=${id}`, { scroll: false });
+  }, [router]);
   const [focusComp, setFocusComp] = useState(null);
   const [focusModule, setFocusModule] = useState(null);
 
@@ -357,7 +364,7 @@ export default function Learn({ role, target }) {
   return (
     <div style={{ display: "flex", flexDirection: "column", height: "100%", minHeight: 0 }}>
       <div style={{ flexShrink: 0, padding: "0 var(--sp-5)", background: tk.bg, borderBottom: `1px solid ${tk.line}` }}>
-        <Tabs items={tabs} value={tab} onChange={setTab} style={{ border: "none" }} />
+        <Tabs items={tabs} value={tab} onChange={goTab} style={{ border: "none" }} />
       </div>
       <div style={{ flex: 1, minHeight: 0, overflowY: "auto" }}>
         {tab === "competencies" && <CompetencyTab role={role} focusId={focusComp} />}

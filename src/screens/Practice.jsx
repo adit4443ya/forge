@@ -1,5 +1,6 @@
 "use client";
-import { useMemo, useState } from "react";
+import { useCallback, useMemo, useState } from "react";
+import { useRouter } from "next/navigation";
 import RapidFire from "./RapidFire.jsx";
 import Estimation from "./Estimation.jsx";
 import MentalMath from "./MentalMath.jsx";
@@ -71,6 +72,7 @@ function ProblemRow({ p, active, onClick, prog, i, reveal, forRole }) {
 }
 
 function ProblemsTab({ target, role }) {
+  const router = useRouter();
   const prog = useProgress();
   const [q, setQ] = useState(() => (target?.kind === "section" ? target.id : ""));
   const [tierF, setTierF] = useState("all");
@@ -107,6 +109,14 @@ function ProblemsTab({ target, role }) {
     /* Role sorts, it does not hide: the whole coding bar still matters. */
     return roleF ? filtered : sortForRole(filtered, role);
   }, [q, tierF, statusF, roleF, secs, role, prog.dsa]);
+
+  /* Selection is not navigation — on a wide screen both panes are visible — so
+     it REPLACES rather than pushing. The URL stays shareable and reload-safe
+     without putting every browsed problem into the history. */
+  const selectProblem = useCallback((id) => {
+    setSel(id);
+    router.replace(`/practice?problem=${id}`, { scroll: false });
+  }, [router]);
 
   const problem = PROBLEMS.find((p) => p.id === sel) || list[0] || PROBLEMS[0];
   const solvedCount = PROBLEMS.filter((p) => isSolved(prog.dsa[p.id])).length;
@@ -152,7 +162,7 @@ function ProblemsTab({ target, role }) {
         </div>
         {list.map((p, i) => (
           <ProblemRow key={p.id} p={p} i={i} prog={prog} reveal={reveal} active={p.id === problem?.id}
-            forRole={secs.has(p.section)} onClick={() => { setSel(p.id); setShowList(false); }} />
+            forRole={secs.has(p.section)} onClick={() => { selectProblem(p.id); setShowList(false); }} />
         ))}
         {list.length === 0 && <Empty icon="⌕" title="Nothing matches">Loosen a filter, or clear the search.</Empty>}
       </aside>
@@ -321,12 +331,22 @@ function LaddersTab() {
 }
 
 export default function Practice({ target, role }) {
+  const router = useRouter();
   const [tab, setTab] = useState(() => (target?.kind === "tab" ? target.id : "problems"));
   useTargetChange(target, (t) => {
     if (t.kind === "tab") setTab(t.id);
     if (t.kind === "problem") setTab("problems");
     if (t.kind === "section") setTab("problems");   // ProblemsTab filters on it
   });
+
+  /* Switching tab is navigation, so it belongs in the URL: the tab survives a
+     reload, can be linked to, and Back returns to the previous tab instead of
+     leaving the site. Setting the same value again is a no-op, so the round
+     trip through useTargetChange cannot loop. */
+  const goTab = useCallback((id) => {
+    setTab(id);
+    router.push(id === "problems" ? "/practice" : `/practice?tab=${id}`, { scroll: false });
+  }, [router]);
 
   const tabs = [
     { id: "problems", label: "Problems", count: PROBLEMS.length },
@@ -344,7 +364,7 @@ export default function Practice({ target, role }) {
   return (
     <div style={{ display: "flex", flexDirection: "column", height: "100%", minHeight: 0 }}>
       <div style={{ flexShrink: 0, padding: "0 var(--sp-5)", background: tk.bg, borderBottom: `1px solid ${tk.line}` }}>
-        <Tabs items={tabs} value={tab} onChange={setTab} style={{ border: "none" }} />
+        <Tabs items={tabs} value={tab} onChange={goTab} style={{ border: "none" }} />
       </div>
       <div style={{ flex: 1, minHeight: 0, overflow: ["problems", "rapid", "estimate", "mental"].includes(tab) ? "hidden" : "auto" }}>
         {tab === "problems" && <ProblemsTab target={target} role={role} />}

@@ -144,3 +144,14 @@ problem list is opt-in and the labs filter is a visible, reversible toggle.
 If you add a surface, decide what the role changes there and assert it in
 `scripts/test-role.mjs`. If the honest answer is "nothing", say so in the UI
 rather than leaving the switch looking like it did something.
+
+## Navigation belongs in the URL
+
+If a control changes what the user is looking at, it must change the address.
+Tab switches `push`; selection inside a view (picking a problem from the list,
+where both panes are visible anyway) `replace`s, so the URL stays shareable and
+reload-safe without filling the history with every row you browsed.
+
+Local `useState` for a tab is the bug this rule exists to prevent: the back
+button then leaves the site entirely, a reload drops you back to the default,
+and no view can be linked to. `npm run test:nav` asserts all three.
