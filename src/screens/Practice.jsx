@@ -4,6 +4,8 @@ import RapidFire from "./RapidFire.jsx";
 import Estimation from "./Estimation.jsx";
 import MentalMath from "./MentalMath.jsx";
 import MarketMaking from "./MarketMaking.jsx";
+import Patterns from "./Patterns.jsx";
+import { PATTERNS_2 } from "@/data/patterns.js";
 import { RAPID } from "@/data/rapidfire.js";
 import { ESTIMATES } from "@/data/estimation.js";
 import { tk, hue as H } from "@/theme/carbon.jsx";
@@ -12,6 +14,8 @@ import { useNav } from "@/shell/nav.js";
 import { useTargetChange } from "@/ui/hooks.js";
 import { useProgress, isSolved, attemptCount, lastAttempt } from "@/lib/progress/store.js";
 import { ALL_PROBLEMS as PROBLEMS, CPP_CONCEPTS, CHEATSHEET, TIPS, BUG_HUNTS, OUTPUT_QUIZZES } from "@/dsaData.jsx";
+import { CPP_CONCEPTS_2 } from "@/data/cppConcepts.js";
+import { OUTPUT_QUIZZES_2, BUG_HUNTS_2 } from "@/data/drills.js";
 import { content as LEGACY, NavCtx as LegacyNavCtx } from "@/legacyLibrary.jsx";
 import { tierOf, GAPS } from "@/data/dsaCurriculum.js";
 import { LADDERS, JUDGES } from "@/data/externalLinks.js";
@@ -181,9 +185,9 @@ function DrillsTab() {
         question every systems interviewer eventually asks. Commit to an answer out loud, then reveal.
       </Muted>
       <Tabs value={tab} onChange={setTab} style={{ marginBottom: "var(--sp-5)" }}
-        items={[{ id: "bugs", label: "Bug hunts", count: BUG_HUNTS.length }, { id: "quiz", label: "Output quizzes", count: OUTPUT_QUIZZES.length }]} />
+        items={[{ id: "bugs", label: "Bug hunts", count: BUG_HUNTS.length + BUG_HUNTS_2.length }, { id: "quiz", label: "Output quizzes", count: OUTPUT_QUIZZES.length + OUTPUT_QUIZZES_2.length }]} />
 
-      {tab === "bugs" && BUG_HUNTS.map((b, i) => (
+      {tab === "bugs" && [...BUG_HUNTS, ...BUG_HUNTS_2].map((b, i) => (
         <StagedDrill key={b.id} i={i} hue="bad" title={b.title} meta={[b.category].filter(Boolean)}
           stages={[
             { label: "Code", code: b.buggyCode, codeLabel: "// what is wrong here?" },
@@ -193,7 +197,7 @@ function DrillsTab() {
           ].filter((x) => x.code || x.body)} />
       ))}
 
-      {tab === "quiz" && OUTPUT_QUIZZES.map((q, i) => (
+      {tab === "quiz" && [...OUTPUT_QUIZZES, ...OUTPUT_QUIZZES_2].map((q, i) => (
         <StagedDrill key={q.id} i={i} hue="warn" title={q.title} meta={[q.category].filter(Boolean)}
           stages={[
             { label: "Code", code: q.code, codeLabel: "// what does this print?" },
@@ -210,11 +214,12 @@ function ConceptsTab() {
   return (
     <div className="pane-pad pane-narrow">
       <H1>C++ concepts</H1>
-      <Muted style={{ marginTop: 8, marginBottom: "var(--sp-5)", maxWidth: "70ch" }}>
-        Twelve things an interviewer keeps pulling on until you either show depth or run out. Each has the model, the code, and the
-        follow-up questions they will actually ask.
+      <Muted style={{ marginTop: 8, marginBottom: "var(--sp-5)", maxWidth: "72ch" }}>
+        {CPP_CONCEPTS.length + CPP_CONCEPTS_2.length} things an interviewer keeps pulling on until you either show depth or run out.
+        The first {CPP_CONCEPTS.length} are the ground every list covers; the rest are what a low-latency or systems panel reaches
+        for once you have answered those. Each has the mechanism, the code, and the follow-ups they will actually ask.
       </Muted>
-      {CPP_CONCEPTS.map((c, i) => (
+      {[...CPP_CONCEPTS, ...CPP_CONCEPTS_2].map((c, i) => (
         <Accordion key={c.id} i={i} hue="info" q={c.title} right={c.category ? <Tag hue="info">{c.category}</Tag> : null}>
           <div style={{ color: tk.dim, fontSize: "var(--fs-sm)", lineHeight: 1.8, whiteSpace: "pre-wrap" }}>{c.explanation}</div>
           {c.keyInsight && <Note hue="accent" title="the thing to remember">{c.keyInsight}</Note>}
@@ -232,31 +237,10 @@ function ConceptsTab() {
         </Accordion>
       ))}
 
-      <Section title="Pattern cheat sheet" i={1} style={{ marginTop: "var(--sp-7)" }}>
-        <div style={{ display: "grid", gap: "var(--sp-2)" }}>
-          {CHEATSHEET.map((c, i) => (
-            <Panel key={i} i={i} style={{ padding: "var(--sp-3) var(--sp-4)" }}>
-              <div className="row" style={{ gap: 9, marginBottom: 5 }}>
-                <span style={{ color: tk.accent, fontWeight: 700, fontSize: "var(--fs-sm)" }}>{c.pattern}</span>
-                <span style={{ color: tk.dim, fontSize: "var(--fs-xs)", flex: 1 }}>{c.when}</span>
-              </div>
-              {c.template && <Code lang="cpp">{c.template}</Code>}
-              {c.tip && <div style={{ color: tk.faint, fontSize: "var(--fs-xs)", lineHeight: 1.65, marginTop: 5 }}>{c.tip}</div>}
-              {c.problems && <Mono dim style={{ display: "block", marginTop: 5 }}>{c.problems}</Mono>}
-            </Panel>
-          ))}
-        </div>
-      </Section>
-
-      <Section title="Tips" i={2}>
-        {TIPS.map((t, i) => (
-          <Accordion key={i} i={i} q={t.title}>
-            <ul style={{ margin: 0, paddingLeft: 18, color: tk.dim, fontSize: "var(--fs-sm)", lineHeight: 1.85 }}>
-              {(t.tips || []).map((x, k) => <li key={k}>{x}</li>)}
-            </ul>
-          </Accordion>
-        ))}
-      </Section>
+      <Note hue="info" title="patterns moved">
+        The pattern templates now have their own tab, next to the problems that use each one — with how to recognise it and the
+        plausible wrong idea it replaces.
+      </Note>
     </div>
   );
 }
@@ -331,8 +315,9 @@ export default function Practice({ target }) {
     { id: "estimate", label: "Estimation", count: ESTIMATES.length },
     { id: "mental", label: "Mental math" },
     { id: "market", label: "Make a market" },
-    { id: "drills", label: "Drills", count: BUG_HUNTS.length + OUTPUT_QUIZZES.length },
-    { id: "concepts", label: "C++ concepts", count: CPP_CONCEPTS.length },
+    { id: "drills", label: "Drills", count: BUG_HUNTS.length + BUG_HUNTS_2.length + OUTPUT_QUIZZES.length + OUTPUT_QUIZZES_2.length },
+    { id: "patterns", label: "Patterns", count: CHEATSHEET.length + PATTERNS_2.length },
+    { id: "concepts", label: "C++ concepts", count: CPP_CONCEPTS.length + CPP_CONCEPTS_2.length },
     { id: "mocks", label: "Mocks", count: 5 },
     { id: "ladders", label: "Ladders", count: LADDERS.length },
   ];
@@ -349,6 +334,7 @@ export default function Practice({ target }) {
         {tab === "mental" && <MentalMath />}
         {tab === "market" && <MarketMaking />}
         {tab === "drills" && <DrillsTab />}
+        {tab === "patterns" && <Patterns />}
         {tab === "concepts" && <ConceptsTab />}
         {tab === "mocks" && <MocksTab />}
         {tab === "ladders" && <LaddersTab />}

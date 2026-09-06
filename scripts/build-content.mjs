@@ -104,6 +104,10 @@ const stats = {
   // Only the question entries carry `domain:` — the DOMAINS headers do not.
   rapid: (rapidSrc.match(/^  \{ id: "[^"]+", domain:/gm) || []).length,
   estimates: (fs.readFileSync(path.join(root, 'src/data/estimation.js'), 'utf8').match(/^  \{\n?\s*id: "e/gm) || []).length,
+  patterns: (dsaSrc.slice(dsaSrc.indexOf('export const CHEATSHEET'), dsaSrc.indexOf('export const TIPS')).match(/pattern: "/g) || []).length
+           + (fs.readFileSync(path.join(root, 'src/data/patterns.js'), 'utf8').match(/^    pattern: "/gm) || []).length,
+  cppConcepts: (dsaSrc.slice(dsaSrc.indexOf('export const CPP_CONCEPTS'), dsaSrc.indexOf('export const CHEATSHEET')).match(/^    title: "/gm) || []).length
+             + (fs.readFileSync(path.join(root, 'src/data/cppConcepts.js'), 'utf8').match(/^    id: \d+, title: "/gm) || []).length,
   labSteps,
   labs: labsJson.labs.length,
   tracks: labsJson.tracks.length,

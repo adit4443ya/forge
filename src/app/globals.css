@@ -891,3 +891,44 @@ a:hover { text-decoration: underline; text-underline-offset: 3px; }
 .mk-feedback ul { margin: 9px 0 0; padding-left: 18px; }
 .mk-feedback li { color: var(--tk-dim); font-size: var(--fs-sm); line-height: 1.75; margin-bottom: 8px; }
 .mk-feedback strong { color: var(--tk-text); }
+
+/* ── patterns ─────────────────────────────────────────────────────────── */
+.pat-bar { display: flex; gap: 9px; align-items: center; flex-wrap: wrap; margin-bottom: var(--sp-4); }
+.pat-search {
+  flex: 1; min-width: 220px; padding: 9px 12px; border-radius: var(--r-2);
+  border: 1px solid var(--tk-line); background: var(--tk-bg1); color: var(--tk-text); font-size: var(--fs-sm);
+}
+.pat-search:focus { outline: none; border-color: var(--tk-accent); }
+.pat-chip {
+  padding: 6px 12px; border-radius: var(--r-2); border: 1px solid var(--tk-line);
+  background: var(--tk-bg1); color: var(--tk-faint); font-size: var(--fs-sm); font-weight: 600;
+  transition: all var(--dur-1);
+}
+.pat-chip:hover { color: var(--tk-text); border-color: var(--tk-line2); }
+.pat-chip[data-on] { color: var(--tk-accent); border-color: var(--tk-accentLine); background: var(--tk-accentBg); }
+
+.pat-list { display: grid; gap: var(--sp-3); }
+.pat {
+  border: 1px solid var(--tk-line); border-radius: var(--r-3); background: var(--tk-bg1);
+  padding: 13px 15px; transition: border-color var(--dur-2);
+}
+.pat:hover, .pat[data-open] { border-color: var(--tk-line2); }
+.pat-head { display: flex; align-items: center; gap: 10px; width: 100%; text-align: left; }
+.pat-name { color: var(--tk-text); font-size: var(--fs-md); font-weight: 650; letter-spacing: -.01em; }
+.pat-caret { color: var(--tk-faint); font-size: 12px; transition: transform var(--dur-2) var(--ease-out); }
+.pat-caret[data-open] { transform: rotate(90deg); }
+.pat-when { margin-top: 5px; color: var(--tk-dim); font-size: var(--fs-sm); line-height: 1.65; }
+.pat-body { display: grid; gap: var(--sp-3); padding-top: var(--sp-4); }
+.pat-cell { padding: 11px 13px; border-left: 3px solid var(--tk-line2); border-radius: var(--r-2); background: var(--tk-bg2); }
+.pat-cell p { margin: 5px 0 0; color: var(--tk-dim); font-size: var(--fs-sm); line-height: 1.75; }
+.pat-template { background: var(--tk-codeBg); border-left-color: var(--tk-accent); }
+.pat-template pre { margin: 7px 0 0; overflow-x: auto; }
+.pat-template code { font-family: var(--font-mono); font-size: 12.5px; line-height: 1.75; color: var(--tk-text); white-space: pre; }
+.pat-prob {
+  padding: 5px 11px; border-radius: var(--r-2); border: 1px solid var(--tk-line);
+  background: var(--tk-bg2); color: var(--tk-dim); font-size: var(--fs-sm);
+  transition: all var(--dur-1);
+}
+button.pat-prob:hover { color: var(--tk-text); border-color: var(--tk-accent); }
+.pat-prob[data-solved] { color: var(--tk-ok); border-color: var(--tk-okLine); background: var(--tk-okBg); }
+.pat-prob-ext { color: var(--tk-faint); border-style: dashed; cursor: default; }

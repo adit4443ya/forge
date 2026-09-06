@@ -29,7 +29,7 @@ const FEATURES = [
   },
   {
     k: "05", t: "Rapid fire, and estimation",
-    d: `${STATS.rapid} mechanism questions across C++ internals, systems, architecture, compilers, probability and microstructure — one at a time, nothing else on screen: commit out loud, reveal, then see the follow-up where most people come apart. Plus ${STATS.estimates} estimation questions, which make you write your chain of assumptions before showing you a worked one, because those rounds score the structure and not the number.`,
+    d: `${STATS.rapid} mechanism questions across C++ internals, systems, architecture, compilers, probability and microstructure — one at a time, nothing else on screen: commit out loud, reveal, then see the follow-up where most people come apart. Plus ${STATS.estimates} estimation questions that make you write your chain of assumptions before showing you a worked one, ${STATS.cppConcepts} C++ concepts with the mechanism and the follow-ups, and ${STATS.patterns} patterns each linked to the problems that need it.`,
   },
   {
     k: "06", t: "Your progress is yours",
@@ -44,6 +44,7 @@ const NUMBERS = [
   { n: STATS.labs, l: `guided labs · ${STATS.labSteps} steps you actually run` },
   { n: STATS.guides, l: `long-form guides · ${Math.round(STATS.guideWords / 1000)}k words` },
   { n: STATS.rapid + STATS.questions + STATS.estimates, l: "recall, rapid-fire and estimation" },
+  { n: STATS.patterns, l: "patterns, each linked to the problems that need it" },
 ];
 
 export default function Landing() {
