@@ -2,6 +2,8 @@
 import { useMemo, useState } from "react";
 import RapidFire from "./RapidFire.jsx";
 import Estimation from "./Estimation.jsx";
+import MentalMath from "./MentalMath.jsx";
+import MarketMaking from "./MarketMaking.jsx";
 import { RAPID } from "@/data/rapidfire.js";
 import { ESTIMATES } from "@/data/estimation.js";
 import { tk, hue as H } from "@/theme/carbon.jsx";
@@ -327,6 +329,8 @@ export default function Practice({ target }) {
     { id: "problems", label: "Problems", count: PROBLEMS.length },
     { id: "rapid", label: "Rapid fire", count: RAPID.length },
     { id: "estimate", label: "Estimation", count: ESTIMATES.length },
+    { id: "mental", label: "Mental math" },
+    { id: "market", label: "Make a market" },
     { id: "drills", label: "Drills", count: BUG_HUNTS.length + OUTPUT_QUIZZES.length },
     { id: "concepts", label: "C++ concepts", count: CPP_CONCEPTS.length },
     { id: "mocks", label: "Mocks", count: 5 },
@@ -338,10 +342,12 @@ export default function Practice({ target }) {
       <div style={{ flexShrink: 0, padding: "0 var(--sp-5)", background: tk.bg, borderBottom: `1px solid ${tk.line}` }}>
         <Tabs items={tabs} value={tab} onChange={setTab} style={{ border: "none" }} />
       </div>
-      <div style={{ flex: 1, minHeight: 0, overflow: tab === "problems" || tab === "rapid" || tab === "estimate" ? "hidden" : "auto" }}>
+      <div style={{ flex: 1, minHeight: 0, overflow: ["problems", "rapid", "estimate", "mental"].includes(tab) ? "hidden" : "auto" }}>
         {tab === "problems" && <ProblemsTab target={target} />}
         {tab === "rapid" && <RapidFire />}
         {tab === "estimate" && <Estimation />}
+        {tab === "mental" && <MentalMath />}
+        {tab === "market" && <MarketMaking />}
         {tab === "drills" && <DrillsTab />}
         {tab === "concepts" && <ConceptsTab />}
         {tab === "mocks" && <MocksTab />}

@@ -88,3 +88,19 @@ deploys without `debug_lab` present.
 could actually say), and `edge` — the follow-up where most people come apart.
 That third field is the point of the format; an entry without a real one is
 trivia, and trivia does not belong here.
+
+## Trading-track material
+
+`src/data/mentalmath.js` and `src/data/marketmaking.js` back two drills that are
+**not** part of a software-engineering loop. Both screens say so before you
+start, and that framing is not decoration — a candidate who spends weeks on
+mental math instead of C++ and systems has been actively misled. Keep the
+scoping note if you touch them.
+
+Mental math is generated, not a bank, so it never repeats; every answer carries
+the technique, because drilling arithmetic without a method makes you slower
+more confidently.
+
+The market-making counterparty is deliberately informed: it trades only when
+your quote is wrong relative to fair value. Every fill is therefore adverse.
+That is the lesson, not a bug — do not "balance" it.

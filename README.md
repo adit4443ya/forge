@@ -10,6 +10,7 @@ revealed against each attempt — so "solved" means something specific.
 ```
 120 problems · 61 guided labs (113 steps) in 11 tracks · 23 guides (80k words)
 239 recall questions · 56 rapid-fire mechanisms · 14 estimation chains
+plus mental-math drills and a market-making game (trading track, clearly scoped)
 ```
 
 ## Run it
