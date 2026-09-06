@@ -10,7 +10,7 @@ readTime: 45 min
 > [!IMPORTANT]
 > **TL;DR — what you must remember:** AArch64 is a clean RISC ISA: **31 GPRs** (W=32 / X=64, writing W zeroes the top half), **AAPCS64** passes args in X0–X7, **addressing modes** fold pointer arithmetic (pre/post-index = free increments), and the **NZCV flags** drive branchless **CSEL/CCMP**. Its sharpest edge is the **weak memory model** — acquire/release map to **LDAR/STLR**, and you reach for **DMB / LSE atomics** exactly where x86 would be implicitly ordered.
 
-You are joining the **ARM LLVM team at Qualcomm**. Everything you generate, optimize, and debug will target this ISA. This guide covers AArch64 the way a backend engineer needs it — registers, calling convention, addressing modes, conditional execution, and the weak memory model — with the LLVM mapping at every step.
+You are working on an **AArch64 LLVM backend**. Everything you generate, optimize and debug targets this ISA. This guide covers AArch64 the way a backend engineer needs it — registers, calling convention, addressing modes, conditional execution, and the weak memory model — with the LLVM mapping at every step.
 
 ---
 
@@ -138,7 +138,7 @@ Condition codes: `EQ NE CS/HS CC/LO MI PL VS VC HI LS GE LT GT LE AL`. Signed co
 
 ## CSEL Family — Branchless Codegen
 
-This is the AArch64 answer to your **Godbolt ternary-vectorization story** from the Qualcomm interview:
+This is the AArch64 answer to the classic **ternary-vectorization** question — the one you can demonstrate on Godbolt in thirty seconds:
 
 ```asm
 csel  x0, x1, x2, ge   // x0 = (ge) ? x1 : x2

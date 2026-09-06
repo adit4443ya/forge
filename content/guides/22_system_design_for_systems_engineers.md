@@ -1,6 +1,6 @@
 <!--
 category: Interview Preparation
-tags: System Design, Order Book, Feed Handler, Async Logging, Cache, Time Series, Rate Limiter, Timer Wheel, Build Cache, Low Latency, Throughput, Google Design Interview, HFT Design Interview
+tags: System Design, Order Book, Feed Handler, Async Logging, Cache, Time Series, Rate Limiter, Timer Wheel, Build Cache, Low Latency, Throughput, Distributed Systems Design, Low Latency Design
 difficulty: Advanced
 readTime: 45 min
 -->
@@ -8,7 +8,7 @@ readTime: 45 min
 # System Design for Systems Engineers
 
 > [!IMPORTANT]
-> **TL;DR — what you must remember:** Two different interviews share the name "system design". The **Google-style** round scales a service across machines: APIs, storage, consistency, sharding, failure of any component, capacity estimates. The **HFT-style** round shrinks a system onto one machine, often one core: a latency budget in nanoseconds, data structures chosen by cache behaviour, a threading model with no sharing, determinism and replay. Both reward the same habit: **state the requirements as numbers, sketch the data path, go deep on the hot path, name the failure modes, and say what you would measure.** This guide has seven designs you should be able to draw from memory, each with its numbers, structures, threading, failures and measurements, and a rubric for running either kind of interview.
+> **TL;DR — what you must remember:** Two different interviews share the name "system design". The **distributed-systems** round scales a service across machines: APIs, storage, consistency, sharding, failure of any component, capacity estimates. The **HFT-style** round shrinks a system onto one machine, often one core: a latency budget in nanoseconds, data structures chosen by cache behaviour, a threading model with no sharing, determinism and replay. Both reward the same habit: **state the requirements as numbers, sketch the data path, go deep on the hot path, name the failure modes, and say what you would measure.** This guide has seven designs you should be able to draw from memory, each with its numbers, structures, threading, failures and measurements, and a rubric for running either kind of interview.
 
 ---
 
@@ -70,7 +70,7 @@ Vocabulary that signals competence in a systems round: cache line, line utilizat
 
 **Measure.** Hot-path cost per log call (`perf/04` rules), drop counter, end-to-end delay from record to disk.
 
-## 2.4 In-memory cache with expiry and concurrency (Google-style single node, then sharded)
+## 2.4 In-memory cache with expiry and concurrency (distributed-systems single node, then sharded)
 
 **Numbers.** 1M ops/s, 100 GB working set per node, p99 < 1 ms, N reader threads.
 
@@ -98,7 +98,7 @@ Vocabulary that signals competence in a systems round: cache line, line utilizat
 
 **Rate limiter.** Token bucket per key: capacity, refill rate, last-refill timestamp; a request costs one token; refill lazily on access using the elapsed time; state in a hash table keyed by client. For a distributed limiter: per-node buckets with periodic reconciliation, or a central counter with sloppy quotas; state the accuracy you give up. Measure: decision latency (nanoseconds if single-machine), false rejects under skew.
 
-## 2.7 A distributed build cache for a compiler team (Google-style)
+## 2.7 A distributed build cache for a compiler team (distributed-systems)
 
 **Numbers.** 7,500 TUs per build (`bigcode/01`), thousands of developers, 30% of compiles unchanged day to day; artifacts 100 KB–100 MB.
 
@@ -112,7 +112,7 @@ Vocabulary that signals competence in a systems round: cache line, line utilizat
 
 # PART 3 — THE TWO RUBRICS
 
-| Dimension | Google-style round wants | HFT-style round wants |
+| Dimension | Distributed-systems round wants | Low-latency round wants |
 |---|---|---|
 | Scope | many machines, users, regions | one machine, one core, one queue |
 | Numbers | QPS, storage, bandwidth, growth | ns per message, bytes per line, p99.9 |
@@ -137,7 +137,7 @@ The SPSC queue is bounded; the producer never blocks. Choose: drop with a counte
 ### Q: How do you make a trading system deterministic and why?
 Single-threaded ownership of state, inputs recorded with sequence numbers and timestamps, no wall-clock reads in logic (inject time), no unordered iteration. Replay of a recorded day must reproduce every decision bit-for-bit; that is how you debug production and test changes.
 
-### Q: Google asks you to design a URL shortener; you are a systems person. How do you shine?
+### Q: You are asked to design a URL shortener and you are a systems person. How do you shine?
 Do the standard design (API, key generation, storage, caching, redirects) *and* bring the systems depth where it matters: the read path's tail latency (cache locality, connection reuse, no allocation per request), capacity math to the byte, and honest failure analysis. Depth on the hot path is your differentiator; do not skip the breadth.
 
 ### Q: Why an intrusive list for orders at a price level?
@@ -152,4 +152,4 @@ Per-message-type latency histograms with p99.9 and max; level-array occupancy an
 
 - The lab measurements the numbers come from: `cache/02` (miss cost), `cache/03` (layout), `concurrency/02` (SPSC), `systems/03`, `systems/05` (wait costs), `perf/05` (tails), `bigcode/01` (build sizes).
 - Public exchange protocol specifications (sequence numbers, snapshots) for 2.1–2.2; the Linux man pages cited in [Guide 18](#guide/18).
-- For the Google-style rubric: Google's published interview guidance describes design rounds as assessing the ability to design scalable systems under ambiguity; the specifics above are standard distributed-systems material (consistent hashing, content-addressed storage, single-flight), not company-specific claims.
+- For the distributed-systems rubric: large-scale employers' published interview guidance describes design rounds as assessing the ability to design scalable systems under ambiguity; the specifics above are standard distributed-systems material (consistent hashing, content-addressed storage, single-flight), not company-specific claims.

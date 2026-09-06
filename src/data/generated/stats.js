@@ -7,7 +7,7 @@ export const STATS = {
  "labs": 61,
  "tracks": 11,
  "guides": 23,
- "guideWords": 80245,
+ "guideWords": 80298,
  "questions": 239,
  "roles": 3,
  "competencies": 21,

@@ -1,11 +1,11 @@
 <!--
-category: ML Compilers & GPU Systems
-tags: NVIDIA, Verification, Fuzzing, Alive2, Testing, PTX, Compute-Sanitizer
+category: Compiler Engineering & Tooling
+tags: Verification, Fuzzing, Alive2, Translation Validation, Csmith, creduce, Sanitizers, Differential Testing
 difficulty: Advanced
 readTime: 30 min
 -->
 
-# PART 1 — NVIDIA Compiler Verification Engineer: Role Reframe
+# Compiler Verification: proving a compiler correct
 
 > [!IMPORTANT]
 > **TL;DR — what you must remember:** Compiler verification answers *"is the compiler correct?"*, not *"write a pass."* The toolbox: **differential / fuzz testing** (Csmith, random IR), **translation validation** (Alive2 proving InstCombine peepholes), **sanitizers** (compute-sanitizer for GPU), and **shrinking** failures with `creduce` / `bugpoint`. You're paid to break the compiler methodically and file minimal, reproducible bugs.
@@ -22,21 +22,21 @@ You're responsible for:
 - Fuzzing compiler pipelines
 - Stress testing edge cases in codegen, register allocation, vectorization
 
-This is actually a sophisticated role. A bad compiler verification engineer just runs test suites. A great one **thinks like an adversary** — where would this compiler generate wrong code and how would I catch it before it ships to millions of GPUs?
+This is actually a sophisticated role. A bad compiler verification engineer just runs test suites. A great one **thinks like an adversary** — where would this compiler generate wrong code and how would I catch it before it ships to everyone who compiles with it?
 
 ---
 
-## How Swapnil's GPU Compiler Background Affects Tomorrow
+## Why this is asked of compiler engineers, not just testers
 
-He's screening you from a GPU compiler perspective even for a verification role — because at NVIDIA, verification engineers for the compiler need to deeply understand what the compiler is doing to know where it could go wrong.
+Verification interviews screen from a *compiler* perspective even though the job is testing, because you cannot decide where a compiler might go wrong without understanding what it is doing. Everything you know about the pipeline stays relevant; the angle shifts.
 
-So: your OpenMP offloading knowledge, CUDA execution model, LLVM pipeline understanding — all still fully relevant. The angle shifts slightly:
+Instead of "how do you build this" the question becomes **"how do you break this, and how do you prove it is broken."**
 
-Instead of "how do you build this" it becomes "how do you break this and prove it's broken."
+That reframing is the whole skill. A weak verification engineer runs the existing test suite. A strong one reasons about which transformations have the most room to be wrong, constructs inputs that land there, and reduces a failure to something a maintainer can act on in minutes.
 
 ---
 
-## Role-Specific Questions to Expect
+## Questions to expect
 
 **Q: How would you verify that a compiler optimization is semantics-preserving?**
 

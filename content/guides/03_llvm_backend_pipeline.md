@@ -10,7 +10,7 @@ readTime: 40 min
 > [!IMPORTANT]
 > **TL;DR — what you must remember:** After mid-end opts, IR flows through **instruction selection** (SelectionDAG per-block vs GlobalISel whole-function), **register allocation** (live intervals → interference → greedy coloring + spill/split), then **scheduling and emission**. SelectionDAG is the mature default; GlobalISel — AArch64's flagship — is global, faster at `-O0`, and MIR-based. TableGen patterns drive most of isel. Trace one instruction end-to-end and you understand the whole backend.
 
-This is a production-grade reference covering the LLVM backend pipeline in the depth required for a compiler backend engineering interview (Qualcomm, NVIDIA, AMD, Meta, Google). Every section includes concrete examples, internal LLVM mechanics, and targeted Q&A.
+This is a production-grade reference covering the LLVM backend pipeline in the depth required for a compiler backend engineering interview. Every section includes concrete examples, internal LLVM mechanics, and targeted Q&A.
 
 > This guide is **target-independent** — it covers the shared CodeGen machinery. For how these stages become concrete on ARM, see [AArch64 Architecture](#guide/13) (registers, addressing modes, flags, weak memory) and [The AArch64 Backend + Onboarding](#guide/15/part-2-what-makes-the-aarch64-target-special) (the actual `llvm/lib/Target/AArch64/` code, GlobalISel, scheduling models).
 

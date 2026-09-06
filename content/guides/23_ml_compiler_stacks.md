@@ -5,6 +5,7 @@ difficulty: Advanced
 readTime: 45 min
 -->
 
+# ML Compiler Stacks: XLA, PyTorch 2.0, Triton and MLIR
 > [!IMPORTANT]
 > **TL;DR — what you must remember:** Modern ML compilers lower a high-level graph to fused hardware kernels through a stack of IRs: **TF → XLA** (HLO), **PyTorch 2.0** (Dynamo → AOTAutograd → Inductor), **Triton** (block-level Python → PTX), and **MLIR** (the dialect-based meta-framework everything is converging on). The shared idea is **progressive lowering**, with **operator fusion** and **tiling** as the dominant performance wins.
 
@@ -27,7 +28,7 @@ readTime: 45 min
 
 ---
 
-## PyTorch 2.0 Compile Stack — Most Important for Qualcomm
+## PyTorch 2.0 Compile Stack
 
 This is what Rishabh told you to study. Here it is precisely.
 
@@ -71,7 +72,7 @@ model = torch.compile(model)  # That's it. Everything above happens automaticall
 
 ---
 
-## Triton — The Most Important One for Both Interviews
+## Triton — the one worth knowing best
 
 **What problem Triton solves:**
 - Writing high-performance CUDA kernels requires expert knowledge of memory hierarchies, warp scheduling, tensor cores
@@ -213,7 +214,7 @@ linalg.matmul
 
 ---
 
-## Probable Qualcomm Round 2 Questions From These Topics
+## Questions these topics invite
 
 **On PyTorch compile stack:**
 - **torch.compile**: JIT (Just-In-Time) compilation. It traces at runtime, handles dynamic Python via "Guards", and uses Inductor/Triton to generate code. It still depends on the Python runtime.

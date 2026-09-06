@@ -922,7 +922,7 @@ export const GUIDES = [
   "tags": "Backend, ISel, SelectionDAG, GlobalISel, Register Allocation, TableGen, Scheduling",
   "difficulty": "Advanced",
   "readTime": "40 min",
-  "words": 5551
+  "words": 5546
  },
  {
   "num": "04",
@@ -1801,9 +1801,9 @@ export const GUIDES = [
  },
  {
   "num": "09",
-  "name": "09_nvidia_verification_engineering",
-  "file": "09_nvidia_verification_engineering.md",
-  "title": "PART 1 — NVIDIA Compiler Verification Engineer: Role Reframe",
+  "name": "09_compiler_verification",
+  "file": "09_compiler_verification.md",
+  "title": "Compiler Verification: proving a compiler correct",
   "headings": [
    {
     "level": 2,
@@ -1812,26 +1812,26 @@ export const GUIDES = [
    },
    {
     "level": 2,
-    "text": "How Swapnil's GPU Compiler Background Affects Tomorrow",
-    "id": "how-swapnil-s-gpu-compiler-background-affects-tomorrow"
+    "text": "Why this is asked of compiler engineers, not just testers",
+    "id": "why-this-is-asked-of-compiler-engineers-not-just-testers"
    },
    {
     "level": 2,
-    "text": "Role-Specific Questions to Expect",
-    "id": "role-specific-questions-to-expect"
+    "text": "Questions to expect",
+    "id": "questions-to-expect"
    }
   ],
-  "category": "ML Compilers & GPU Systems",
-  "tags": "NVIDIA, Verification, Fuzzing, Alive2, Testing, PTX, Compute-Sanitizer",
+  "category": "Compiler Engineering & Tooling",
+  "tags": "Verification, Fuzzing, Alive2, Translation Validation, Csmith, creduce, Sanitizers, Differential Testing",
   "difficulty": "Advanced",
   "readTime": "30 min",
-  "words": 1243
+  "words": 1278
  },
  {
   "num": "10",
-  "name": "10_qualcomm_backend_interview",
-  "file": "10_qualcomm_backend_interview.md",
-  "title": "Qualcomm Compiler Systems Interview: Deep Dive Preparation",
+  "name": "10_middle_end_and_backend_qa",
+  "file": "10_middle_end_and_backend_qa.md",
+  "title": "Compiler Middle-End and Backend: the questions, answered",
   "headings": [
    {
     "level": 2,
@@ -2039,11 +2039,11 @@ export const GUIDES = [
     "id": "when-does-sve-actually-help-a-qualcomm-workload-over-neon-and-what-s-the-codegen-cost"
    }
   ],
-  "category": "Interview Prep & Tooling",
+  "category": "LLVM & Compiler Infrastructure",
   "tags": "Qualcomm, SSA, Dominance, LICM, GVN, SCCP, Alias Analysis, Backend, TableGen, Register Allocation, Scheduling, RISC-V, XQCI",
   "difficulty": "Advanced",
   "readTime": "35 min",
-  "words": 3775
+  "words": 3787
  },
  {
   "num": "11",
@@ -2507,7 +2507,7 @@ export const GUIDES = [
   "tags": "AArch64, ARM, ISA, AAPCS64, Registers, Calling Convention, Memory Model, Atomics, CSEL",
   "difficulty": "Advanced",
   "readTime": "45 min",
-  "words": 1996
+  "words": 2001
  },
  {
   "num": "14",
@@ -2698,7 +2698,7 @@ export const GUIDES = [
   "tags": "AArch64 Backend, GlobalISel, TableGen, SchedModel, llvm-mca, lit, Onboarding, Qualcomm, First 90 Days",
   "difficulty": "Advanced",
   "readTime": "45 min",
-  "words": 1777
+  "words": 1782
  },
  {
   "num": "16",
@@ -3236,8 +3236,8 @@ export const GUIDES = [
    },
    {
     "level": 3,
-    "text": "Q: Google asks you to design a URL shortener; you are a systems person. How do you shine?",
-    "id": "q-google-asks-you-to-design-a-url-shortener-you-are-a-systems-person-how-do-you-shine"
+    "text": "Q: You are asked to design a URL shortener and you are a systems person. How do you shine?",
+    "id": "q-you-are-asked-to-design-a-url-shortener-and-you-are-a-systems-person-how-do-you-shine"
    },
    {
     "level": 3,
@@ -3256,16 +3256,16 @@ export const GUIDES = [
    }
   ],
   "category": "Interview Preparation",
-  "tags": "System Design, Order Book, Feed Handler, Async Logging, Cache, Time Series, Rate Limiter, Timer Wheel, Build Cache, Low Latency, Throughput, Google Design Interview, HFT Design Interview",
+  "tags": "System Design, Order Book, Feed Handler, Async Logging, Cache, Time Series, Rate Limiter, Timer Wheel, Build Cache, Low Latency, Throughput, Distributed Systems Design, Low Latency Design",
   "difficulty": "Advanced",
   "readTime": "45 min",
-  "words": 2144
+  "words": 2146
  },
  {
   "num": "23",
   "name": "23_ml_compiler_stacks",
   "file": "23_ml_compiler_stacks.md",
-  "title": "PART 3 — Code Examples: The Full Stack",
+  "title": "ML Compiler Stacks: XLA, PyTorch 2.0, Triton and MLIR",
   "headings": [
    {
     "level": 2,
@@ -3274,13 +3274,13 @@ export const GUIDES = [
    },
    {
     "level": 2,
-    "text": "PyTorch 2.0 Compile Stack — Most Important for Qualcomm",
-    "id": "pytorch-2-0-compile-stack-most-important-for-qualcomm"
+    "text": "PyTorch 2.0 Compile Stack",
+    "id": "pytorch-2-0-compile-stack"
    },
    {
     "level": 2,
-    "text": "Triton — The Most Important One for Both Interviews",
-    "id": "triton-the-most-important-one-for-both-interviews"
+    "text": "Triton — the one worth knowing best",
+    "id": "triton-the-one-worth-knowing-best"
    },
    {
     "level": 2,
@@ -3299,8 +3299,8 @@ export const GUIDES = [
    },
    {
     "level": 2,
-    "text": "Probable Qualcomm Round 2 Questions From These Topics",
-    "id": "probable-qualcomm-round-2-questions-from-these-topics"
+    "text": "Questions these topics invite",
+    "id": "questions-these-topics-invite"
    },
    {
     "level": 2,
@@ -3332,7 +3332,7 @@ export const GUIDES = [
   "tags": "PyTorch 2.0, Triton, MLIR, Mojo, XLA, AI Compilers",
   "difficulty": "Advanced",
   "readTime": "45 min",
-  "words": 3489
+  "words": 3488
  }
 ];
 export const guideByNum = (n) => GUIDES.find((g) => g.num === String(n));

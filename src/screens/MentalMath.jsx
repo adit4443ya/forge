@@ -40,8 +40,13 @@ export default function MentalMath() {
     const card = deck[i];
     if (!card) return;
     const ok = correct(entry, card.a);
-    setLog((l) => [...l, { ...card, given: entry, ok, ms: Date.now() - startedAt.current }]);
-    startedAt.current = Date.now();
+    /* Read the clock EAGERLY. A state updater is called lazily by React, so
+       computing the elapsed time inside it would run after the reset below and
+       measure zero for every question. */
+    const now = Date.now();
+    const ms = now - startedAt.current;
+    startedAt.current = now;
+    setLog((l) => [...l, { ...card, given: entry, ok, ms }]);
     setEntry("");
     if (i + 1 >= deck.length) setRunning(false); else setI(i + 1);
   }, [deck, i, entry]);
@@ -97,7 +102,7 @@ export default function MentalMath() {
   /* ── results ───────────────────────────────────────────────────────── */
   if (!running) {
     const right = log.filter((l) => l.ok).length;
-    const avg = log.length ? Math.round(log.reduce((a, l) => a + l.ms, 0) / log.length / 100) / 10 : 0;
+    const avg = log.length ? (log.reduce((a, l) => a + l.ms, 0) / log.length / 1000).toFixed(1) : "0.0";
     return (
       <div className="pane-pad pane-narrow">
         <H1>{right} / {log.length}</H1>

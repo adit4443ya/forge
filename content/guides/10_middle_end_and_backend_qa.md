@@ -1,16 +1,16 @@
 <!--
-category: Interview Prep & Tooling
+category: LLVM & Compiler Infrastructure
 tags: Qualcomm, SSA, Dominance, LICM, GVN, SCCP, Alias Analysis, Backend, TableGen, Register Allocation, Scheduling, RISC-V, XQCI
 difficulty: Advanced
 readTime: 35 min
 -->
 
-# Qualcomm Compiler Systems Interview: Deep Dive Preparation
+# Compiler Middle-End and Backend: the questions, answered
 
 > [!IMPORTANT]
 > **TL;DR — what you must remember:** Qualcomm designs **both the silicon and the compiler**. Two targets dominate: **Hexagon DSP** (VLIW — the *compiler* is the scheduler; it bundles independent ops into packets, with HVX as the wide vector unit) and **Oryon** (a wide custom-ARM core, Snapdragon X Elite). Mobile flips the objective function: **code size and power often beat peak throughput**, so `-Os`/`-O2` frequently win over `-O3`. Expect SSA/dominance, pass internals, register allocation, **AArch64 codegen, addressing modes, and weak-memory** questions — and a top-5 upstream contributor's bar for patch quality.
 
-This document contains highly detailed, production-grade answers to deep compiler backend and middle-end engineering questions, explicitly tailored for a Qualcomm technical interview panel (specifically involving back-end/RISC-V and LLVM Pass engineers).
+Production-grade answers to deep compiler middle-end and backend questions, at the depth a panel of pass and backend engineers will push you to. Each answer states the mechanism first, then the edge case that separates a rehearsed answer from an understood one.
 
 ---
 

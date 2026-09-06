@@ -10,7 +10,7 @@ readTime: 45 min
 > [!IMPORTANT]
 > **TL;DR — what you must remember:** The AArch64 backend (`llvm/lib/Target/AArch64/`) is LLVM's **GlobalISel flagship**: TableGen describes instructions, the **NZCV flag register must be scheduled around**, **SchedModels** encode per-core CPU tuning, and **TTI cost models** are a product surface. The daily loop is `edit → llc → update_llc_test_checks → FileCheck`. Onboarding = read codegen tests until you know the house style.
 
-Guide 03 gave you the target-independent backend pipeline. This guide is the **AArch64-specific layer**: where the code lives, what makes this target unusual, the workflow tools you'll use daily at Qualcomm, and a concrete week-by-week ramp-up plan so you walk in on July 7th already knowing the terrain.
+Guide 03 gave you the target-independent backend pipeline. This guide is the **AArch64-specific layer**: where the code lives, what makes this target unusual, the workflow tools you will use daily on any AArch64 backend team, and a concrete week-by-week ramp-up plan so you walk in on July 7th already knowing the terrain.
 
 ---
 
@@ -92,7 +92,7 @@ Run `llc -mtriple=aarch64 -debug-pass=Structure` once and read the list. The sta
 
 ## 4. The Cost Model Is a Product Surface
 
-`AArch64TargetTransformInfo` answers the mid-end's questions: vector op costs, gather/scatter viability, unroll factors, `getMinVectorRegisterBitWidth`. Qualcomm cares because **mis-priced costs = lost benchmarks on Snapdragon**. A very plausible early task: "this loop vectorizes on Neoverse but not on Oryon — find out why" → answer lives in TTI + SchedModel interplay.
+`AArch64TargetTransformInfo` answers the mid-end's questions: vector op costs, gather/scatter viability, unroll factors, `getMinVectorRegisterBitWidth`. Backend teams care because **mis-priced costs = lost benchmarks on Snapdragon**. A very plausible early task: "this loop vectorizes on Neoverse but not on Oryon — find out why" → answer lives in TTI + SchedModel interplay.
 
 ---
 
