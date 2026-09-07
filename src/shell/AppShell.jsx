@@ -1,5 +1,5 @@
 "use client";
-import { useCallback, useEffect, useMemo, useState } from "react";
+import { Suspense, useCallback, useEffect, useMemo, useState } from "react";
 import { useRouter, usePathname, useSearchParams } from "next/navigation";
 import Link from "next/link";
 import { tk, hue as H, useTheme } from "@/theme/carbon.jsx";
@@ -29,6 +29,18 @@ const IconBtn = ({ onClick, title, children, active }) => (
     {children}
   </button>
 );
+
+/* useSearchParams forces whatever renders it under a Suspense boundary, and
+   anything inside a boundary loses its server-rendered <script> tags — which is
+   how the guide and lab pages were silently dropping their structured data.
+   So the boundary lives here, around the one component that needs it, instead
+   of around the whole app in the layout. Page content now renders outside any
+   boundary and reaches the HTML intact. */
+function TargetBridge({ onTarget }) {
+  const params = useSearchParams();
+  useEffect(() => { onTarget(targetFromParams(params)); }, [params, onTarget]);
+  return null;
+}
 
 function RoleSwitch({ role, setRole }) {
   const [open, setOpen] = useState(false);
@@ -72,14 +84,16 @@ function RoleSwitch({ role, setRole }) {
 export default function AppShell({ children }) {
   const router = useRouter();
   const pathname = usePathname();
-  const params = useSearchParams();
   const prog = useProgress();
   const { mode, toggle } = useTheme();
   const [paletteOpen, setPaletteOpen] = useState(false);
 
   const surface = SURFACES.find((s) => pathname?.startsWith(s.href))?.id || "today";
   const role = prog.role || "compiler";
-  const target = useMemo(() => targetFromParams(params), [params]);
+  /* Starts null and is filled on the client, which is exactly what happened
+     before: on a statically rendered page useSearchParams has nothing to read
+     during prerender either. */
+  const [target, setTarget] = useState(null);
 
   const setRole = useCallback((r) => progressStore.setRole(r), []);
   const go = useCallback((s, t = null) => router.push(hrefFor(s, t)), [router]);
@@ -110,6 +124,7 @@ export default function AppShell({ children }) {
 
   return (
     <NavCtx.Provider value={nav}>
+      <Suspense fallback={null}><TargetBridge onTarget={setTarget} /></Suspense>
       <div className="shell">
         <header className="topbar">
           <Link className="press brand" href="/today" title="Home">
@@ -154,7 +169,9 @@ export default function AppShell({ children }) {
         </div>
 
         {paletteOpen && <CommandPalette open onClose={() => setPaletteOpen(false)} nav={nav} />}
-        <Scratchpad />
+        {/* Scratchpad reads the search params too, so it carries its own boundary
+            rather than pulling one back around the page content. */}
+        <Suspense fallback={null}><Scratchpad /></Suspense>
         <RolePicker />
       </div>
     </NavCtx.Provider>

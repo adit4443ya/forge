@@ -88,7 +88,7 @@ export const SESSION_TEMPLATES = [
 export const ROLE_SESSIONS = {
   compiler: {
     A: {
-      purpose: "Coding rounds are real for compiler loops too — Google-style ones especially. This is the session that keeps that half sharp.",
+      purpose: "Coding rounds are real for compiler loops too — the generalist algorithmic kind especially. This is the session that keeps that half sharp.",
       steps: {
         1: { detail: "From your tier. Compiler loops favour graphs, trees and parsing — state the invariant before you type." },
         2: { detail: "One tier up. Narrate it. The bar is explaining the transformation, not just passing the tests." },

@@ -13,6 +13,7 @@ export default function HftModule() {
   return (
     <div>
       <S title="What HFT software roles actually test">
+        {/* content-check:sourced — every claim below is quoted from the linked public posting or page */}
         <B type="interview">
           Evidence, not stereotypes. From the firms' own postings and pages (Sep 2026): <strong>HRT</strong> asks for C/C++ or Python, CS fundamentals,
           "UNIX operating systems (we use Linux), system/processor performance, and network communication"; its core-dev team promises
@@ -22,9 +23,10 @@ export default function HftModule() {
           asks for C/C++, algorithms, Linux, and prefers TCP/IP and Ethernet knowledge. <strong>Jane Street</strong> states it does not ask software
           engineers mental math or logic puzzles: long collaborative coding in the language you know best.
         </B>
+        {/* content-check:end */}
         <G cols={2} items={[
           { t: "The spine (every firm)", d: "C++ depth (object model, lifetimes, templates, atomics) · Linux internals · CPU, cache and memory behaviour · networking · clean algorithms explained while you code." },
-          { t: "Firm-specific extras", d: "Mental-math or probability screens at some market-making firms (Optiver-style); FPGA/hardware familiarity for execution teams; Python for research tooling. Prepare these per application, not up front." },
+          { t: "Firm-specific extras", d: "Mental-math or probability screens at some market-making firms; FPGA/hardware familiarity for execution teams; Python for research tooling. Prepare these per application, not up front." },
           { t: "What they are really scoring", d: "Can you reason from mechanism to measurement? 'It is slow because of X, here is the counter that proves it, here is the fix and the number after.' Recited tricks without evidence score zero." },
           { t: "Your edge", d: "You read what the compiler emitted and you can prove a change with counters. Lead with that: it is rarer than another lock-free queue." },
         ]} />
@@ -115,6 +117,7 @@ export default function HftModule() {
           { t: "Design", d: "Order book, feed handler, log pipeline, cache, tick store, timer wheel: Library guide 22. Whiteboard the order book from memory in 20 minutes, then run a timed design mock (Mock Interviews module)." }, 
           { t: "Microarchitecture and method", d: "Guide 19 (x86 field guide) and Guide 20 (the investigation playbook) turn these answers into a procedure you can run on a real box." },
         ]} />
+        {/* content-check:sourced */}
         <B type="tip">Mental math and probability: prepare a small module only when applying to a firm known to screen for it (some market makers do for certain tracks). Jane Street's own page says its engineering loop does not.</B>
         <P style={{ marginTop: 12 }}>
           Sources: <a href="https://www.hudsonrivertrading.com/work-at-hrt/" target="_blank" rel="noopener noreferrer">HRT · Work at HRT</a> ·{" "}
@@ -122,6 +125,7 @@ export default function HftModule() {
           <a href="https://job-boards.greenhouse.io/gravitonresearchcapital/jobs/4004920002" target="_blank" rel="noopener noreferrer">Graviton · Software Engineer (C++)</a> ·{" "}
           <a href="https://www.janestreet.com/preparing-for-a-software-engineering-interview/" target="_blank" rel="noopener noreferrer">Jane Street · Preparing for a Software Engineering Interview</a>
         </P>
+        {/* content-check:end */}
       </S>
     </div>
   );

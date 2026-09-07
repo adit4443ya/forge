@@ -33,7 +33,7 @@ export const PHASES = [
     id: 2, name: "Codegen and concurrency", weeks: [8, 13],
     goal: "Read and steer -O2 codegen; lock-free SPSC that passes TSan and a stress test; HFT-specific depth (Linux, networking, x86).",
     tracks: ["codegen", "concurrency"], dsaTiers: [1, 2], guides: ["02", "14", "17", "18", "19"],
-    milestone: "First full Google-style mock; SPSC queue measured and explained; tier 2 started.",
+    milestone: "First full generalist coding mock; SPSC queue measured and explained; tier 2 started.",
   },
   {
     id: 3, name: "Systems and Arm", weeks: [14, 19],
@@ -43,7 +43,7 @@ export const PHASES = [
   },
   {
     id: 4, name: "Interview loop", weeks: [20, 26],
-    goal: "Weekly mocks alternating Google-style and HFT-style; capstone 2; stories rewritten for both targets; applications.",
+    goal: "Weekly mocks alternating generalist SWE and HFT formats; capstone 2; stories rewritten for both targets; applications.",
     tracks: ["capstones"], dsaTiers: [2, 3], guides: ["12", "20", "22"],
     milestone: "Four full mocks scored; capstone 2 done; HFT applications around month 4, Google around month 5.",
   },
@@ -59,7 +59,7 @@ export const PATHS = [
   { id: "hft", name: "HFT / low-latency software engineer", color: "orange",
     why: "C++ depth, Linux, CPU performance, networking, clean algorithms in long collaborative sessions. Evidence: HRT, Optiver, Graviton postings; Jane Street's own prep page.",
     guides: ["17", "18", "19", "07", "22"], modules: ["hft", "arch", "cpp_mem", "cpp_con", "link", "mocks"], dsa: ["problems", "cpp"], tracks: ["perf", "cache", "concurrency", "systems"] },
-  { id: "google", name: "Google-style SWE / compiler team", color: "accent",
+  { id: "google", name: "Generalist SWE / compiler team", color: "accent",
     why: "Generalist loop: timed coding, one design round at mid level, behavioral. Role knowledge is a tie-breaker, coding fluency is the gate.",
     guides: ["01", "02", "03", "22", "12"], modules: ["ssa", "llvm", "passes", "pipeline", "behav", "mocks", "review"], dsa: ["problems", "patterns"], tracks: ["perf", "codegen"] },
   { id: "perfeng", name: "Performance engineer in a huge codebase", color: "emerald",

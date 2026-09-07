@@ -3,12 +3,47 @@ import { STATS } from "@/data/generated/stats.js";
 import { ROLES } from "@/data/roles.js";
 import { CLOUD_ENABLED } from "@/lib/supabase/config";
 import { REPO } from "@/data/links.js";
+import { GUIDES } from "@/data/generated/guides.js";
+import { LAB_INDEX, LAB_TRACKS } from "@/data/generated/labs.js";
+import { abs, jsonLd } from "@/lib/seo.js";
 
 export const metadata = {
   title: "Forge — practice that behaves like the interview",
   description:
     `${STATS.problems} problems behind timed hint gates, ${STATS.labs} labs you run on your own machine, ` +
     `and ${STATS.guides} long-form guides. For engineers targeting compiler, systems and high-frequency-trading roles.`,
+  alternates: { canonical: "/" },
+};
+
+
+/* Grouped once at module scope: this is generated content, identical for every
+   request, so there is nothing to recompute per render. */
+const groupBy = (rows, key) => {
+  const m = new Map();
+  for (const r of rows) {
+    const k = key(r);
+    if (!m.has(k)) m.set(k, []);
+    m.get(k).push(r);
+  }
+  return [...m.entries()];
+};
+const GUIDE_GROUPS = groupBy(GUIDES, (g) => g.category);
+const LAB_GROUPS = groupBy(LAB_INDEX, (l) => l.track)
+  .map(([id, list]) => [LAB_TRACKS.find((t) => t.id === id) || { id, title: id }, list])
+  .sort((a, b) => (a[0].order ?? 99) - (b[0].order ?? 99));
+
+const DIRECTORY_LD = {
+  "@context": "https://schema.org",
+  "@type": "ItemList",
+  name: "Forge guides and labs",
+  itemListElement: [
+    ...GUIDES.map((g, i) => ({
+      "@type": "ListItem", position: i + 1, name: g.title, url: abs(`/learn/guide/${g.num}`),
+    })),
+    ...LAB_INDEX.map((l, i) => ({
+      "@type": "ListItem", position: GUIDES.length + i + 1, name: l.title, url: abs(`/labs/${l.id}`),
+    })),
+  ],
 };
 
 const FEATURES = [
@@ -59,6 +94,7 @@ export default function Landing() {
         <nav className="lp-nav-links">
           <a href="#how">How it works</a>
           <a href="#roles">Roles</a>
+          <a href="#contents">Contents</a>
           <a href={REPO.forge} target="_blank" rel="noopener noreferrer">Source ↗</a>
         </nav>
         <Link className="lp-cta-sm press" href="/today">Open the app →</Link>
@@ -151,6 +187,49 @@ export default function Landing() {
           <div><span className="mono">localStorage</span><small>works with no backend at all</small></div>
           <div><span className="mono">CRDT merge</span><small>devices join, never overwrite</small></div>
         </div>
+      </section>
+
+      {/* A real, crawlable index. Everything else on the site is a client
+          screen behind a shell, so without this the guides and labs are
+          reachable only through JavaScript — and they are the pages with the
+          prose worth finding. It doubles as the answer to "what is in here?",
+          which is the first thing a visitor asks. */}
+      <script type="application/ld+json" dangerouslySetInnerHTML={jsonLd(DIRECTORY_LD)} />
+      <section id="contents" className="lp-section lp-directory">
+        <h2 className="lp-h2">Everything in here</h2>
+        <p className="lp-sub">
+          {STATS.guides} guides and {STATS.labs} labs, every one its own page. Browse without signing in.
+        </p>
+
+        <h3 className="lp-dir-h">Guides</h3>
+        {GUIDE_GROUPS.map(([category, list]) => (
+          <div key={category} className="lp-dir-group">
+            <span className="lp-dir-cat mono">{category}</span>
+            <ul className="lp-dir-list">
+              {list.map((g) => (
+                <li key={g.num}>
+                  <Link href={`/learn/guide/${g.num}`}>{g.title}</Link>
+                  <small className="mono">{g.readTime}</small>
+                </li>
+              ))}
+            </ul>
+          </div>
+        ))}
+
+        <h3 className="lp-dir-h">Labs</h3>
+        {LAB_GROUPS.map(([track, list]) => (
+          <div key={track.id} className="lp-dir-group">
+            <span className="lp-dir-cat mono">{track.title}</span>
+            <ul className="lp-dir-list">
+              {list.map((l) => (
+                <li key={l.id}>
+                  <Link href={`/labs/${l.id}`}>{l.title}</Link>
+                  <small className="mono">{l.minutes} min</small>
+                </li>
+              ))}
+            </ul>
+          </div>
+        ))}
       </section>
 
       <footer className="lp-foot">

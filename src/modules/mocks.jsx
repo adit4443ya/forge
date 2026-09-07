@@ -48,7 +48,7 @@ const BEHAVIORAL = [
 const FUND_MODULES = ["cpp_obj", "cpp_tpl", "cpp_mem", "cpp_con", "cpp_misc", "arch", "link", "test", "hft"];
 
 const FORMATS = [
-  { id: "google", name: "Google-style coding", minutes: 45, color: tk.accent, blurb: "Two problems, one from tier 1 and one from tier 2. Talk while you code. No AI, no docs." },
+  { id: "google", name: "Generalist coding", minutes: 45, color: tk.accent, blurb: "Two problems, one from tier 1 and one from tier 2. Talk while you code. No AI, no docs." },
   { id: "hft", name: "HFT fundamentals grill", minutes: 30, color: tk.orange, blurb: "Ten rapid questions on C++, memory, concurrency, Linux and hardware. Answer each in under three minutes, out loud." },
   { id: "design", name: "System design", minutes: 40, color: tk.rose, blurb: "One prompt. Numbers first, then the data path, then the hot path, then failures, then what you would measure." },
   { id: "perf", name: "Performance investigation", minutes: 30, color: tk.emerald, blurb: "One scenario. Narrate the evidence you would collect and the decision tree (Guide 20)." },

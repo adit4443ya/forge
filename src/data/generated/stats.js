@@ -13,5 +13,5 @@ export const STATS = {
  "questions": 239,
  "roles": 3,
  "competencies": 21,
- "generatedAt": "2026-09-06"
+ "generatedAt": "2026-09-07"
 };

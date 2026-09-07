@@ -2,7 +2,7 @@ import Link from "next/link";
 import { CLOUD_ENABLED } from "@/lib/supabase/config";
 import SignInButton from "./SignInButton.jsx";
 
-export const metadata = { title: "Sign in · Forge" };
+export const metadata = { title: "Sign in · Forge", robots: { index: false, follow: true } };
 
 export default async function LoginPage({ searchParams }) {
   const { error } = await searchParams;

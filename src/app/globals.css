@@ -520,6 +520,25 @@ a:hover { text-decoration: underline; text-underline-offset: 3px; }
 .lp-stack-grid span { display: block; color: var(--tk-text); font-size: var(--fs-sm); font-weight: 650; }
 .lp-stack-grid small { display: block; margin-top: 5px; color: var(--tk-faint); font-size: var(--fs-micro); line-height: 1.6; }
 
+/* The contents directory: a plain, dense index. It is deliberately quiet —
+   it is there to be scanned and to be crawlable, not to compete with the
+   sections above it. */
+.lp-directory h3.lp-dir-h {
+  margin: var(--sp-5) 0 var(--sp-2); font-size: var(--fs-sm); font-weight: 650;
+  color: var(--tk-text); letter-spacing: 0.02em;
+}
+.lp-directory h3.lp-dir-h:first-of-type { margin-top: var(--sp-4); }
+.lp-dir-group { display: grid; grid-template-columns: 210px 1fr; gap: var(--sp-3); padding: var(--sp-3) 0; border-top: 1px solid var(--tk-line); }
+.lp-dir-cat { color: var(--tk-faint); font-size: var(--fs-micro); text-transform: uppercase; letter-spacing: 0.08em; padding-top: 3px; }
+.lp-dir-list { list-style: none; margin: 0; padding: 0; display: grid; grid-template-columns: repeat(auto-fill, minmax(260px, 1fr)); gap: 2px var(--sp-3); }
+.lp-dir-list li { display: flex; align-items: baseline; justify-content: space-between; gap: var(--sp-2); padding: 3px 0; min-width: 0; }
+.lp-dir-list a { color: var(--tk-dim); font-size: var(--fs-sm); text-decoration: none; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.lp-dir-list a:hover, .lp-dir-list a:focus-visible { color: var(--tk-accent); text-decoration: underline; }
+.lp-dir-list small { color: var(--tk-faint); font-size: var(--fs-micro); flex: none; }
+@media (max-width: 720px) {
+  .lp-dir-group { grid-template-columns: 1fr; gap: var(--sp-1); }
+}
+
 .lp-foot {
   display: flex; align-items: center; gap: var(--sp-5); flex-wrap: wrap;
   max-width: 1120px; margin: clamp(64px, 9vw, 104px) auto 0;

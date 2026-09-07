@@ -1517,7 +1517,7 @@ public:
     difficulty: "Medium", frequency: "High", leetcode: 206,
     pattern: "Pointer reversal + DLL with HashMap",
     intuition: "Reverse: 3 pointers (prev, curr, next). LRU: HashMap O(1) lookup + DLL O(1) removal/insertion. Sentinel head/tail eliminate null-check edge cases.",
-    keyInsight: "DLL + HashMap = O(1) for ALL LRU operations. Sentinel nodes remove null checks. Most frequently tested linked list combination at Apple/Qualcomm.",
+    keyInsight: "DLL + HashMap = O(1) for ALL LRU operations. Sentinel nodes remove null checks. The most-tested linked-list + hashmap combination there is.",
     approach: "Reverse: save next, redirect, advance. LRU: get→move front. put→insert front, evict tail if overflow.",
     complexity: "Reverse: O(N)/O(1) | LRU: O(1) per op",
     tabCode: `ListNode* reverseList(ListNode* head) {
@@ -3806,7 +3806,7 @@ private:
 ];
 
 // ═══════════════════════════════════════════════════════════════════
-//  NVIDIA BONUS PROBLEMS  (ids 77–81) — Compiler Verification Focus
+//  BONUS PROBLEMS  (ids 77–81) — Compiler Verification Focus
 // ═══════════════════════════════════════════════════════════════════
 // Append these to PROBLEMS at runtime to keep IDs sequential.
 export const NVIDIA_PROBLEMS = [
@@ -3900,12 +3900,12 @@ int dfs(TreeNode* node) {
   {
     id: 81, section: "Linked List", title: "Binary Tree to Doubly Linked List",
     difficulty: "Medium", frequency: "Low", leetcode: 426,
-    pattern: "In-order DFS with thread weaving — NVIDIA's actual coding round problem!",
+    pattern: "In-order DFS with thread weaving — the classic pointer-surgery problem.",
     intuition: "In-order traversal of BST gives sorted order. As we visit each node in-order, weave it into a DLL by linking prev->right=cur and cur->left=prev. Track head and prev pointers.",
-    keyInsight: "This was literally the exact problem given in NVIDIA's compiler intern coding round. Pointer manipulation bugs are what they test. Key: handle head initialization (first in-order node), and circular linking at the end.",
+    keyInsight: "Pointer-manipulation bugs are the whole point of this one: it is a standard code-reading-round shape because every mistake is a silent one. Key: handle head initialization (first in-order node), and circular linking at the end.",
     approach: "1) In-order recursion. 2) At each node: link prev and cur. 3) After traversal: link head and tail circularly.",
     complexity: "Time: O(N) | Space: O(H) recursion",
-    memoCode: `// The BUG-LADEN version NVIDIA gives you to fix:
+    memoCode: `// The BUG-LADEN version to fix:
 // BUG 1: treeToDoublyList called by VALUE, not reference for head/prev
 // BUG 2: Missing null check before dereferencing prev
 // BUG 3: Circular link not established at the end
@@ -4708,7 +4708,7 @@ export const TIPS = [
     ]
   },
   {
-    title: "Systems / Qualcomm / Nvidia Interview Focus",
+    title: "Systems & Compiler Interview Focus",
     tips: [
       "Graph algorithms: DAG scheduling, dependency analysis → Topological Sort + cycle detection.",
       "Register allocation: interval graph coloring (each live range is an interval on a timeline).",
@@ -4737,10 +4737,10 @@ export const TIPS = [
 ];
 
 // ═══════════════════════════════════════════════════════════════════
-//  NVIDIA BUG HUNT — Code Reading & Bug-Finding Exercises
-//  (Based on actual NVIDIA compiler verification interview format)
+//  BUG HUNT — Code Reading & Bug-Finding Exercises
+//  (The code-reading round shape: 100–300 lines of C/C++, find the defects, fix them)
 // ═══════════════════════════════════════════════════════════════════
-export const NVIDIA_BUG_HUNT = [
+export const CODE_READING_BUG_HUNT = [
   {
     id: 1, title: "Dangling Pointer — Return Address of Local",
     category: "Memory Safety", difficulty: "High Probability",
@@ -5082,7 +5082,7 @@ double a = shapes[0]->area();        // ~12.57 — correct virtual dispatch
 ];
 
 // ═══════════════════════════════════════════════════════════════════
-//  NVIDIA OUTPUT QUIZ — Tricky C++ Output Questions
+//  OUTPUT QUIZ — Tricky C++ Output Questions
 // ═══════════════════════════════════════════════════════════════════
 export const NVIDIA_OUTPUT_QUIZ = [
   {
@@ -5387,9 +5387,9 @@ cout << "done";`,
 ];
 
 // ═══════════════════════════════════════════════════════════════════
-//  NVIDIA COMPILER VERIFICATION — Interview Tips
+//  CODE-READING ROUNDS — Interview Tips
 // ═══════════════════════════════════════════════════════════════════
-export const NVIDIA_TIPS = [
+export const CODE_READING_TIPS = [
   {
     title: "🐛 Bug-Reading Framework (5-Step Process)",
     tips: [
@@ -5416,7 +5416,7 @@ export const NVIDIA_TIPS = [
     ]
   },
   {
-    title: "🎯 NVIDIA Round 1 — What You'll Actually Face",
+    title: "🎯 The Code-Reading Round — What You'll Actually Face",
     tips: [
       "Code Reading (HIGH): 100-300 lines C/C++. Understand in 5-10 mins, find bugs, fix them.",
       "Bug Types (HIGH): Dangling ptrs, off-by-one, null deref, memory leaks, value-vs-reference, type errors",
@@ -5472,9 +5472,9 @@ export const NVIDIA_TIPS = [
 //  one company's interview loop; the material is generic code-reading and
 //  C++ semantics practice, so the UI uses these names instead.
 // ═══════════════════════════════════════════════════════════════════
-export const BUG_HUNTS = NVIDIA_BUG_HUNT;
+export const BUG_HUNTS = CODE_READING_BUG_HUNT;
 export const OUTPUT_QUIZZES = NVIDIA_OUTPUT_QUIZ;
 export const EXTRA_PROBLEMS = NVIDIA_PROBLEMS;
-export const INTERVIEW_TIPS = NVIDIA_TIPS;
+export const INTERVIEW_TIPS = CODE_READING_TIPS;
 /* One bank. EXTRA_PROBLEMS fills ids 77-81, which the main list skips. */
 export const ALL_PROBLEMS = [...PROBLEMS, ...NVIDIA_PROBLEMS].sort((a, b) => a.id - b.id);

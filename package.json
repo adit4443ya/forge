@@ -26,7 +26,8 @@
     "test:nav": "node scripts/test-navigation.mjs",
     "test:audit": "node scripts/test-audit-fixes.mjs",
     "test:followups": "node scripts/test-followups.mjs",
-    "test:anchors": "node scripts/test-anchors.mjs"
+    "test:anchors": "node scripts/test-anchors.mjs",
+    "test:seo": "node scripts/test-seo.mjs"
   },
   "dependencies": {
     "@supabase/ssr": "^0.7.0",

@@ -167,7 +167,7 @@ export const LADDERS = [
   { id: "cses", name: "CSES Problem Set", url: "https://cses.fi/problemset/", count: "300+",
     who: "HFT / quant loops", why: "Standard problems, exact-output judging, no hints and no discussion tab. The set that most reliably exposes gaps: if you can finish Sorting and Searching plus Dynamic Programming plus Graph Algorithms, a trading-firm coding round holds no surprises." },
   { id: "neetcode", name: "NeetCode 150", url: "https://neetcode.io/practice", count: "150",
-    who: "Google-style loops", why: "A curated spine over LeetCode covering every pattern a generalist loop draws from, in a sensible order. Use it to check pattern coverage, not to grind volume." },
+    who: "Generalist SWE loops", why: "A curated spine over LeetCode covering every pattern a generalist loop draws from, in a sensible order. Use it to check pattern coverage, not to grind volume." },
   { id: "codeforces", name: "Codeforces", url: "https://codeforces.com/problemset", count: "9000+",
     who: "speed and pressure", why: "Rated problems and live contests. Div 2 A-C at rating 1200-1700 builds the thing no static bank can: correct code, fast, with a clock running and no editorial." },
   { id: "atcoder", name: "AtCoder Educational DP", url: "https://atcoder.jp/contests/dp/tasks", count: "26",
