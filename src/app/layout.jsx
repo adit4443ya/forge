@@ -20,6 +20,9 @@ export const metadata = {
   keywords: KEYWORDS,
   category: "education",
   alternates: { canonical: "/" },
+  /* Search Console ownership. The token is public by design — it is served in
+     the page source — so it lives in the repo rather than in an env var. */
+  verification: { google: "dJXyZ3E3VTeVplBfXbV1nWpOrLRfDLrQnByx6oKNGVU" },
   openGraph: {
     title: "Forge — compiler, systems and HFT interview preparation",
     description: DESCRIPTION,
