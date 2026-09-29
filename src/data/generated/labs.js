@@ -83,6 +83,76 @@ export const LAB_TRACKS = [
   "summary": "Multi-day investigations that combine every track.",
   "order": 11,
   "run": "cd capstones && ./build.sh"
+ },
+ {
+  "id": "mlir-basics",
+  "title": "MLIR anatomy",
+  "summary": "Everything is an op: regions, blocks, SSA values, and the tower of dialects.",
+  "order": 12,
+  "run": "cd mlir/01_basics && ./build.sh"
+ },
+ {
+  "id": "mlir-lowering",
+  "title": "MLIR to LLVM IR",
+  "summary": "Every conversion pass, the four ways a lowering breaks, and the pass manager.",
+  "order": 13,
+  "run": "cd mlir/02_lowering && ./build.sh"
+ },
+ {
+  "id": "mlir-linalg",
+  "title": "Linalg and transforms",
+  "summary": "Indexing maps as a loop nest, where hidden copies come from, tiling and fusion.",
+  "order": 14,
+  "run": "cd mlir/03_linalg && ./build.sh"
+ },
+ {
+  "id": "mlir-optimization",
+  "title": "Fast with X, slow without X",
+  "summary": "Measured ablations where every speedup is explained by an artifact, not a timing.",
+  "order": 15,
+  "run": "cd mlir/04_optimization && ./build.sh"
+ },
+ {
+  "id": "mlir-aarch64",
+  "title": "MLIR on AArch64",
+  "summary": "Target features that are present but unused, scalable vectors, and i8mm.",
+  "order": 16,
+  "run": "cd mlir/05_aarch64 && ./build.sh"
+ },
+ {
+  "id": "mlir-debugging",
+  "title": "Debugging MLIR pipelines",
+  "summary": "Which pass did it, reduce the reproducer, pin it with a test you watched fail.",
+  "order": 17,
+  "run": "cd mlir/06_debugging && ./build.sh"
+ },
+ {
+  "id": "mlir-triton",
+  "title": "Triton without a GPU",
+  "summary": "A real Triton kernel to TTIR to linalg, then profile where the time actually went.",
+  "order": 18,
+  "run": "cd mlir/07_triton && ./build.sh"
+ },
+ {
+  "id": "mlir-iree",
+  "title": "IREE as the reference",
+  "summary": "A target number and a source of techniques: the same matmul, both ways.",
+  "order": 19,
+  "run": "cd mlir/08_iree && ./build.sh"
+ },
+ {
+  "id": "mlir-write_a_pass",
+  "title": "Write a C++ pass",
+  "summary": "TableGen, a rewrite pattern, legality, lit tests and a measured effect.",
+  "order": 20,
+  "run": "cd mlir/09_write_a_pass && ./build.sh"
+ },
+ {
+  "id": "mlir-python",
+  "title": "MLIR from Python",
+  "summary": "Driving a pipeline from Python, the way Triton backends are wired.",
+  "order": 21,
+  "run": "cd mlir/10_python && ./build.sh"
  }
 ];
 export const LAB_INDEX = [
@@ -1400,6 +1470,475 @@ export const LAB_INDEX = [
    "codegen-03"
   ],
   "evidence": "Correctness matrix at four vector lengths; predicted cost per element per core; crossover size; dispatch with override",
+  "steps": 0,
+  "minutes": 12,
+  "teaser": ""
+ },
+ {
+  "id": "mlir-basics-01",
+  "num": "01",
+  "track": "mlir-basics",
+  "file": "mlir-basics/01_anatomy.mlir",
+  "title": "The anatomy of MLIR — ops, regions, blocks, SSA values",
+  "difficulty": 1,
+  "skills": [
+   "generic form",
+   "ops/regions/blocks",
+   "SSA"
+  ],
+  "prereqs": [],
+  "evidence": "The same function printed in generic form, and a sentence naming what each region and block argument is for",
+  "steps": 5,
+  "minutes": 52,
+  "teaser": "MLIR has exactly ONE core concept: the Operation. Everything you see below"
+ },
+ {
+  "id": "mlir-basics-02",
+  "num": "02",
+  "track": "mlir-basics",
+  "file": "mlir-basics/02_types_and_dialects.mlir",
+  "title": "Types, and the tower of dialects",
+  "difficulty": 1,
+  "skills": [
+   "tensor vs memref",
+   "vector types",
+   "dialects"
+  ],
+  "prereqs": [],
+  "evidence": "A table of which dialect each op in your file belongs to, and why tensor and memref cannot be mixed",
+  "steps": 5,
+  "minutes": 52,
+  "teaser": "The four types you will meet in EVERY ML compiler, and why each exists:"
+ },
+ {
+  "id": "mlir-basics-03",
+  "num": "03",
+  "track": "mlir-basics",
+  "file": "mlir-basics/03_errors.mlir",
+  "title": "Reading MLIR errors (and testing for them)",
+  "difficulty": 1,
+  "skills": [
+   "verifier errors",
+   "diagnostics",
+   "expected-error"
+  ],
+  "prereqs": [],
+  "evidence": "All four error shapes reproduced, each with the one-line reason and an expected-error test that catches it",
+  "steps": 3,
+  "minutes": 36,
+  "teaser": "Four broken functions, one per kind of error you'll hit daily. MLIR"
+ },
+ {
+  "id": "mlir-basics-04",
+  "num": "04",
+  "track": "mlir-basics",
+  "file": "mlir-basics/04_first_run.mlir",
+  "title": "Your first MLIR program that RUNS (JIT and AOT)",
+  "difficulty": 1,
+  "skills": [
+   "mlir-runner",
+   "JIT vs AOT",
+   "fastmath"
+  ],
+  "prereqs": [],
+  "evidence": "The same kernel run through both JIT and AOT with matching results, and the asm showing fmul+fadd rather than fmla, explained",
+  "steps": 4,
+  "minutes": 44,
+  "teaser": "Reading IR is half the job. The other half is RUNNING it, because the only"
+ },
+ {
+  "id": "mlir-lowering-01",
+  "num": "01",
+  "track": "mlir-lowering",
+  "file": "mlir-lowering/01_progressive_lowering.mlir",
+  "title": "Progressive lowering, one pass at a time, down to AArch64 asm",
+  "difficulty": 2,
+  "skills": [
+   "conversion passes",
+   "target triple",
+   "reassoc"
+  ],
+  "prereqs": [],
+  "evidence": "One IR file walked to AArch64 asm one pass at a time, with the pass that first changed the vectorization decision named",
+  "steps": 7,
+  "minutes": 68,
+  "teaser": "\"Lowering to LLVM\" is not one step. It's a set of CONVERSION passes, each"
+ },
+ {
+  "id": "mlir-lowering-02",
+  "num": "02",
+  "track": "mlir-lowering",
+  "file": "mlir-lowering/02_conversion_framework.mlir",
+  "title": "The dialect-conversion framework — and the 4 ways a lowering breaks",
+  "difficulty": 2,
+  "skills": [
+   "dialect conversion",
+   "unrealized casts",
+   "legality"
+  ],
+  "prereqs": [],
+  "evidence": "Each of the four lowering failures reproduced on purpose, with the missing pass or illegal op named for each",
+  "steps": 5,
+  "minutes": 52,
+  "teaser": "Every `convert-X-to-Y` pass is built from the same three parts. Once you"
+ },
+ {
+  "id": "mlir-lowering-03",
+  "num": "03",
+  "track": "mlir-lowering",
+  "file": "mlir-lowering/03_pass_manager.mlir",
+  "title": "The pass manager — pipelines, nesting, options, timing",
+  "difficulty": 2,
+  "skills": [
+   "pass pipelines",
+   "nesting",
+   "mlir-timing"
+  ],
+  "prereqs": [],
+  "evidence": "A pipeline string you wrote by hand that reproduces LOWER_STD, plus its timing tree",
+  "steps": 6,
+  "minutes": 60,
+  "teaser": "A compiler like a production backend IS a pass pipeline. In C++ it"
+ },
+ {
+  "id": "mlir-lowering-04",
+  "num": "04",
+  "track": "mlir-lowering",
+  "file": "mlir-lowering/04_kernel.mlir",
+  "title": "Calling MLIR from C — and running it on AArch64 (qemu)",
+  "difficulty": 2,
+  "skills": [
+   "C interface",
+   "memref descriptor",
+   "qemu"
+  ],
+  "prereqs": [],
+  "evidence": "A C program calling an MLIR kernel, producing identical results natively and under qemu-aarch64",
+  "steps": 4,
+  "minutes": 44,
+  "teaser": "mlir-runner is for experiments. A real compiler produces an OBJECT FILE"
+ },
+ {
+  "id": "mlir-linalg-01",
+  "num": "01",
+  "track": "mlir-linalg",
+  "file": "mlir-linalg/01_indexing_maps.mlir",
+  "title": "linalg.generic and indexing maps — the one idea behind ML compilers",
+  "difficulty": 2,
+  "skills": [
+   "linalg.generic",
+   "indexing maps",
+   "iterator types"
+  ],
+  "prereqs": [],
+  "evidence": "The loop nest an indexing map implies, written out by hand and confirmed against the lowered scf",
+  "steps": 4,
+  "minutes": 44,
+  "teaser": "triton-shared lowers Triton to linalg. torch-mlir lowers PyTorch to linalg."
+ },
+ {
+  "id": "mlir-linalg-02",
+  "num": "02",
+  "track": "mlir-linalg",
+  "file": "mlir-linalg/02_bufferization.mlir",
+  "title": "Bufferization — where hidden copies come from",
+  "difficulty": 2,
+  "skills": [
+   "bufferization",
+   "memref.alloc",
+   "copy elimination"
+  ],
+  "prereqs": [],
+  "evidence": "The final IR grepped for alloc/copy, with each remaining buffer explained or eliminated",
+  "steps": 2,
+  "minutes": 28,
+  "teaser": "Tensors are values, memory is not. At some point every pipeline runs"
+ },
+ {
+  "id": "mlir-linalg-03",
+  "num": "03",
+  "track": "mlir-linalg",
+  "file": "mlir-linalg/03_transform_dialect.mlir",
+  "title": "The transform dialect — tile, fuse, and see it happen",
+  "difficulty": 3,
+  "skills": [
+   "transform dialect",
+   "tiling",
+   "fusion"
+  ],
+  "prereqs": [],
+  "evidence": "A transform script that tiles and fuses, and the IR before and after showing the loop structure it produced",
+  "steps": 4,
+  "minutes": 44,
+  "teaser": "Every optimisation you'll do on a production MLIR backend is one of: tile, fuse, pack,"
+ },
+ {
+  "id": "mlir-optimization-01",
+  "num": "01",
+  "track": "mlir-optimization",
+  "file": "mlir-optimization/01_matmul_ablation.md",
+  "title": "OPTIMIZATION LAB #01 — matmul: 1 GFLOP/s → 40 GFLOP/s, and proving which step did it",
+  "difficulty": 3,
+  "skills": [
+   "ablation",
+   "register tiling",
+   "vectorization",
+   "spills"
+  ],
+  "prereqs": [],
+  "evidence": "An ablation table where each row differs by one stage, and every speedup explained with asm or spill counts rather than timing alone",
+  "steps": 0,
+  "minutes": 12,
+  "teaser": ""
+ },
+ {
+  "id": "mlir-optimization-02",
+  "num": "02",
+  "track": "mlir-optimization",
+  "file": "mlir-optimization/02_fusion_ablation.md",
+  "title": "OPTIMIZATION LAB #02 — elementwise fusion: the 8× hiding in \"just 3 simple ops\"",
+  "difficulty": 3,
+  "skills": [
+   "fusion",
+   "empty tensor elimination",
+   "page faults"
+  ],
+  "prereqs": [],
+  "evidence": "The 8x explained by the artifact that causes it (the temporary and its page faults), not by the timings",
+  "steps": 0,
+  "minutes": 12,
+  "teaser": ""
+ },
+ {
+  "id": "mlir-optimization-03",
+  "num": "03",
+  "track": "mlir-optimization",
+  "file": "mlir-optimization/03_find_the_X.md",
+  "title": "OPTIMIZATION LAB #03 — \"It's fast with the pipeline, slow without — which pass is X?\"",
+  "difficulty": 2,
+  "skills": [
+   "leave-one-out ablation",
+   "pass pipelines"
+  ],
+  "prereqs": [],
+  "evidence": "A ranked list of which passes in a pipeline actually mattered, produced with tools/ablate.py",
+  "steps": 0,
+  "minutes": 12,
+  "teaser": ""
+ },
+ {
+  "id": "mlir-aarch64-01",
+  "num": "01",
+  "track": "mlir-aarch64",
+  "file": "mlir-aarch64/01_target.mlir",
+  "title": "Telling the compiler what the machine is (triple, CPU, features)",
+  "difficulty": 2,
+  "skills": [
+   "target triple",
+   "mcpu",
+   "target_features"
+  ],
+  "prereqs": [],
+  "evidence": "A case where the feature was present but unused, and the attribute placement that caused it",
+  "steps": 4,
+  "minutes": 44,
+  "teaser": "Three levels of \"what machine is this\", and each one changes the code:"
+ },
+ {
+  "id": "mlir-aarch64-02",
+  "num": "02",
+  "track": "mlir-aarch64",
+  "file": "mlir-aarch64/02_sve_matmul.md",
+  "title": "AARCH64 LAB #02 — Scalable vectors in MLIR: one binary, every SVE vector length",
+  "difficulty": 4,
+  "skills": [
+   "scalable vectors",
+   "SVE",
+   "vector length agnostic"
+  ],
+  "prereqs": [],
+  "evidence": "One binary proved correct at 128, 256 and 512-bit VL under qemu, and the two bugs fixed to get there",
+  "steps": 0,
+  "minutes": 12,
+  "teaser": ""
+ },
+ {
+  "id": "mlir-aarch64-03",
+  "num": "03",
+  "track": "mlir-aarch64",
+  "file": "mlir-aarch64/03_mca_tiles.md",
+  "title": "AARCH64 LAB #03 — Picking AArch64 tile sizes without Arm hardware (llvm-mca)",
+  "difficulty": 3,
+  "skills": [
+   "llvm-mca",
+   "register pressure",
+   "tile selection"
+  ],
+  "prereqs": [],
+  "evidence": "A ranking of tile sizes by modelled throughput, with the register-file argument for the winner",
+  "steps": 0,
+  "minutes": 12,
+  "teaser": ""
+ },
+ {
+  "id": "mlir-aarch64-04",
+  "num": "04",
+  "track": "mlir-aarch64",
+  "file": "mlir-aarch64/04_i8mm_mmt4d.md",
+  "title": "AARCH64 LAB #04 — int8 matmul on `smmla`: pack → mmt4d → unpack (IREE's data tiling, in miniature)",
+  "difficulty": 4,
+  "skills": [
+   "i8mm",
+   "smmla",
+   "pack/mmt4d",
+   "SIGILL"
+  ],
+  "prereqs": [],
+  "evidence": "int8 matmul running on smmla under qemu, and the SIGILL reproduced on a core without i8mm",
+  "steps": 0,
+  "minutes": 12,
+  "teaser": ""
+ },
+ {
+  "id": "mlir-debugging-01",
+  "num": "01",
+  "track": "mlir-debugging",
+  "file": "mlir-debugging/01_find_the_pass.md",
+  "title": "DEBUGGING LAB #01 — \"Which pass did that?\" in one run",
+  "difficulty": 2,
+  "skills": [
+   "print-changed",
+   "pass bisection",
+   "MLIR_ENABLE_DUMP"
+  ],
+  "prereqs": [],
+  "evidence": "The single pass that introduced a given IR change, named and proved with its before/after diff",
+  "steps": 0,
+  "minutes": 12,
+  "teaser": ""
+ },
+ {
+  "id": "mlir-debugging-02",
+  "num": "02",
+  "track": "mlir-debugging",
+  "file": "mlir-debugging/02_reproduce_and_reduce.md",
+  "title": "DEBUGGING LAB #02 — Crash reproducers, and shrinking a 407-line crash to 3 lines",
+  "difficulty": 3,
+  "skills": [
+   "llvm-reduce",
+   "reproducers",
+   "interestingness"
+  ],
+  "prereqs": [],
+  "evidence": "A large crash reduced to a minimal reproducer, with the interestingness test that drove the reduction",
+  "steps": 0,
+  "minutes": 12,
+  "teaser": ""
+ },
+ {
+  "id": "mlir-debugging-03",
+  "num": "03",
+  "track": "mlir-debugging",
+  "file": "mlir-debugging/03_regression_tests.md",
+  "title": "DEBUGGING LAB #03 — Pin every fix with a lit/FileCheck test you have watched fail",
+  "difficulty": 2,
+  "skills": [
+   "lit",
+   "FileCheck",
+   "regression tests"
+  ],
+  "prereqs": [],
+  "evidence": "A lit test you have watched fail before it passed",
+  "steps": 0,
+  "minutes": 12,
+  "teaser": ""
+ },
+ {
+  "id": "mlir-triton-01",
+  "num": "01",
+  "track": "mlir-triton",
+  "file": "mlir-triton/01_triton_to_ttir.md",
+  "title": "TRITON LAB #01 — From a Triton kernel to TTIR, on a laptop with no GPU",
+  "difficulty": 2,
+  "skills": [
+   "Triton",
+   "TTIR",
+   "compiler stages"
+  ],
+  "prereqs": [],
+  "evidence": "TTIR dumped from a real Triton kernel with no GPU, and each tt op mapped back to its Python line",
+  "steps": 0,
+  "minutes": 12,
+  "teaser": ""
+ },
+ {
+  "id": "mlir-triton-02",
+  "num": "02",
+  "track": "mlir-triton",
+  "file": "mlir-triton/02_triton_shared_on_cpu.md",
+  "title": "TRITON LAB #02 — triton-shared's output on a CPU: 0.6 GB/s → 17 GB/s, found with a profiler",
+  "difficulty": 4,
+  "skills": [
+   "triton-shared",
+   "profiling",
+   "memrefCopy"
+  ],
+  "prereqs": [],
+  "evidence": "A profile showing where the time actually went, and a fix whose effect you measured rather than assumed",
+  "steps": 0,
+  "minutes": 12,
+  "teaser": ""
+ },
+ {
+  "id": "mlir-iree-01",
+  "num": "01",
+  "track": "mlir-iree",
+  "file": "mlir-iree/01_compare_with_iree.md",
+  "title": "IREE LAB #01 — Using the reference compiler: same matmul, IREE vs our schedule",
+  "difficulty": 3,
+  "skills": [
+   "IREE",
+   "data tiling",
+   "reference numbers"
+  ],
+  "prereqs": [],
+  "evidence": "The same matmul through IREE and your own schedule, with the flags that produced each number stated",
+  "steps": 0,
+  "minutes": 12,
+  "teaser": ""
+ },
+ {
+  "id": "mlir-write_a_pass-01",
+  "num": "",
+  "track": "mlir-write_a_pass",
+  "file": "mlir-write_a_pass/README.md",
+  "title": "WRITE-A-PASS LAB — your own MLIR pass in C++, out of tree, tested and measured",
+  "difficulty": 4,
+  "skills": [
+   "TableGen",
+   "RewritePattern",
+   "out-of-tree pass",
+   "lit"
+  ],
+  "prereqs": [],
+  "evidence": "An out-of-tree pass that builds, passes its own tests, and shows a measured effect on a benchmark",
+  "steps": 0,
+  "minutes": 12,
+  "teaser": ""
+ },
+ {
+  "id": "mlir-python-01",
+  "num": "",
+  "track": "mlir-python",
+  "file": "mlir-python/README.md",
+  "title": "PYTHON LAB — driving MLIR from Python (how Triton backends are wired)",
+  "difficulty": 2,
+  "skills": [
+   "MLIR Python bindings",
+   "pass manager from Python"
+  ],
+  "prereqs": [],
+  "evidence": "A pipeline driven end to end from Python, and the version trap that breaks the bindings understood",
   "steps": 0,
   "minutes": 12,
   "teaser": ""

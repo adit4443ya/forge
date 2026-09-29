@@ -25,9 +25,10 @@ if (!fs.existsSync(SRC)) {
   process.exit(1);
 }
 
-/* Strip the C block-comment gutter (" * ") without eating code indentation. */
+/* Strip the comment gutter (" * " in C, "// " in MLIR) without eating code
+   indentation. */
 const degutter = (lines) => {
-  const out = lines.map((l) => l.replace(/^\s*\*\s?/, ''));
+  const out = lines.map((l) => l.replace(/^\s*(?:\*|\/\/)\s?/, ''));
   const indents = out.filter((l) => l.trim()).map((l) => l.match(/^ */)[0].length);
   const base = indents.length ? Math.min(...indents) : 0;
   return out.map((l) => l.slice(base)).join('\n').replace(/\s+$/, '');
@@ -108,9 +109,21 @@ function parseLab(file, track) {
              lang: 'markdown', teaches: '', build: '', steps: [], sections: [], markdown: raw, source: '', difficulty: 2 };
   }
 
-  // The header is the first block comment.
-  const end = raw.indexOf('*/');
-  const header = end > 0 ? raw.slice(0, end) : raw.slice(0, 4000);
+  /* The header is the first block comment — except in MLIR, which has no block
+     comments: there it is the run of // lines the file opens with, and every
+     STEP lives inside it. */
+  const isMlir = file.endsWith('.mlir');
+  let end = -1, header;
+  if (isMlir) {
+    const all = raw.split('\n');
+    let i = 0;
+    while (i < all.length && (!all[i].trim() || /^\s*\/\//.test(all[i]))) i++;
+    header = all.slice(0, i).join('\n');
+    end = header.length;                 // where the source resumes
+  } else {
+    end = raw.indexOf('*/');
+    header = end > 0 ? raw.slice(0, end) : raw.slice(0, 4000);
+  }
   const lines = header.split('\n');
 
   const titleLine = lines.find((l) => /LAB\s*#?\d*\s*:/i.test(l)) || '';
@@ -135,7 +148,7 @@ function parseLab(file, track) {
     buf = [];
   };
   for (const line of lines) {
-    const bare = line.replace(/^\s*\*?\s?/, '');
+    const bare = line.replace(/^\s*(?:\/\/|\*)?\s?/, '');
     const stepHead = /^STEP\s+\d+\s*[—:-]/i.test(bare);
     const sectHead = /^[A-Z][A-Z0-9 /,'()-]{3,44}:\s*$/.test(bare) || /^[A-Z][A-Z0-9 /,'()-]{3,44}:\s+\S/.test(bare);
     if (stepHead) { flush(); mode = 'step'; head = bare; continue; }
@@ -163,11 +176,11 @@ function parseLab(file, track) {
 
   /* Vendor the code itself so a lab can be read without leaving the site.
      The header comment is dropped: it is already parsed into steps above. */
-  const source = (end > 0 ? raw.slice(end + 2) : raw).replace(/^\s*\n/, '').replace(/\s+$/, '');
+  const source = (end > 0 ? raw.slice(isMlir ? end : end + 2) : raw).replace(/^\s*\n/, '').replace(/\s+$/, '');
 
   return {
     id: `${track}-${num}`, num, track, file: `${track}/${name}`, title, difficulty, needs, source,
-    lang: file.endsWith('.cpp') ? 'cpp' : isLl ? 'llvm' : 'c',
+    lang: file.endsWith('.cpp') ? 'cpp' : isLl ? 'llvm' : isMlir ? 'mlir' : 'c',
     teaches: teaches ? teaches.blocks.filter((b) => b.kind === 'prose').map((b) => b.text).join('\n\n') : '',
     build: buildCmd, artifact,
     steps,
@@ -190,6 +203,19 @@ const TRACKS = [
   { id: 'bigcode', dir: 'bigcode', order: 10, title: 'Large codebases', summary: 'Navigate, bisect and reduce inside a codebase too big to read.' },
   { id: 'passwork', dir: 'passwork', order: 9, title: 'Pass work', summary: 'Bisect to one pass, read what it did, reduce it, pin it with a test.' },
   { id: 'capstones', dir: 'capstones', order: 11, title: 'Capstones', summary: 'Multi-day investigations that combine every track.' },
+  /* The MLIR tracks live one level down, in mlir/. Their ids carry an `mlir-`
+     prefix because this repository already has a `capstones` track and progress
+     is keyed on the id. */
+  { id: 'mlir-basics', dir: 'mlir/01_basics', order: 12, title: 'MLIR anatomy', summary: 'Everything is an op: regions, blocks, SSA values, and the tower of dialects.' },
+  { id: 'mlir-lowering', dir: 'mlir/02_lowering', order: 13, title: 'MLIR to LLVM IR', summary: 'Every conversion pass, the four ways a lowering breaks, and the pass manager.' },
+  { id: 'mlir-linalg', dir: 'mlir/03_linalg', order: 14, title: 'Linalg and transforms', summary: 'Indexing maps as a loop nest, where hidden copies come from, tiling and fusion.' },
+  { id: 'mlir-optimization', dir: 'mlir/04_optimization', order: 15, title: 'Fast with X, slow without X', summary: 'Measured ablations where every speedup is explained by an artifact, not a timing.' },
+  { id: 'mlir-aarch64', dir: 'mlir/05_aarch64', order: 16, title: 'MLIR on AArch64', summary: 'Target features that are present but unused, scalable vectors, and i8mm.' },
+  { id: 'mlir-debugging', dir: 'mlir/06_debugging', order: 17, title: 'Debugging MLIR pipelines', summary: 'Which pass did it, reduce the reproducer, pin it with a test you watched fail.' },
+  { id: 'mlir-triton', dir: 'mlir/07_triton', order: 18, title: 'Triton without a GPU', summary: 'A real Triton kernel to TTIR to linalg, then profile where the time actually went.' },
+  { id: 'mlir-iree', dir: 'mlir/08_iree', order: 19, title: 'IREE as the reference', summary: 'A target number and a source of techniques: the same matmul, both ways.' },
+  { id: 'mlir-write_a_pass', dir: 'mlir/09_write_a_pass', order: 20, title: 'Write a C++ pass', summary: 'TableGen, a rewrite pattern, legality, lit tests and a measured effect.' },
+  { id: 'mlir-python', dir: 'mlir/10_python', order: 21, title: 'MLIR from Python', summary: 'Driving a pipeline from Python, the way Triton backends are wired.' },
 ];
 
 /* The repository's own manifest carries ids, skills, prereqs and the evidence

@@ -5,13 +5,13 @@ export const STATS = {
  "estimates": 19,
  "patterns": 33,
  "cppConcepts": 32,
- "labSteps": 118,
- "labs": 64,
- "tracks": 12,
+ "labSteps": 171,
+ "labs": 90,
+ "tracks": 22,
  "guides": 23,
  "guideWords": 80298,
  "questions": 239,
  "roles": 3,
  "competencies": 21,
- "generatedAt": "2026-09-07"
+ "generatedAt": "2026-09-29"
 };
