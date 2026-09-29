@@ -104,9 +104,20 @@ function parseLab(file, track) {
   const num = (name.match(/^(\d+)/) || [])[1] || '';
 
   if (isMd) {
-    const title = (/^#\s+(.*)/m.exec(raw) || [])[1] || name;
+    /* "OPTIMIZATION LAB #01 — matmul: …" becomes "matmul: …". The card already
+       shows the track and the number, so the prefix is noise on every title. */
+    const title = ((/^#\s+(.*)/m.exec(raw) || [])[1] || name)
+      .replace(/^[A-Z0-9_ ]{3,}LAB\s*#?\d*\s*[—:-]\s*/i, '');
+    /* A markdown lab states what it needs on a bold meta line rather than in a
+       comment header. It is the one thing a reader has to know BEFORE opening
+       the lab, so it is worth pulling out instead of leaving it in the body. */
+    const meta = (/^\*\*TRACK:\*\*.*$/m.exec(raw) || [])[0] || '';
+    const needs = (/\*\*NEEDS:\*\*\s*(.+?)\s*$/.exec(meta) || [])[1] || '';
+    const difficulty = Number((/\*\*DIFFICULTY:\*\*\s*(\d)/.exec(meta) || [])[1]) || 2;
+    const manual = /steps:\s*manual/.test(raw.slice(0, 4000));
     return { id: `${track}-${num}`, num, track, file: `${track}/${name}`, title: title.trim(),
-             lang: 'markdown', teaches: '', build: '', steps: [], sections: [], markdown: raw, source: '', difficulty: 2 };
+             lang: 'markdown', teaches: '', build: '', steps: [], sections: [], markdown: raw,
+             source: '', difficulty, needs, manual };
   }
 
   /* The header is the first block comment — except in MLIR, which has no block
@@ -206,24 +217,25 @@ const TRACKS = [
   /* The MLIR tracks live one level down, in mlir/. Their ids carry an `mlir-`
      prefix because this repository already has a `capstones` track and progress
      is keyed on the id. */
-  { id: 'mlir-basics', dir: 'mlir/01_basics', order: 12, title: 'MLIR anatomy', summary: 'Everything is an op: regions, blocks, SSA values, and the tower of dialects.' },
-  { id: 'mlir-lowering', dir: 'mlir/02_lowering', order: 13, title: 'MLIR to LLVM IR', summary: 'Every conversion pass, the four ways a lowering breaks, and the pass manager.' },
-  { id: 'mlir-linalg', dir: 'mlir/03_linalg', order: 14, title: 'Linalg and transforms', summary: 'Indexing maps as a loop nest, where hidden copies come from, tiling and fusion.' },
-  { id: 'mlir-optimization', dir: 'mlir/04_optimization', order: 15, title: 'Fast with X, slow without X', summary: 'Measured ablations where every speedup is explained by an artifact, not a timing.' },
-  { id: 'mlir-aarch64', dir: 'mlir/05_aarch64', order: 16, title: 'MLIR on AArch64', summary: 'Target features that are present but unused, scalable vectors, and i8mm.' },
-  { id: 'mlir-debugging', dir: 'mlir/06_debugging', order: 17, title: 'Debugging MLIR pipelines', summary: 'Which pass did it, reduce the reproducer, pin it with a test you watched fail.' },
-  { id: 'mlir-triton', dir: 'mlir/07_triton', order: 18, title: 'Triton without a GPU', summary: 'A real Triton kernel to TTIR to linalg, then profile where the time actually went.' },
-  { id: 'mlir-iree', dir: 'mlir/08_iree', order: 19, title: 'IREE as the reference', summary: 'A target number and a source of techniques: the same matmul, both ways.' },
-  { id: 'mlir-write_a_pass', dir: 'mlir/09_write_a_pass', order: 20, title: 'Write a C++ pass', summary: 'TableGen, a rewrite pattern, legality, lit tests and a measured effect.' },
-  { id: 'mlir-python', dir: 'mlir/10_python', order: 21, title: 'MLIR from Python', summary: 'Driving a pipeline from Python, the way Triton backends are wired.' },
+  { id: 'mlir-setup', dir: 'mlir/00_setup', order: 12, title: 'MLIR toolchain setup', summary: 'One consistent LLVM/MLIR build, verified — and which extras each track needs.', setup: 'source tools/env.sh' },
+  { id: 'mlir-basics', dir: 'mlir/01_basics', order: 13, title: 'MLIR anatomy', summary: 'Everything is an op: regions, blocks, SSA values, and the tower of dialects.' },
+  { id: 'mlir-lowering', dir: 'mlir/02_lowering', order: 14, title: 'MLIR to LLVM IR', summary: 'Every conversion pass, the four ways a lowering breaks, and the pass manager.' },
+  { id: 'mlir-linalg', dir: 'mlir/03_linalg', order: 15, title: 'Linalg and transforms', summary: 'Indexing maps as a loop nest, where hidden copies come from, tiling and fusion.' },
+  { id: 'mlir-optimization', dir: 'mlir/04_optimization', order: 16, title: 'Fast with X, slow without X', summary: 'Measured ablations where every speedup is explained by an artifact, not a timing.' },
+  { id: 'mlir-aarch64', dir: 'mlir/05_aarch64', order: 17, title: 'MLIR on AArch64', summary: 'Target features that are present but unused, scalable vectors, and i8mm.' },
+  { id: 'mlir-debugging', dir: 'mlir/06_debugging', order: 18, title: 'Debugging MLIR pipelines', summary: 'Which pass did it, reduce the reproducer, pin it with a test you watched fail.' },
+  { id: 'mlir-triton', dir: 'mlir/07_triton', order: 19, title: 'Triton without a GPU', summary: 'A real Triton kernel to TTIR to linalg, then profile where the time actually went.' },
+  { id: 'mlir-iree', dir: 'mlir/08_iree', order: 20, title: 'IREE as the reference', summary: 'A target number and a source of techniques: the same matmul, both ways.' },
+  { id: 'mlir-write_a_pass', dir: 'mlir/09_write_a_pass', order: 21, title: 'Write a C++ pass', summary: 'TableGen, a rewrite pattern, legality, lit tests and a measured effect.' },
+  { id: 'mlir-python', dir: 'mlir/10_python', order: 22, title: 'MLIR from Python', summary: 'Driving a pipeline from Python, the way Triton backends are wired.' },
 ];
 
 /* The repository's own manifest carries ids, skills, prereqs and the evidence
    each lab should leave behind — all things the source comment does not state. */
 const manifestPath = path.join(SRC, 'labs.json');
-const MANIFEST = fs.existsSync(manifestPath)
-  ? (JSON.parse(fs.readFileSync(manifestPath, 'utf8')).labs || [])
-  : [];
+const MANIFEST_DOC = fs.existsSync(manifestPath) ? JSON.parse(fs.readFileSync(manifestPath, 'utf8')) : {};
+const MANIFEST = MANIFEST_DOC.labs || [];
+const MANIFEST_TRACKS = MANIFEST_DOC.tracks || [];
 
 const labs = [];
 const tracks = [];
@@ -266,8 +278,12 @@ for (const t of TRACKS) {
                   difficulty: entry.difficulty || base.difficulty });
     }
   }
-  tracks.push({ id: t.id, title: t.title, summary: t.summary, order: t.order,
-                run: t.dir === '.' ? './build.sh && ls bin/' : `cd ${t.dir} && ./build.sh` });
+  /* The repository's manifest states how each track is actually run. Only fall
+     back to a guess when it does not — the MLIR tracks have no build.sh, and
+     telling someone to run one is worse than saying nothing. */
+  const manifestRun = (MANIFEST_TRACKS.find((x) => x.id === t.id) || {}).run;
+  tracks.push({ id: t.id, title: t.title, summary: t.summary, order: t.order, setup: t.setup || '',
+                run: manifestRun || (t.dir === '.' ? './build.sh && ls bin/' : `cd ${t.dir} && ./build.sh`) });
 }
 
 const withSteps = labs.filter((l) => l.steps.length).length;

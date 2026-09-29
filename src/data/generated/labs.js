@@ -5,34 +5,39 @@ export const LAB_TRACKS = [
   "title": "Runtime debugging",
   "summary": "Sixteen deliberately broken programs. Predict the symptom, then prove the cause with a tool.",
   "order": 0,
-  "run": "./build.sh && ls bin/"
+  "setup": "",
+  "run": "./build.sh then open the files in numeric order"
  },
  {
   "id": "ir",
   "title": "IR and the pipeline",
   "summary": "Read what the compiler produced and say which pass did it.",
   "order": 1,
-  "run": "cd ir && ./build.sh"
+  "setup": "",
+  "run": "cd ir && ./run_ir_lessons.sh"
  },
  {
   "id": "cross_level",
   "title": "Source to assembly",
   "summary": "Follow one construct all the way down.",
   "order": 2,
-  "run": "cd cross_level && ./build.sh"
+  "setup": "",
+  "run": "cd cross_level && ./run_cross_level.sh"
  },
  {
   "id": "perf",
   "title": "Measurement",
   "summary": "Establish a noise floor, then measure with counters instead of guessing.",
   "order": 3,
-  "run": "cd perf && ./build.sh"
+  "setup": "",
+  "run": "cd perf && ./build.sh, then follow each file's STEP commands"
  },
  {
   "id": "cache",
   "title": "Memory hierarchy",
   "summary": "Stride, working set, layout, sharing, parallelism and the TLB.",
   "order": 4,
+  "setup": "",
   "run": "cd cache && ./build.sh"
  },
  {
@@ -40,13 +45,15 @@ export const LAB_TRACKS = [
   "title": "Code generation",
   "summary": "What the optimizer does with your idioms, and when it gives up.",
   "order": 5,
-  "run": "cd codegen && ./build.sh"
+  "setup": "",
+  "run": "cd codegen && ./build.sh (emits the .s files the labs read)"
  },
  {
   "id": "concurrency",
   "title": "Concurrency",
   "summary": "Races, queues, memory orders and what a mutex actually costs.",
   "order": 6,
+  "setup": "",
   "run": "cd concurrency && ./build.sh"
  },
  {
@@ -54,6 +61,7 @@ export const LAB_TRACKS = [
   "title": "Systems and syscalls",
   "summary": "Allocator behaviour, the syscall floor, timing and the network path.",
   "order": 7,
+  "setup": "",
   "run": "cd systems && ./build.sh"
  },
  {
@@ -61,20 +69,23 @@ export const LAB_TRACKS = [
   "title": "AArch64 and SVE",
   "summary": "NEON, SVE, LSE atomics and runtime dispatch, on a root-free toolchain.",
   "order": 8,
-  "run": "cd aarch64 && ./build.sh"
+  "setup": "",
+  "run": "tools/a64-setup.sh once, then cd aarch64 && ./build.sh"
  },
  {
   "id": "bigcode",
   "title": "Large codebases",
   "summary": "Navigate, bisect and reduce inside a codebase too big to read.",
   "order": 10,
-  "run": "cd bigcode && ./build.sh"
+  "setup": "",
+  "run": "bigcode/run_bigcode.sh (labs are markdown with the real outputs)"
  },
  {
   "id": "passwork",
   "title": "Pass work",
   "summary": "Bisect to one pass, read what it did, reduce it, pin it with a test.",
   "order": 9,
+  "setup": "",
   "run": "cd passwork && ./build.sh"
  },
  {
@@ -82,77 +93,96 @@ export const LAB_TRACKS = [
   "title": "Capstones",
   "summary": "Multi-day investigations that combine every track.",
   "order": 11,
-  "run": "cd capstones && ./build.sh"
+  "setup": "",
+  "run": "read capstones/README.md; do capstones 1 and 2 on your own public code"
+ },
+ {
+  "id": "mlir-setup",
+  "title": "MLIR toolchain setup",
+  "summary": "One consistent LLVM/MLIR build, verified — and which extras each track needs.",
+  "order": 12,
+  "setup": "source tools/env.sh",
+  "run": "cd mlir && ./00_setup/check_env.sh"
  },
  {
   "id": "mlir-basics",
   "title": "MLIR anatomy",
   "summary": "Everything is an op: regions, blocks, SSA values, and the tower of dialects.",
-  "order": 12,
-  "run": "cd mlir/01_basics && ./build.sh"
+  "order": 13,
+  "setup": "",
+  "run": "cd mlir && source tools/env.sh && python3 tools/steps.py 01_basics/01_anatomy.mlir"
  },
  {
   "id": "mlir-lowering",
   "title": "MLIR to LLVM IR",
   "summary": "Every conversion pass, the four ways a lowering breaks, and the pass manager.",
-  "order": 13,
-  "run": "cd mlir/02_lowering && ./build.sh"
+  "order": 14,
+  "setup": "",
+  "run": "cd mlir && source tools/env.sh && python3 tools/steps.py 02_lowering/01_progressive_lowering.mlir"
  },
  {
   "id": "mlir-linalg",
   "title": "Linalg and transforms",
   "summary": "Indexing maps as a loop nest, where hidden copies come from, tiling and fusion.",
-  "order": 14,
-  "run": "cd mlir/03_linalg && ./build.sh"
+  "order": 15,
+  "setup": "",
+  "run": "cd mlir && source tools/env.sh && python3 tools/steps.py 03_linalg/01_indexing_maps.mlir"
  },
  {
   "id": "mlir-optimization",
   "title": "Fast with X, slow without X",
   "summary": "Measured ablations where every speedup is explained by an artifact, not a timing.",
-  "order": 15,
-  "run": "cd mlir/04_optimization && ./build.sh"
+  "order": 16,
+  "setup": "",
+  "run": "cd mlir/04_optimization && source ../tools/env.sh && ./run_matmul.sh"
  },
  {
   "id": "mlir-aarch64",
   "title": "MLIR on AArch64",
   "summary": "Target features that are present but unused, scalable vectors, and i8mm.",
-  "order": 16,
-  "run": "cd mlir/05_aarch64 && ./build.sh"
+  "order": 17,
+  "setup": "",
+  "run": "cd mlir && source tools/env.sh && python3 tools/steps.py 05_aarch64/01_target.mlir"
  },
  {
   "id": "mlir-debugging",
   "title": "Debugging MLIR pipelines",
   "summary": "Which pass did it, reduce the reproducer, pin it with a test you watched fail.",
-  "order": 17,
-  "run": "cd mlir/06_debugging && ./build.sh"
+  "order": 18,
+  "setup": "",
+  "run": "cd mlir && source tools/env.sh && python3 tools/steps.py 06_debugging/01_find_the_pass.md"
  },
  {
   "id": "mlir-triton",
   "title": "Triton without a GPU",
   "summary": "A real Triton kernel to TTIR to linalg, then profile where the time actually went.",
-  "order": 18,
-  "run": "cd mlir/07_triton && ./build.sh"
+  "order": 19,
+  "setup": "",
+  "run": "cd mlir && source tools/env.sh && python3 tools/steps.py 07_triton/01_triton_to_ttir.md"
  },
  {
   "id": "mlir-iree",
   "title": "IREE as the reference",
   "summary": "A target number and a source of techniques: the same matmul, both ways.",
-  "order": 19,
-  "run": "cd mlir/08_iree && ./build.sh"
+  "order": 20,
+  "setup": "",
+  "run": "cd mlir/08_iree && source ../tools/env.sh && ./run_iree.sh"
  },
  {
   "id": "mlir-write_a_pass",
   "title": "Write a C++ pass",
   "summary": "TableGen, a rewrite pattern, legality, lit tests and a measured effect.",
-  "order": 20,
-  "run": "cd mlir/09_write_a_pass && ./build.sh"
+  "order": 21,
+  "setup": "",
+  "run": "cd mlir/09_write_a_pass && source ../tools/env.sh && cmake -B build -G Ninja && ninja -C build"
  },
  {
   "id": "mlir-python",
   "title": "MLIR from Python",
   "summary": "Driving a pipeline from Python, the way Triton backends are wired.",
-  "order": 21,
-  "run": "cd mlir/10_python && ./build.sh"
+  "order": 22,
+  "setup": "",
+  "run": "cd mlir && source tools/env.sh && python3 10_python/mlir_python.py"
  }
 ];
 export const LAB_INDEX = [
@@ -1242,7 +1272,7 @@ export const LAB_INDEX = [
   "num": "01",
   "track": "bigcode",
   "file": "bigcode/01_build_topology.md",
-  "title": "BIGCODE LAB #01: Build topology — how a 7,500-file C++ project is put together",
+  "title": "Build topology — how a 7,500-file C++ project is put together",
   "difficulty": 2,
   "skills": [
    "ninja -t targets/query/commands/deps",
@@ -1262,7 +1292,7 @@ export const LAB_INDEX = [
   "num": "02",
   "track": "bigcode",
   "file": "bigcode/02_elf_forensics.md",
-  "title": "BIGCODE LAB #02: ELF forensics — what kind of binary is this, and where are its symbols?",
+  "title": "ELF forensics — what kind of binary is this, and where are its symbols?",
   "difficulty": 2,
   "skills": [
    "file",
@@ -1284,7 +1314,7 @@ export const LAB_INDEX = [
   "num": "03",
   "track": "bigcode",
   "file": "bigcode/03_flags_archaeology.md",
-  "title": "BIGCODE LAB #03: Flags archaeology — which compiler, which flags, produced this binary?",
+  "title": "Flags archaeology — which compiler, which flags, produced this binary?",
   "difficulty": 2,
   "skills": [
    "readelf -p",
@@ -1305,7 +1335,7 @@ export const LAB_INDEX = [
   "num": "04",
   "track": "bigcode",
   "file": "bigcode/04_hot_in_library.md",
-  "title": "BIGCODE LAB #04: The hot function is in a shared library you did not build — profile the compiler itself",
+  "title": "The hot function is in a shared library you did not build — profile the compiler itself",
   "difficulty": 3,
   "skills": [
    "perf --sort dso",
@@ -1328,7 +1358,7 @@ export const LAB_INDEX = [
   "num": "05",
   "track": "bigcode",
   "file": "bigcode/05_time_trace.md",
-  "title": "BIGCODE LAB #05: Why does this file take three seconds to compile? — `-ftime-trace`",
+  "title": "Why does this file take three seconds to compile? — `-ftime-trace`",
   "difficulty": 3,
   "skills": [
    "-ftime-trace",
@@ -1470,6 +1500,24 @@ export const LAB_INDEX = [
    "codegen-03"
   ],
   "evidence": "Correctness matrix at four vector lengths; predicted cost per element per core; crossover size; dispatch with override",
+  "steps": 0,
+  "minutes": 12,
+  "teaser": ""
+ },
+ {
+  "id": "mlir-setup-01",
+  "num": "01",
+  "track": "mlir-setup",
+  "file": "mlir-setup/01_toolchain.md",
+  "title": "Getting an MLIR toolchain, and knowing what you can skip",
+  "difficulty": 1,
+  "skills": [
+   "cmake",
+   "LLVM build options",
+   "toolchain consistency"
+  ],
+  "prereqs": [],
+  "evidence": "check_env.sh output with every WARN either fixed or consciously accepted, and four tools reporting the same version",
   "steps": 0,
   "minutes": 12,
   "teaser": ""
@@ -1677,7 +1725,7 @@ export const LAB_INDEX = [
   "num": "01",
   "track": "mlir-optimization",
   "file": "mlir-optimization/01_matmul_ablation.md",
-  "title": "OPTIMIZATION LAB #01 — matmul: 1 GFLOP/s → 40 GFLOP/s, and proving which step did it",
+  "title": "matmul: 1 GFLOP/s → 40 GFLOP/s, and proving which step did it",
   "difficulty": 3,
   "skills": [
    "ablation",
@@ -1696,7 +1744,7 @@ export const LAB_INDEX = [
   "num": "02",
   "track": "mlir-optimization",
   "file": "mlir-optimization/02_fusion_ablation.md",
-  "title": "OPTIMIZATION LAB #02 — elementwise fusion: the 8× hiding in \"just 3 simple ops\"",
+  "title": "elementwise fusion: the 8× hiding in \"just 3 simple ops\"",
   "difficulty": 3,
   "skills": [
    "fusion",
@@ -1714,7 +1762,7 @@ export const LAB_INDEX = [
   "num": "03",
   "track": "mlir-optimization",
   "file": "mlir-optimization/03_find_the_X.md",
-  "title": "OPTIMIZATION LAB #03 — \"It's fast with the pipeline, slow without — which pass is X?\"",
+  "title": "\"It's fast with the pipeline, slow without — which pass is X?\"",
   "difficulty": 2,
   "skills": [
    "leave-one-out ablation",
@@ -1749,7 +1797,7 @@ export const LAB_INDEX = [
   "num": "02",
   "track": "mlir-aarch64",
   "file": "mlir-aarch64/02_sve_matmul.md",
-  "title": "AARCH64 LAB #02 — Scalable vectors in MLIR: one binary, every SVE vector length",
+  "title": "Scalable vectors in MLIR: one binary, every SVE vector length",
   "difficulty": 4,
   "skills": [
    "scalable vectors",
@@ -1767,7 +1815,7 @@ export const LAB_INDEX = [
   "num": "03",
   "track": "mlir-aarch64",
   "file": "mlir-aarch64/03_mca_tiles.md",
-  "title": "AARCH64 LAB #03 — Picking AArch64 tile sizes without Arm hardware (llvm-mca)",
+  "title": "Picking AArch64 tile sizes without Arm hardware (llvm-mca)",
   "difficulty": 3,
   "skills": [
    "llvm-mca",
@@ -1785,7 +1833,7 @@ export const LAB_INDEX = [
   "num": "04",
   "track": "mlir-aarch64",
   "file": "mlir-aarch64/04_i8mm_mmt4d.md",
-  "title": "AARCH64 LAB #04 — int8 matmul on `smmla`: pack → mmt4d → unpack (IREE's data tiling, in miniature)",
+  "title": "int8 matmul on `smmla`: pack → mmt4d → unpack (IREE's data tiling, in miniature)",
   "difficulty": 4,
   "skills": [
    "i8mm",
@@ -1804,7 +1852,7 @@ export const LAB_INDEX = [
   "num": "01",
   "track": "mlir-debugging",
   "file": "mlir-debugging/01_find_the_pass.md",
-  "title": "DEBUGGING LAB #01 — \"Which pass did that?\" in one run",
+  "title": "\"Which pass did that?\" in one run",
   "difficulty": 2,
   "skills": [
    "print-changed",
@@ -1822,7 +1870,7 @@ export const LAB_INDEX = [
   "num": "02",
   "track": "mlir-debugging",
   "file": "mlir-debugging/02_reproduce_and_reduce.md",
-  "title": "DEBUGGING LAB #02 — Crash reproducers, and shrinking a 407-line crash to 3 lines",
+  "title": "Crash reproducers, and shrinking a 407-line crash to 3 lines",
   "difficulty": 3,
   "skills": [
    "llvm-reduce",
@@ -1840,7 +1888,7 @@ export const LAB_INDEX = [
   "num": "03",
   "track": "mlir-debugging",
   "file": "mlir-debugging/03_regression_tests.md",
-  "title": "DEBUGGING LAB #03 — Pin every fix with a lit/FileCheck test you have watched fail",
+  "title": "Pin every fix with a lit/FileCheck test you have watched fail",
   "difficulty": 2,
   "skills": [
    "lit",
@@ -1858,7 +1906,7 @@ export const LAB_INDEX = [
   "num": "01",
   "track": "mlir-triton",
   "file": "mlir-triton/01_triton_to_ttir.md",
-  "title": "TRITON LAB #01 — From a Triton kernel to TTIR, on a laptop with no GPU",
+  "title": "From a Triton kernel to TTIR, on a laptop with no GPU",
   "difficulty": 2,
   "skills": [
    "Triton",
@@ -1876,7 +1924,7 @@ export const LAB_INDEX = [
   "num": "02",
   "track": "mlir-triton",
   "file": "mlir-triton/02_triton_shared_on_cpu.md",
-  "title": "TRITON LAB #02 — triton-shared's output on a CPU: 0.6 GB/s → 17 GB/s, found with a profiler",
+  "title": "triton-shared's output on a CPU: 0.6 GB/s → 17 GB/s, found with a profiler",
   "difficulty": 4,
   "skills": [
    "triton-shared",
@@ -1894,7 +1942,7 @@ export const LAB_INDEX = [
   "num": "01",
   "track": "mlir-iree",
   "file": "mlir-iree/01_compare_with_iree.md",
-  "title": "IREE LAB #01 — Using the reference compiler: same matmul, IREE vs our schedule",
+  "title": "Using the reference compiler: same matmul, IREE vs our schedule",
   "difficulty": 3,
   "skills": [
    "IREE",
@@ -1931,7 +1979,7 @@ export const LAB_INDEX = [
   "num": "",
   "track": "mlir-python",
   "file": "mlir-python/README.md",
-  "title": "PYTHON LAB — driving MLIR from Python (how Triton backends are wired)",
+  "title": "driving MLIR from Python (how Triton backends are wired)",
   "difficulty": 2,
   "skills": [
    "MLIR Python bindings",

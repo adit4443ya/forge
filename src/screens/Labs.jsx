@@ -54,7 +54,8 @@ export default function Labs({ role, target }) {
       <div className="anim-rise">
         <H1>Labs</H1>
         <Muted style={{ marginTop: 8, maxWidth: "72ch" }}>
-          Sixty-one runnable labs in the <span className="mono" style={{ color: tk.accent }}>debug_lab</span> repository. Every number in
+          {LAB_INDEX.length} runnable labs in the <span className="mono" style={{ color: tk.accent }}>debug_lab</span> repository — C and C++
+          at the bottom of the stack, and MLIR from "what is an op" up to optimising Triton kernels for AArch64. Every number in
           their headers was produced on the machine that wrote them; your job is to reproduce it and explain any difference. A lab is
           finished when you can write its evidence note, not when you have read it.
         </Muted>
@@ -91,6 +92,11 @@ export default function Labs({ role, target }) {
             right={<div className="row" style={{ minWidth: 150 }}><Mono dim>{d}/{labs.length}</Mono><Bar value={d} max={labs.length} hue={TRACK_HUE[t.id] || "accent"} /></div>}>
             <Muted style={{ fontSize: "var(--fs-sm)", marginBottom: "var(--sp-3)" }}>{t.summary}</Muted>
             <Code label="// run it">{t.run}</Code>
+            {t.setup && (
+              <Mono dim style={{ display: "block", marginTop: 6 }}>
+                every shell for this track starts with <span style={{ color: tk.text }}>{t.setup}</span>
+              </Mono>
+            )}
             <div className="lab-cards">
               {labs.map((l, i) => {
                 const isDone = !!prog.labs[l.id];
@@ -137,6 +143,9 @@ export default function Labs({ role, target }) {
         <a href={REPO.labs} target="_blank" rel="noopener noreferrer"
            style={{ color: tk.accent, fontFamily: "var(--font-mono)" }}>{REPO.labs.replace("https://", "")} ↗</a>.
         The AArch64 track needs one setup run first, <span className="mono" style={{ color: tk.text }}>tools/a64-setup.sh</span>, which needs no root.
+        The MLIR tracks need an LLVM build with MLIR — start at{" "}
+        <span className="mono" style={{ color: tk.text }}>mlir/00_setup</span>, which walks through getting one, says which extras each
+        track needs, and what you lose by skipping each. Tracks 01–03, 06 and 09 need nothing but that build.
       </Note>
     </div>
   );
