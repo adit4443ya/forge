@@ -4028,6 +4028,928 @@ export const GUIDES = [
   "difficulty": "Advanced",
   "readTime": "45 min",
   "words": 3488
+ },
+ {
+  "num": "24",
+  "name": "24_memory_hierarchy_derived",
+  "file": "24_memory_hierarchy_derived.md",
+  "title": "The Memory Hierarchy, Derived",
+  "headings": [
+   {
+    "level": 1,
+    "text": "PART 1 — WHY THERE IS A HIERARCHY AT ALL",
+    "id": "part-1-why-there-is-a-hierarchy-at-all"
+   },
+   {
+    "level": 2,
+    "text": "A DRAM bit is a capacitor, and that changes everything",
+    "id": "a-dram-bit-is-a-capacitor-and-that-changes-everything"
+   },
+   {
+    "level": 2,
+    "text": "The memory wall",
+    "id": "the-memory-wall"
+   },
+   {
+    "level": 1,
+    "text": "PART 2 — INSIDE DRAM: ROWS, BANKS, AND WHY \"RANDOM\" IS WORSE THAN THE LATENCY NUMBER",
+    "id": "part-2-inside-dram-rows-banks-and-why-random-is-worse-than-the-latency-number"
+   },
+   {
+    "level": 2,
+    "text": "The address is a hierarchy too",
+    "id": "the-address-is-a-hierarchy-too"
+   },
+   {
+    "level": 2,
+    "text": "Three outcomes, three very different costs",
+    "id": "three-outcomes-three-very-different-costs"
+   },
+   {
+    "level": 2,
+    "text": "Bank-level parallelism and interleaving",
+    "id": "bank-level-parallelism-and-interleaving"
+   },
+   {
+    "level": 1,
+    "text": "PART 3 — THE LINE IS THE UNIT",
+    "id": "part-3-the-line-is-the-unit"
+   },
+   {
+    "level": 2,
+    "text": "What that means for your loop",
+    "id": "what-that-means-for-your-loop"
+   },
+   {
+    "level": 2,
+    "text": "The corollary that changes data structure design",
+    "id": "the-corollary-that-changes-data-structure-design"
+   },
+   {
+    "level": 1,
+    "text": "PART 4 — CACHE ORGANISATION: SETS, WAYS, AND THE CONFLICTS THEY CREATE",
+    "id": "part-4-cache-organisation-sets-ways-and-the-conflicts-they-create"
+   },
+   {
+    "level": 2,
+    "text": "The address split",
+    "id": "the-address-split"
+   },
+   {
+    "level": 2,
+    "text": "Deriving the lab machine's L1 — and why L1 sizes are what they are",
+    "id": "deriving-the-lab-machine-s-l1-and-why-l1-sizes-are-what-they-are"
+   },
+   {
+    "level": 2,
+    "text": "Conflict misses, and the real reason stride 4096 is a disaster",
+    "id": "conflict-misses-and-the-real-reason-stride-4096-is-a-disaster"
+   },
+   {
+    "level": 2,
+    "text": "4K aliasing: when the core guesses two addresses conflict",
+    "id": "4k-aliasing-when-the-core-guesses-two-addresses-conflict"
+   },
+   {
+    "level": 1,
+    "text": "PART 5 — THE STAIRCASE, MEASURED",
+    "id": "part-5-the-staircase-measured"
+   },
+   {
+    "level": 1,
+    "text": "PART 6 — PREFETCHERS: THE HARDWARE'S GUESS",
+    "id": "part-6-prefetchers-the-hardware-s-guess"
+   },
+   {
+    "level": 2,
+    "text": "The kinds, and what each can detect",
+    "id": "the-kinds-and-what-each-can-detect"
+   },
+   {
+    "level": 2,
+    "text": "The two hard limits",
+    "id": "the-two-hard-limits"
+   },
+   {
+    "level": 2,
+    "text": "When software prefetch actually helps",
+    "id": "when-software-prefetch-actually-helps"
+   },
+   {
+    "level": 1,
+    "text": "PART 7 — MEMORY-LEVEL PARALLELISM, AND LITTLE'S LAW",
+    "id": "part-7-memory-level-parallelism-and-little-s-law"
+   },
+   {
+    "level": 2,
+    "text": "Little's law, applied to memory",
+    "id": "little-s-law-applied-to-memory"
+   },
+   {
+    "level": 1,
+    "text": "PART 8 — WRITES, THE STORE BUFFER, AND LAYOUT",
+    "id": "part-8-writes-the-store-buffer-and-layout"
+   },
+   {
+    "level": 2,
+    "text": "Stores do not go straight to memory",
+    "id": "stores-do-not-go-straight-to-memory"
+   },
+   {
+    "level": 2,
+    "text": "AoS versus SoA, with the condition attached",
+    "id": "aos-versus-soa-with-the-condition-attached"
+   },
+   {
+    "level": 2,
+    "text": "Alignment and padding, briefly",
+    "id": "alignment-and-padding-briefly"
+   },
+   {
+    "level": 1,
+    "text": "PART 9 — THE INVESTIGATION ORDER",
+    "id": "part-9-the-investigation-order"
+   },
+   {
+    "level": 1,
+    "text": "PART 10 — Q&A DRILL",
+    "id": "part-10-q-a-drill"
+   },
+   {
+    "level": 3,
+    "text": "Q: Why has DRAM bandwidth improved so much more than DRAM latency?",
+    "id": "q-why-has-dram-bandwidth-improved-so-much-more-than-dram-latency"
+   },
+   {
+    "level": 3,
+    "text": "Q: What is a row buffer, and why does it make random access worse than the quoted latency?",
+    "id": "q-what-is-a-row-buffer-and-why-does-it-make-random-access-worse-than-the-quoted-latency"
+   },
+   {
+    "level": 3,
+    "text": "Q: Both stride 64 and stride 1 move the same number of cache lines. Why is stride 64 eight times slower per access?",
+    "id": "q-both-stride-64-and-stride-1-move-the-same-number-of-cache-lines-why-is-stride-64-eight-times-slower-per-access"
+   },
+   {
+    "level": 3,
+    "text": "Q: Why can L1 not simply be made much bigger?",
+    "id": "q-why-can-l1-not-simply-be-made-much-bigger"
+   },
+   {
+    "level": 3,
+    "text": "Q: A column walk over a 1024 × 1024 double array is pathologically slow. Mechanism and fix?",
+    "id": "q-a-column-walk-over-a-1024-1024-double-array-is-pathologically-slow-mechanism-and-fix"
+   },
+   {
+    "level": 3,
+    "text": "Q: Two arrays run slower when identically aligned than when deliberately misaligned. What is happening?",
+    "id": "q-two-arrays-run-slower-when-identically-aligned-than-when-deliberately-misaligned-what-is-happening"
+   },
+   {
+    "level": 3,
+    "text": "Q: A stride-1 sweep over 640 MB reports almost no cache misses. Is the data in cache?",
+    "id": "q-a-stride-1-sweep-over-640-mb-reports-almost-no-cache-misses-is-the-data-in-cache"
+   },
+   {
+    "level": 3,
+    "text": "Q: Why can a prefetcher not help a linked-list traversal, and what would?",
+    "id": "q-why-can-a-prefetcher-not-help-a-linked-list-traversal-and-what-would"
+   },
+   {
+    "level": 3,
+    "text": "Q: The same random loads cost 145 ns each in one arrangement and 12 ns in another. What changed?",
+    "id": "q-the-same-random-loads-cost-145-ns-each-in-one-arrangement-and-12-ns-in-another-what-changed"
+   },
+   {
+    "level": 3,
+    "text": "Q: Why can one core rarely saturate the memory bandwidth in the datasheet?",
+    "id": "q-why-can-one-core-rarely-saturate-the-memory-bandwidth-in-the-datasheet"
+   },
+   {
+    "level": 3,
+    "text": "Q: When is structure-of-arrays the wrong choice?",
+    "id": "q-when-is-structure-of-arrays-the-wrong-choice"
+   },
+   {
+    "level": 3,
+    "text": "Q: Writing a buffer you will fully overwrite still reads it from memory. Why, and what avoids it?",
+    "id": "q-writing-a-buffer-you-will-fully-overwrite-still-reads-it-from-memory-why-and-what-avoids-it"
+   },
+   {
+    "level": 2,
+    "text": "Sources",
+    "id": "sources"
+   }
+  ],
+  "category": "The Machine",
+  "tags": "Memory Hierarchy, DRAM, Row Buffer, Cache Line, Associativity, Conflict Miss, VIPT, 4K Aliasing, Prefetcher, MLP, MSHR, Fill Buffer, Store Buffer, Little's Law, AoS, SoA, Bandwidth",
+  "difficulty": "Advanced",
+  "readTime": "45 min",
+  "words": 5379
+ },
+ {
+  "num": "25",
+  "name": "25_coherence_and_memory_models",
+  "file": "25_coherence_and_memory_models.md",
+  "title": "Coherence and the Hardware Memory Model",
+  "headings": [
+   {
+    "level": 1,
+    "text": "PART 1 — COHERENCE VERSUS CONSISTENCY",
+    "id": "part-1-coherence-versus-consistency"
+   },
+   {
+    "level": 1,
+    "text": "PART 2 — MESI, DERIVED",
+    "id": "part-2-mesi-derived"
+   },
+   {
+    "level": 2,
+    "text": "The invariant the hardware must maintain",
+    "id": "the-invariant-the-hardware-must-maintain"
+   },
+   {
+    "level": 2,
+    "text": "The states fall out",
+    "id": "the-states-fall-out"
+   },
+   {
+    "level": 2,
+    "text": "The transitions worth naming",
+    "id": "the-transitions-worth-naming"
+   },
+   {
+    "level": 2,
+    "text": "The extensions you should recognise",
+    "id": "the-extensions-you-should-recognise"
+   },
+   {
+    "level": 2,
+    "text": "Snooping does not scale, so the LLC keeps a directory",
+    "id": "snooping-does-not-scale-so-the-llc-keeps-a-directory"
+   },
+   {
+    "level": 1,
+    "text": "PART 3 — WHAT COHERENCE COSTS YOU: FALSE SHARING",
+    "id": "part-3-what-coherence-costs-you-false-sharing"
+   },
+   {
+    "level": 2,
+    "text": "Finding it rather than guessing",
+    "id": "finding-it-rather-than-guessing"
+   },
+   {
+    "level": 2,
+    "text": "The fixes, in order of preference",
+    "id": "the-fixes-in-order-of-preference"
+   },
+   {
+    "level": 1,
+    "text": "PART 4 — THE STORE BUFFER FORCES A WEAK MEMORY MODEL",
+    "id": "part-4-the-store-buffer-forces-a-weak-memory-model"
+   },
+   {
+    "level": 2,
+    "text": "The structure",
+    "id": "the-structure"
+   },
+   {
+    "level": 2,
+    "text": "The consequence, in four lines",
+    "id": "the-consequence-in-four-lines"
+   },
+   {
+    "level": 2,
+    "text": "Measured, not asserted",
+    "id": "measured-not-asserted"
+   },
+   {
+    "level": 1,
+    "text": "PART 5 — x86-TSO",
+    "id": "part-5-x86-tso"
+   },
+   {
+    "level": 2,
+    "text": "What is and is not permitted",
+    "id": "what-is-and-is-not-permitted"
+   },
+   {
+    "level": 2,
+    "text": "It is a real formal model, not a folk description",
+    "id": "it-is-a-real-formal-model-not-a-folk-description"
+   },
+   {
+    "level": 1,
+    "text": "PART 6 — AArch64 AND WEAK MEMORY",
+    "id": "part-6-aarch64-and-weak-memory"
+   },
+   {
+    "level": 2,
+    "text": "Multi-copy atomicity — the revision that matters",
+    "id": "multi-copy-atomicity-the-revision-that-matters"
+   },
+   {
+    "level": 2,
+    "text": "The instructions",
+    "id": "the-instructions"
+   },
+   {
+    "level": 2,
+    "text": "DMB, DSB, ISB — the three that get confused",
+    "id": "dmb-dsb-isb-the-three-that-get-confused"
+   },
+   {
+    "level": 2,
+    "text": "The practical asymmetry",
+    "id": "the-practical-asymmetry"
+   },
+   {
+    "level": 1,
+    "text": "PART 7 — THE LITMUS CATALOGUE",
+    "id": "part-7-the-litmus-catalogue"
+   },
+   {
+    "level": 2,
+    "text": "SB — Store Buffer (also Dekker)",
+    "id": "sb-store-buffer-also-dekker"
+   },
+   {
+    "level": 2,
+    "text": "MP — Message Passing",
+    "id": "mp-message-passing"
+   },
+   {
+    "level": 2,
+    "text": "LB — Load Buffer",
+    "id": "lb-load-buffer"
+   },
+   {
+    "level": 2,
+    "text": "IRIW — Independent Reads of Independent Writes",
+    "id": "iriw-independent-reads-of-independent-writes"
+   },
+   {
+    "level": 2,
+    "text": "CoRR — Coherence, Read-Read",
+    "id": "corr-coherence-read-read"
+   },
+   {
+    "level": 2,
+    "text": "Two more to recognise",
+    "id": "two-more-to-recognise"
+   },
+   {
+    "level": 2,
+    "text": "The summary table to carry",
+    "id": "the-summary-table-to-carry"
+   },
+   {
+    "level": 1,
+    "text": "PART 8 — BARRIERS, AND TOOLS THAT CHECK YOUR REASONING",
+    "id": "part-8-barriers-and-tools-that-check-your-reasoning"
+   },
+   {
+    "level": 2,
+    "text": "The four orderings a barrier can enforce",
+    "id": "the-four-orderings-a-barrier-can-enforce"
+   },
+   {
+    "level": 2,
+    "text": "Compiler barriers are a different thing",
+    "id": "compiler-barriers-are-a-different-thing"
+   },
+   {
+    "level": 2,
+    "text": "Check your reasoning mechanically",
+    "id": "check-your-reasoning-mechanically"
+   },
+   {
+    "level": 1,
+    "text": "PART 9 — Q&A DRILL",
+    "id": "part-9-q-a-drill"
+   },
+   {
+    "level": 3,
+    "text": "Q: Distinguish coherence from consistency.",
+    "id": "q-distinguish-coherence-from-consistency"
+   },
+   {
+    "level": 3,
+    "text": "Q: Why does MESI have an Exclusive state when Modified and Shared would do?",
+    "id": "q-why-does-mesi-have-an-exclusive-state-when-modified-and-shared-would-do"
+   },
+   {
+    "level": 3,
+    "text": "Q: What is read-for-ownership, and what does it imply about writes?",
+    "id": "q-what-is-read-for-ownership-and-what-does-it-imply-about-writes"
+   },
+   {
+    "level": 3,
+    "text": "Q: Is false sharing cheaper than true sharing?",
+    "id": "q-is-false-sharing-cheaper-than-true-sharing"
+   },
+   {
+    "level": 3,
+    "text": "Q: You suspect false sharing in a large program. How do you confirm it rather than guess?",
+    "id": "q-you-suspect-false-sharing-in-a-large-program-how-do-you-confirm-it-rather-than-guess"
+   },
+   {
+    "level": 3,
+    "text": "Q: Derive why x86 permits StoreLoad reordering.",
+    "id": "q-derive-why-x86-permits-storeload-reordering"
+   },
+   {
+    "level": 3,
+    "text": "Q: Which single memory_order is required for the store-buffer pattern, and why is nothing weaker enough?",
+    "id": "q-which-single-memory-order-is-required-for-the-store-buffer-pattern-and-why-is-nothing-weaker-enough"
+   },
+   {
+    "level": 3,
+    "text": "Q: On x86, is a relaxed fetch_add cheaper than a seq_cst fetch_add?",
+    "id": "q-on-x86-is-a-relaxed-fetch-add-cheaper-than-a-seq-cst-fetch-add"
+   },
+   {
+    "level": 3,
+    "text": "Q: Why can C++ seq_cst lower to plain LDAR/STLR on AArch64 with no extra fence?",
+    "id": "q-why-can-c-seq-cst-lower-to-plain-ldar-stlr-on-aarch64-with-no-extra-fence"
+   },
+   {
+    "level": 3,
+    "text": "Q: What is LDAPR for?",
+    "id": "q-what-is-ldapr-for"
+   },
+   {
+    "level": 3,
+    "text": "Q: Your lock-free code passes millions of runs on x86 and fails on an ARM core. First hypothesis?",
+    "id": "q-your-lock-free-code-passes-millions-of-runs-on-x86-and-fails-on-an-arm-core-first-hypothesis"
+   },
+   {
+    "level": 3,
+    "text": "Q: ARMv8 is other-multi-copy atomic. Does that forbid IRIW?",
+    "id": "q-armv8-is-other-multi-copy-atomic-does-that-forbid-iriw"
+   },
+   {
+    "level": 3,
+    "text": "Q: Someone fixes a race with volatile. What do you say?",
+    "id": "q-someone-fixes-a-race-with-volatile-what-do-you-say"
+   },
+   {
+    "level": 3,
+    "text": "Q: A litmus experiment never shows a given outcome. Is the outcome forbidden?",
+    "id": "q-a-litmus-experiment-never-shows-a-given-outcome-is-the-outcome-forbidden"
+   },
+   {
+    "level": 2,
+    "text": "Sources",
+    "id": "sources"
+   }
+  ],
+  "category": "The Machine",
+  "tags": "Cache Coherence, MESI, MOESI, MESIF, False Sharing, Store Buffer, Memory Model, x86-TSO, AArch64, Weak Memory, Litmus Tests, SB, MP, LB, IRIW, Multi-Copy Atomicity, RCsc, RCpc, Barriers, DMB, LDAR, STLR, perf c2c, herd7",
+  "difficulty": "Advanced",
+  "readTime": "50 min",
+  "words": 5535
+ },
+ {
+  "num": "26",
+  "name": "26_virtual_memory_and_the_os",
+  "file": "26_virtual_memory_and_the_os.md",
+  "title": "Virtual Memory and the OS Tax",
+  "headings": [
+   {
+    "level": 1,
+    "text": "PART 1 — THE PAGE WALK",
+    "id": "part-1-the-page-walk"
+   },
+   {
+    "level": 2,
+    "text": "What translation actually costs",
+    "id": "what-translation-actually-costs"
+   },
+   {
+    "level": 2,
+    "text": "The hardware does this for you, which is the problem",
+    "id": "the-hardware-does-this-for-you-which-is-the-problem"
+   },
+   {
+    "level": 1,
+    "text": "PART 2 — TLB REACH, AND THE CLIFF IT EXPLAINS",
+    "id": "part-2-tlb-reach-and-the-cliff-it-explains"
+   },
+   {
+    "level": 2,
+    "text": "Now re-read guide 24's staircase",
+    "id": "now-re-read-guide-24-s-staircase"
+   },
+   {
+    "level": 2,
+    "text": "The second-order effect",
+    "id": "the-second-order-effect"
+   },
+   {
+    "level": 1,
+    "text": "PART 3 — HUGE PAGES",
+    "id": "part-3-huge-pages"
+   },
+   {
+    "level": 2,
+    "text": "Two mechanisms, and they are not the same",
+    "id": "two-mechanisms-and-they-are-not-the-same"
+   },
+   {
+    "level": 2,
+    "text": "Best-effort means exactly that",
+    "id": "best-effort-means-exactly-that"
+   },
+   {
+    "level": 2,
+    "text": "The costs nobody mentions",
+    "id": "the-costs-nobody-mentions"
+   },
+   {
+    "level": 1,
+    "text": "PART 4 — PAGE FAULTS AND THE TAIL",
+    "id": "part-4-page-faults-and-the-tail"
+   },
+   {
+    "level": 2,
+    "text": "Memory you allocated does not exist yet",
+    "id": "memory-you-allocated-does-not-exist-yet"
+   },
+   {
+    "level": 2,
+    "text": "The measurement",
+    "id": "the-measurement"
+   },
+   {
+    "level": 2,
+    "text": "The toolkit",
+    "id": "the-toolkit"
+   },
+   {
+    "level": 1,
+    "text": "PART 5 — NUMA",
+    "id": "part-5-numa"
+   },
+   {
+    "level": 1,
+    "text": "PART 6 — THE ALLOCATOR",
+    "id": "part-6-the-allocator"
+   },
+   {
+    "level": 1,
+    "text": "PART 7 — THE SYSCALL BOUNDARY",
+    "id": "part-7-the-syscall-boundary"
+   },
+   {
+    "level": 1,
+    "text": "PART 8 — SCHEDULING, INTERRUPTS, AND FREQUENCY",
+    "id": "part-8-scheduling-interrupts-and-frequency"
+   },
+   {
+    "level": 2,
+    "text": "Preemption is a tail event",
+    "id": "preemption-is-a-tail-event"
+   },
+   {
+    "level": 2,
+    "text": "The SCHED_FIFO trap",
+    "id": "the-sched-fifo-trap"
+   },
+   {
+    "level": 2,
+    "text": "Frequency, idle states, and hybrid cores",
+    "id": "frequency-idle-states-and-hybrid-cores"
+   },
+   {
+    "level": 1,
+    "text": "PART 9 — ATTRIBUTING A TAIL",
+    "id": "part-9-attributing-a-tail"
+   },
+   {
+    "level": 1,
+    "text": "PART 10 — Q&A DRILL",
+    "id": "part-10-q-a-drill"
+   },
+   {
+    "level": 3,
+    "text": "Q: What does a TLB miss actually cost?",
+    "id": "q-what-does-a-tlb-miss-actually-cost"
+   },
+   {
+    "level": 3,
+    "text": "Q: Your latency-versus-size curve has a step at 8 MB but L3 is 18 MB. Explain.",
+    "id": "q-your-latency-versus-size-curve-has-a-step-at-8-mb-but-l3-is-18-mb-explain"
+   },
+   {
+    "level": 3,
+    "text": "Q: Someone reports L2 \"getting slower\" as the working set grows inside L2. What is really happening?",
+    "id": "q-someone-reports-l2-getting-slower-as-the-working-set-grows-inside-l2-what-is-really-happening"
+   },
+   {
+    "level": 3,
+    "text": "Q: How do huge pages help, and why can you not rely on them?",
+    "id": "q-how-do-huge-pages-help-and-why-can-you-not-rely-on-them"
+   },
+   {
+    "level": 3,
+    "text": "Q: You called madvise(MADV_HUGEPAGE) and latency improved 10%. How do you know huge pages caused it?",
+    "id": "q-you-called-madvise-madv-hugepage-and-latency-improved-10-how-do-you-know-huge-pages-caused-it"
+   },
+   {
+    "level": 3,
+    "text": "Q: You mlockall'd and pre-faulted, yet minor faults still rise during the run. Why?",
+    "id": "q-you-mlockall-d-and-pre-faulted-yet-minor-faults-still-rise-during-the-run-why"
+   },
+   {
+    "level": 3,
+    "text": "Q: What is the first-touch rule and the bug it causes?",
+    "id": "q-what-is-the-first-touch-rule-and-the-bug-it-causes"
+   },
+   {
+    "level": 3,
+    "text": "Q: The same malloc(1 MiB) is 41 ns in one run and 4.2 µs in another. Explain.",
+    "id": "q-the-same-malloc-1-mib-is-41-ns-in-one-run-and-4-2-s-in-another-explain"
+   },
+   {
+    "level": 3,
+    "text": "Q: Why is clock_gettime 38 ns when getpid is 142 ns?",
+    "id": "q-why-is-clock-gettime-38-ns-when-getpid-is-142-ns"
+   },
+   {
+    "level": 3,
+    "text": "Q: isolcpus, nohz_full and rcu_nocbs — what does each remove?",
+    "id": "q-isolcpus-nohz-full-and-rcu-nocbs-what-does-each-remove"
+   },
+   {
+    "level": 3,
+    "text": "Q: A SCHED_FIFO thread that spins makes the whole machine's I/O stall. Why, and what saves you?",
+    "id": "q-a-sched-fifo-thread-that-spins-makes-the-whole-machine-s-i-o-stall-why-and-what-saves-you"
+   },
+   {
+    "level": 3,
+    "text": "Q: Your benchmark varies 2.4x run to run. Before optimising anything, what do you do?",
+    "id": "q-your-benchmark-varies-2-4x-run-to-run-before-optimising-anything-what-do-you-do"
+   },
+   {
+    "level": 3,
+    "text": "Q: p50 is fine and p99.9 is 100x. Walk me through it.",
+    "id": "q-p50-is-fine-and-p99-9-is-100x-walk-me-through-it"
+   },
+   {
+    "level": 2,
+    "text": "Sources",
+    "id": "sources"
+   }
+  ],
+  "category": "The Machine",
+  "tags": "Virtual Memory, Page Table, Page Walk, TLB, STLB, TLB Reach, Huge Pages, THP, Page Fault, Pre-faulting, mlockall, NUMA, First Touch, Allocator, Syscall, vDSO, Scheduler, Jitter, isolcpus, nohz_full, IRQ Affinity, Tail Latency",
+  "difficulty": "Advanced",
+  "readTime": "45 min",
+  "words": 4053
+ },
+ {
+  "num": "27",
+  "name": "27_concurrency_in_practice",
+  "file": "27_concurrency_in_practice.md",
+  "title": "Concurrency in Practice",
+  "headings": [
+   {
+    "level": 1,
+    "text": "PART 1 — THE C++ MEMORY MODEL, PRECISELY",
+    "id": "part-1-the-c-memory-model-precisely"
+   },
+   {
+    "level": 2,
+    "text": "What a data race is, and why UB is the right word",
+    "id": "what-a-data-race-is-and-why-ub-is-the-right-word"
+   },
+   {
+    "level": 2,
+    "text": "The three relations",
+    "id": "the-three-relations"
+   },
+   {
+    "level": 2,
+    "text": "Modification order and the four coherence rules",
+    "id": "modification-order-and-the-four-coherence-rules"
+   },
+   {
+    "level": 2,
+    "text": "SC-DRF, the promise",
+    "id": "sc-drf-the-promise"
+   },
+   {
+    "level": 2,
+    "text": "Two corners worth knowing exist",
+    "id": "two-corners-worth-knowing-exist"
+   },
+   {
+    "level": 1,
+    "text": "PART 2 — THE SIX ORDERINGS AS A BUDGET",
+    "id": "part-2-the-six-orderings-as-a-budget"
+   },
+   {
+    "level": 3,
+    "text": "relaxed",
+    "id": "relaxed"
+   },
+   {
+    "level": 3,
+    "text": "release (stores and RMWs)",
+    "id": "release-stores-and-rmws"
+   },
+   {
+    "level": 3,
+    "text": "acquire (loads and RMWs)",
+    "id": "acquire-loads-and-rmws"
+   },
+   {
+    "level": 3,
+    "text": "acq_rel (RMWs only)",
+    "id": "acq-rel-rmws-only"
+   },
+   {
+    "level": 3,
+    "text": "seq_cst (the default)",
+    "id": "seq-cst-the-default"
+   },
+   {
+    "level": 3,
+    "text": "consume",
+    "id": "consume"
+   },
+   {
+    "level": 2,
+    "text": "Fences versus ordered operations",
+    "id": "fences-versus-ordered-operations"
+   },
+   {
+    "level": 2,
+    "text": "The idiom that uses most of this",
+    "id": "the-idiom-that-uses-most-of-this"
+   },
+   {
+    "level": 1,
+    "text": "PART 3 — WHAT IT COMPILES TO",
+    "id": "part-3-what-it-compiles-to"
+   },
+   {
+    "level": 1,
+    "text": "PART 4 — THE SPSC RING BUFFER, OPTIMISED THREE TIMES",
+    "id": "part-4-the-spsc-ring-buffer-optimised-three-times"
+   },
+   {
+    "level": 2,
+    "text": "Version 1 — the naive one: 148 ns per item",
+    "id": "version-1-the-naive-one-148-ns-per-item"
+   },
+   {
+    "level": 2,
+    "text": "Version 2 — pad and weaken: 18–42 ns per item",
+    "id": "version-2-pad-and-weaken-18-42-ns-per-item"
+   },
+   {
+    "level": 2,
+    "text": "Version 3 — cache the other side's index: 29–34 ns, and stable",
+    "id": "version-3-cache-the-other-side-s-index-29-34-ns-and-stable"
+   },
+   {
+    "level": 2,
+    "text": "Read the numbers properly",
+    "id": "read-the-numbers-properly"
+   },
+   {
+    "level": 1,
+    "text": "PART 5 — THE OTHER STRUCTURES, AND WHEN TO REACH FOR THEM",
+    "id": "part-5-the-other-structures-and-when-to-reach-for-them"
+   },
+   {
+    "level": 2,
+    "text": "Seqlock — cheap reads of a rarely-written value",
+    "id": "seqlock-cheap-reads-of-a-rarely-written-value"
+   },
+   {
+    "level": 2,
+    "text": "The reclamation problem, and its three answers",
+    "id": "the-reclamation-problem-and-its-three-answers"
+   },
+   {
+    "level": 2,
+    "text": "ABA",
+    "id": "aba"
+   },
+   {
+    "level": 2,
+    "text": "Work stealing, briefly",
+    "id": "work-stealing-briefly"
+   },
+   {
+    "level": 1,
+    "text": "PART 6 — LOCKS, HONESTLY",
+    "id": "part-6-locks-honestly"
+   },
+   {
+    "level": 3,
+    "text": "Spinning properly",
+    "id": "spinning-properly"
+   },
+   {
+    "level": 3,
+    "text": "Lock-free is not wait-free, and not automatically faster",
+    "id": "lock-free-is-not-wait-free-and-not-automatically-faster"
+   },
+   {
+    "level": 1,
+    "text": "PART 7 — FINDING THE BUGS",
+    "id": "part-7-finding-the-bugs"
+   },
+   {
+    "level": 1,
+    "text": "PART 8 — THE LOW-LATENCY PLAYBOOK",
+    "id": "part-8-the-low-latency-playbook"
+   },
+   {
+    "level": 1,
+    "text": "PART 9 — Q&A DRILL",
+    "id": "part-9-q-a-drill"
+   },
+   {
+    "level": 3,
+    "text": "Q: What exactly makes something a data race, and why is it UB rather than a stale read?",
+    "id": "q-what-exactly-makes-something-a-data-race-and-why-is-it-ub-rather-than-a-stale-read"
+   },
+   {
+    "level": 3,
+    "text": "Q: A producer fills a buffer then sets a flag. Minimum correct ordering, and what breaks with relaxed?",
+    "id": "q-a-producer-fills-a-buffer-then-sets-a-flag-minimum-correct-ordering-and-what-breaks-with-relaxed"
+   },
+   {
+    "level": 3,
+    "text": "Q: When do you genuinely need seq_cst?",
+    "id": "q-when-do-you-genuinely-need-seq-cst"
+   },
+   {
+    "level": 3,
+    "text": "Q: Your atomic counter uses relaxed. Can another thread see it decrease?",
+    "id": "q-your-atomic-counter-uses-relaxed-can-another-thread-see-it-decrease"
+   },
+   {
+    "level": 3,
+    "text": "Q: Why can a reference count increment be relaxed but the decrement must not?",
+    "id": "q-why-can-a-reference-count-increment-be-relaxed-but-the-decrement-must-not"
+   },
+   {
+    "level": 3,
+    "text": "Q: An SPSC queue is slow. Name two faults you would look for before reading the algorithm.",
+    "id": "q-an-spsc-queue-is-slow-name-two-faults-you-would-look-for-before-reading-the-algorithm"
+   },
+   {
+    "level": 3,
+    "text": "Q: You have two SPSC versions: one averages 30 ns with a 24 ns spread, one averages 32 ns with a 5 ns spread. Which ships?",
+    "id": "q-you-have-two-spsc-versions-one-averages-30-ns-with-a-24-ns-spread-one-averages-32-ns-with-a-5-ns-spread-which-ships"
+   },
+   {
+    "level": 3,
+    "text": "Q: Why is spinning on test_and_set worse than spinning on a plain load?",
+    "id": "q-why-is-spinning-on-test-and-set-worse-than-spinning-on-a-plain-load"
+   },
+   {
+    "level": 3,
+    "text": "Q: Is a mutex slow because it makes a syscall?",
+    "id": "q-is-a-mutex-slow-because-it-makes-a-syscall"
+   },
+   {
+    "level": 3,
+    "text": "Q: What is the ABA problem and how do you avoid it?",
+    "id": "q-what-is-the-aba-problem-and-how-do-you-avoid-it"
+   },
+   {
+    "level": 3,
+    "text": "Q: Compare RCU and hazard pointers.",
+    "id": "q-compare-rcu-and-hazard-pointers"
+   },
+   {
+    "level": 3,
+    "text": "Q: Does lock-free mean faster?",
+    "id": "q-does-lock-free-mean-faster"
+   },
+   {
+    "level": 3,
+    "text": "Q: TSan reports nothing. Is the code race-free?",
+    "id": "q-tsan-reports-nothing-is-the-code-race-free"
+   },
+   {
+    "level": 2,
+    "text": "Sources",
+    "id": "sources"
+   }
+  ],
+  "category": "The Machine",
+  "tags": "C++ Memory Model, Atomics, memory_order, Happens-Before, SC-DRF, Release Sequence, SPSC, Ring Buffer, Seqlock, RCU, Hazard Pointers, ABA, Chase-Lev, Mutex, Futex, Spinlock, TSan, perf c2c, Lock-Free, Wait-Free, Low Latency",
+  "difficulty": "Advanced",
+  "readTime": "50 min",
+  "words": 4647
  }
 ];
 export const guideByNum = (n) => GUIDES.find((g) => g.num === String(n));

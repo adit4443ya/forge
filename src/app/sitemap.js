@@ -16,6 +16,7 @@ export default function sitemap() {
     { url: abs("/learn"), priority: 0.8, changeFrequency: "weekly" },
     { url: abs("/practice"), priority: 0.8, changeFrequency: "weekly" },
     { url: abs("/labs"), priority: 0.8, changeFrequency: "weekly" },
+    { url: abs("/machine"), priority: 0.9, changeFrequency: "weekly" },
     { url: abs("/today"), priority: 0.5, changeFrequency: "daily" },
     { url: abs("/progress"), priority: 0.3, changeFrequency: "monthly" },
   ];

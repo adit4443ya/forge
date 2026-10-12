@@ -13,7 +13,8 @@ export const SURFACES = [
   { id: "practice", label: "Practice", key: "2", href: "/practice", hint: "problems, drills and quizzes" },
   { id: "learn",    label: "Learn",    key: "3", href: "/learn",    hint: "guides and rapid recall, by competency" },
   { id: "labs",     label: "Labs",     key: "4", href: "/labs",     hint: "runnable evidence on your own machine" },
-  { id: "progress", label: "Progress", key: "5", href: "/progress", hint: "what you have actually done" },
+  { id: "machine",  label: "Machine",  key: "5", href: "/machine",  hint: "memory, coherence, ordering, the OS tax" },
+  { id: "progress", label: "Progress", key: "6", href: "/progress", hint: "what you have actually done" },
 ];
 
 /* A deep link is expressed in the query string, and the whole string is the

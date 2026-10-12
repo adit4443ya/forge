@@ -28,7 +28,8 @@
     "test:followups": "node scripts/test-followups.mjs",
     "test:anchors": "node scripts/test-anchors.mjs",
     "test:seo": "node scripts/test-seo.mjs",
-    "test:middleware": "node scripts/test-middleware.mjs"
+    "test:middleware": "node scripts/test-middleware.mjs",
+    "test:machine": "node scripts/test-machine.mjs"
   },
   "dependencies": {
     "@supabase/ssr": "^0.7.0",

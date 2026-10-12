@@ -23,10 +23,10 @@ import { RAPID } from "@/data/rapidfire.js";
 const DOMAIN_HINTS = {
   "c-ir": ["compiler"], "c-debug": ["compiler"], "c-backend": ["compiler", "arch"],
   "c-vec": ["compiler", "arch"], "c-arch": ["arch"], "c-scale": ["compiler", "sys"],
-  "s-measure": ["sys", "arch"], "s-profile": ["sys", "arch"], "s-memory": ["arch"],
-  "s-uarch": ["arch"], "s-kernel": ["sys"], "s-prove": ["sys", "compiler"],
-  "h-cpp": ["cpp"], "h-latency": ["sys", "hft"], "h-conc": ["cpp", "arch"],
-  "h-data": ["arch", "hft"], "h-net": ["sys", "hft"], "h-box": ["sys"],
+  "s-measure": ["sys", "arch"], "s-profile": ["sys", "arch"], "s-memory": ["mem", "arch"],
+  "s-uarch": ["mem", "arch"], "s-kernel": ["mem", "sys"], "s-prove": ["sys", "compiler"],
+  "h-cpp": ["cpp"], "h-latency": ["sys", "hft"], "h-conc": ["mem", "cpp"],
+  "h-data": ["mem", "hft"], "h-net": ["sys", "hft"], "h-box": ["sys"],
   "h-prob": ["prob"], "h-micro": ["hft"], "h-num": ["arch", "compiler"],
 };
 
